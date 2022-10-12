@@ -20,7 +20,7 @@ components_df <- as.data.frame(components_json)
 # get the number of rows of the df to use as # of variables for generating design_coded
 number_of_variables <- nrow(components_df)
 
-# intialises dexperimental design_coded
+# intialises experimental design_coded
 design_coded <- ccd(basis = number_of_variables,
                 n0 = 4,
                 blocks = "Block",

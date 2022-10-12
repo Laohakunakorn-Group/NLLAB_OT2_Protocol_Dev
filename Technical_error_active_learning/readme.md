@@ -1,16 +1,14 @@
-# Introduction
+# **Introduction**
 
 Instructions for deploying the analysis environment and descriptions of the code and workflows within.
 
-##### Bugs /  Opentrons Feedback
-* Offset calibrations file can't be found
-* Could they sell a bolt on self calibrator for those who need more consistant work?
+
+# **The Dockerised Analysis Python and R Environment**
+
+## **Setup and Installation**
 
 
-
-# Usage
-
-1. Open command line and navigate to the unpacked directory
+### **1. Open command line and navigate to the unpacked directory**
 
 You can get the path by 'Copy address as text' in the URL of your file manager.
 Be sure to stick the url in it's own quotes as below. This enters it as a string and will allow CMD to read any spaces in the path correctly.
@@ -20,23 +18,27 @@ Be sure to stick the url in it's own quotes as below. This enters it as a string
 cd "C://mypath/directory/my project/subfolder"
 ```
 
-2. Build the docker image
+### **2. Build the docker image**
 
 ```bash
-docker build -t technical_error_analysis_docker_image .
+docker build -t data_analysis_r_python_img .
 ```
 
-3. Run your container on port 9998
+**3. Run your container on port 8888**
 
-Windows:
+Windows CMD:
 ```bash
-docker run -p 9998:8888 -v "%CD%":/app --name technical_error_analysis_docker_container technical_error_analysis_docker_image
+docker run -p 8888:8888 -v "%CD%":/app --name data_analysis_r_python_ctnr data_analysis_r_python_img
+```
+Windows PowerShell:
+```bash
+docker run -p 8888:8888 -v ${pwd}:/app --name data_analysis_r_python_ctnr data_analysis_r_python_img
 ```
 
 If you're on Mac or Linux:
 
 ```bash
-docker run -p 8888:8888 -v "%PWD":/app --name technical_error_analysis_docker_container technical_error_analysis_docker_image
+docker run -p 8888:8888 -v $pwd:/app --name data_analysis_r_python_ctnr data_analysis_r_python_img
 ```
 
 The way it works is by:
@@ -45,13 +47,71 @@ b. Mounting your current directory ("%CD%") to
 a directory in the container ("/app") so that files can be shared and moved in and out.
 c. starting a Jupyter server.
 
-4. If it has started correctly, you'll get a url token. Copy the token provided into your brower URL
+**Note:** If it has started correctly, you'll get a url token. Copy the token provided into your brower URL
 
 It should look like this:
 
 `http://127.0.0.1:8888/?token=3c96d2a50decb4302c3e96b87ba7444d286e335d07c478fe`
 
 It should open up a Jupyter File explorer in the directory in your browser.
+
+## Usage
+
+### **Python Jupyter Notebooks**
+
+To run Jupyter Notebooks, copy the token provided into your brower URL
+
+It should look like this:
+
+`http://127.0.0.1:8888/?token=3c96d2a50decb4302c3e96b87ba7444d286e335d07c478fe`
+
+It should open up a Jupyter File explorer in the directory in your browser.
+
+### **Executing Scripts**
+
+You need to enter the Docker Container in a terminal to do this. As the terminal window you have been using is displaying the logs for the Jupyter Server, you need to open a new terminal window. Do so and navigate back to the directory using the instructions in **1.** of **Set Up and Installation**.
+
+**Enter the docker container with the following command.**
+
+```bash
+docker exec -it data_analysis_r_python_ctnr /bin/bash
+```
+**Execute Python scripts (.py) with:**
+
+```bash
+python3 myscript.py
+```
+
+**Execute R scripts (.) with:**
+
+```bash
+R < myscript.r --no-save
+```
+
+# **Design of Experiments**
+
+
+The DoE workflow in */src* consists of the following components:
+
+* ***components.json*** : Contains the parameters to be modulated and with min and max values.
+* ***doe.r*** : The R script that takes in the parameters to be modulated in the experiment.
+  * Builds a central composite design (CCD) using the number of parameters to be modulated.
+  * Converts to real values using a linear regression model trained us the min and max values provided for each parameter.
+  * Checks for any negative values and removes those runs.
+  * Exports the design as a .csv
+* ***design_real.csv*** : The output of the experimental design with the real values of the parameters encoded.
+* ***design_coded.csv*** : The output of the experimental design in coded values.
+
+## **Workflow**
+
+1. Set Up the environment using the instructions above.
+2. Change ***components.json*** for the parameters you want to modulate and provide min and max values.
+3. Execute ***doe.r*** using the instructions above in **Executing Scripts**.
+
+
+
+
+
 
 # Connecting to OT2 through ssh
 

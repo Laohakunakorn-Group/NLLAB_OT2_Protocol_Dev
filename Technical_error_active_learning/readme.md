@@ -1,3 +1,11 @@
+# **Jobs:**
+
+* Write Parser to convert the design_real.csv into a nested json containing the new pipetting settings to be iterated over for each experiment/replicate. The doe script takes replicated into account in the design so this should be straightfordward.
+* Convert pipetting script to iterate over the pipetting settings nested json.
+* Build doe script for screening parameters.
+* Write scripts to analyse experimental design.
+
+
 # **Introduction**
 
 Instructions for deploying the analysis environment and descriptions of the code and workflows within.
@@ -104,7 +112,8 @@ The DoE workflow in */src* consists of the following components:
 
 ## **Workflow**
 
-1. Set Up the environment using the instructions above.
+1. Set Up the environment using the instructions above.  
+   **Note:** *In the Docker Container, be sure to navigate into /src to find the files*
 2. Change ***components.json*** for the parameters you want to modulate and provide min and max values.
 3. Execute ***doe.r*** using the instructions above in **Executing Scripts**.
 

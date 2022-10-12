@@ -4,6 +4,8 @@
 * Convert pipetting script to iterate over the pipetting settings nested json.
 * Build doe script for screening parameters.
 * Write scripts to analyse experimental design.
+* Randomise replicates across plate.
+* Test multiple lysates
 
 
 # **Introduction**

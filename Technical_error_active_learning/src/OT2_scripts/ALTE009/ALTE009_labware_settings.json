@@ -1,0 +1,27 @@
+{ "temp_module_name": "temperature module gen2",
+
+  "temp_module_pos": "10",
+
+  "pcr_temp_plate_name": "opentrons_96_aluminumblock_generic_pcr_strip_200ul",
+
+  "nunc_384_name": "corning_384_wellplate_112ul_flat",
+
+  "nunc_384_pos": "7",
+
+  "eppendorf_1500ul_x24_rack_name": "opentrons_24_tuberack_eppendorf_1.5ml_safelock_snapcap",
+
+  "eppendorf_1500ul_x24_rack_pos": "8",
+
+  "tiprack_20ul_name": "opentrons_96_tiprack_20ul",
+
+  "tiprack_20ul_pos": "9",
+
+  "tiprack_300ul_name": "opentrons_96_tiprack_300ul",
+
+  "tiprack_300ul_pos": "6",
+
+  "left_pipette_name": "p20_single_gen2",
+
+  "right_pipette_name": "p300_single_gen2"
+
+}

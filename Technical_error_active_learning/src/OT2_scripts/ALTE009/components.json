@@ -1,0 +1,5 @@
+{
+    "Variable": ["lysate_aspirate_height_inc","lysate_aspirate_rate", "lysate_dispense_rate","substrates_aspirate_height_inc","substrates_aspirate_rate","substrates_dispense_rate"],
+    "Max":[0.6, 0.4, 0.5, 0.8, 1.2, 1.2],
+    "Min":[0.1, 0.1, 0.1, 0.3, 0.7, 0.7]
+}

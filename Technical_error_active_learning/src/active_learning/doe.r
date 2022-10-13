@@ -23,25 +23,30 @@ number_of_variables <- nrow(components_df)
 # intialises experimental design_coded
 design_coded <- ccd(basis = number_of_variables,
                 n0 = 4,
+                wbreps = 6,
                 blocks = "Block",
                 alpha = "orthogonal",
-                wbreps = 1,
-                bbreps = 1,
+                oneblock = TRUE,
                 randomize = FALSE,
                 inscribed = FALSE)
 
 # convert the design_coded object to a data.frame
 design_coded <- as.data.frame(design_coded)
 
+# write the basic design to disk
+write.csv(design_coded,"design_coded.csv", row.names = TRUE)
+
+## Now insert real values
+
 # iterate over the data.frame rows returning row as an integer
 for (row in 1:nrow(components_df)) {
 
-    # store the variable name to rename the new column later 
+    # store the variable name to rename the new column later
     variable_name <- components_df[row,"Variable"]
 
     # create a string with the format "x#" with # as the row number.
     coded_column_name <- paste("x", toString(row), sep="")
-    
+
     # use the string: coded_column_name (e.g. "x2") to look up the numerical index of the column name in design_coded.
     col_index = which(colnames(design_coded) == coded_column_name)
 
@@ -65,8 +70,16 @@ for (row in 1:nrow(components_df)) {
     # create the new column with the variable name as the col name
     # uses the col index to look up the values in the coded design
 
+    # removing negative values and replacing with the min for that parameter
+    min_val = components_df[row, 'Min']
+    design_coded[, variable_name] <- replace(design_coded[,variable_name], design_coded[,variable_name] < 0, min_val)
 
 }
+
+
+# round all values to 0.01
+design_coded <- round(design_coded, digits=2)
+
 
 # copy the coded df
 design_real <- design_coded
@@ -77,4 +90,3 @@ design_real <-design_real %>%
 
 # write both to disk as .csv
 write.csv(design_real,"design_real.csv", row.names = TRUE)
-write.csv(design_coded,"design_coded.csv", row.names = TRUE)

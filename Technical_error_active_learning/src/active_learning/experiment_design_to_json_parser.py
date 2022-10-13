@@ -52,7 +52,6 @@ elif num_of_runs > 384:
             exp_plates.append(plate)
             exp_wells.append(well_list_384[run-1])
 
-
     experiment_design_df['Well'] = exp_wells
     experiment_design_df['Plate'] = exp_plates
 
@@ -64,4 +63,62 @@ else:
     print("There is an error with the number of experiments")
 
 
-experiment_design_df.to_csv("out.csv")
+
+#### Creating the nested master pipetting settings JSON
+
+# import the components.json and build df
+with open('components.json') as json_file:
+    components_df = pd.DataFrame(json.load(json_file))
+
+
+# import the base settings
+with open('base_pipetting_settings.json') as json_file:
+    base_pipetting_settings_dict = json.load(json_file)
+
+# initialise empty a master_plate_pipetting_settings_dict
+master_plate_pipetting_settings_dict = {}
+
+
+# slice the df to deal with one plate at a time
+for plate in range(1, plates_required+1,1):
+    single_plate_df = experiment_design_df[experiment_design_df['Plate'] == plate]
+
+    # initialise the plate_pipetting_settings_dict
+    plate_pipetting_settings_dict = {}
+
+    # iterate over the runs of single_plate_df:
+    for i,run in single_plate_df.iterrows():
+
+        # copy the base_pipetting_settings_dict
+        run_pipetting_settings_dict = base_pipetting_settings_dict.copy()
+
+        # create the run_name from well name
+        run_name = run["Well"]
+
+        # iterate over the variable names and update the run_pipetting_settings_dict with the correct value from the experiment_design_df
+        for var in components_df["Variable"]:
+            run_pipetting_settings_dict[var] = run[var]
+
+        # save the run_pipetting_settings_dict as an entry of the plate_pipetting_settings_dict with the run_name as it's key
+        plate_pipetting_settings_dict[run_name] = run_pipetting_settings_dict
+
+    # save the plate_pipetting_settings_dict as an entry of the master_plate_pipetting_settings_dict with the plate as it's key
+    master_plate_pipetting_settings_dict[plate] = plate_pipetting_settings_dict
+
+
+
+# save the pipetting_settings_dict to individual .jsons based on plate
+for plate in range(1, plates_required+1,1):
+    save_dict = master_plate_pipetting_settings_dict[plate]
+
+    filename = "plate_"+str(plate)+"_pipetting_settings.json"
+
+    with open(filename, 'w') as fp:
+        json.dump(save_dict, fp)
+
+# save the experiment_design_df
+
+#drop the first column - it's just crap spat out from R
+experiment_design_df = experiment_design_df.iloc[:,1:]
+
+experiment_design_df.to_csv("design_real_assigned.csv", index=False)

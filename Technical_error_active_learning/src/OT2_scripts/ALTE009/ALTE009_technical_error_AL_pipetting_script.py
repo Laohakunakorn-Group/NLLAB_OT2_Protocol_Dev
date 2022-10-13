@@ -1,5 +1,7 @@
+from re import T
 from opentrons import protocol_api
 import json
+import os
 
 # metadata
 metadata = {
@@ -27,19 +29,29 @@ def run(protocol: protocol_api.ProtocolContext):
     experiment_prefix = "ALTE009"
     plate_number = 1
 
+
     # Defining the file paths of raspberry pi
-    experiment_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
-    labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_labware_settings.json"
-    pipetting_settings_dict_path = "/data/user_storage/" + experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
+    #
+    #experiment_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
+    experiment_settings_dict_path = experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
+    print(experiment_settings_dict_path)
+    #
+    #labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_labware_settings.json"
+    labware_settings_dict_path = experiment_prefix + "_labware_settings.json"
+    #
+    #master_pipetting_settings_dict_path = "/data/user_storage/" + experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
+    master_pipetting_settings_dict_path = experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
 
     # Reading in json json_settings_file
+    
+    
     experiment_settings_dict = json.load(open(experiment_settings_dict_path, 'r'))
     protocol.comment("Experiment settings json file was read in")
-
+    
     labware_settings_dict = json.load(open(labware_settings_dict_path, 'r'))
     protocol.comment("Labware settings json file was read in")
-
-    pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
+    
+    master_pipetting_settings_dict = json.load(open(master_pipetting_settings_dict_path, 'r'))
     protocol.comment("Pipetting settings json file was read in")
 
     # 1. Defining variables used in protocol-----------------------------------
@@ -70,22 +82,47 @@ def run(protocol: protocol_api.ProtocolContext):
     )
 
     # Defining the 20ul tip rack
-    tiprack_20ul = protocol.load_labware(labware_settings_dict["tiprack_20ul_name"], labware_settings_dict["tiprack_20ul_pos"])
+    tiprack_20ul_1 = protocol.load_labware(labware_settings_dict["tiprack_20ul_1_name"], labware_settings_dict["tiprack_20ul_1_pos"])
+    tiprack_20ul_2 = protocol.load_labware(labware_settings_dict["tiprack_20ul_2_name"], labware_settings_dict["tiprack_20ul_2_pos"])
+    tiprack_20ul_3 = protocol.load_labware(labware_settings_dict["tiprack_20ul_3_name"], labware_settings_dict["tiprack_20ul_3_pos"])
+    tiprack_20ul_4 = protocol.load_labware(labware_settings_dict["tiprack_20ul_4_name"], labware_settings_dict["tiprack_20ul_4_pos"])
+    tiprack_20ul_5 = protocol.load_labware(labware_settings_dict["tiprack_20ul_5_name"], labware_settings_dict["tiprack_20ul_5_pos"])
+
 
     # Defining left_pipette (p20)
     left_pipette = protocol.load_instrument(
-        labware_settings_dict["left_pipette_name"], "left", tip_racks=[tiprack_20ul]
+        labware_settings_dict["left_pipette_name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
     )
 
     # Defining the 300ul tip rack
-    tiprack_300ul = protocol.load_labware(labware_settings_dict["tiprack_300ul_name"], labware_settings_dict["tiprack_300ul_pos"])
+    tiprack_300ul_1 = protocol.load_labware(labware_settings_dict["tiprack_300ul_1_name"], labware_settings_dict["tiprack_300ul_1_pos"])
+    tiprack_300ul_2 = protocol.load_labware(labware_settings_dict["tiprack_300ul_2_name"], labware_settings_dict["tiprack_300ul_2_pos"])
+    tiprack_300ul_3 = protocol.load_labware(labware_settings_dict["tiprack_300ul_3_name"], labware_settings_dict["tiprack_300ul_3_pos"])
 
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
-        labware_settings_dict["right_pipette_name"], "right", tip_racks=[tiprack_300ul]
+        labware_settings_dict["right_pipette_name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
     )
-
     # 2. Defining functions used in this protocol------------------------------
+
+    # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.
+    def distribute_substrates(well, source_well, substrates_aspirate_height):
+
+        left_pipette.pick_up_tip()
+
+        left_pipette.well_bottom_clearance.aspirate = substrates_aspirate_height
+        left_pipette.well_bottom_clearance.dispense = pipetting_settings_dict["substrates_dispense_well_bottom_clearance"]
+
+        # aspirate step
+        left_pipette.aspirate(pipetting_settings_dict["substrates_aspirate_volume"], source_well, rate=pipetting_settings_dict["substrates_aspirate_rate"])
+        left_pipette.move_to(source_well.top(-2))
+        left_pipette.touch_tip()
+
+        # Dispense Step
+        left_pipette.dispense(pipetting_settings_dict["substrates_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["substrates_dispense_rate"])
+
+        left_pipette.drop_tip()
+
 
     # Distributing lysate
     def distribute_lysate(well, source_well, lysate_aspirate_height):
@@ -107,23 +144,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
         left_pipette.drop_tip()
 
-    # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.
-    def distribute_substrates(well, source_well, substrates_aspirate_height):
-
-        left_pipette.pick_up_tip()
-
-        left_pipette.well_bottom_clearance.aspirate = substrates_aspirate_height
-        left_pipette.well_bottom_clearance.dispense = pipetting_settings_dict["substrates_dispense_well_bottom_clearance"]
-
-        # aspirate step
-        left_pipette.aspirate(pipetting_settings_dict["substrates_aspirate_volume"], source_well, rate=pipetting_settings_dict["substrates_aspirate_rate"])
-        left_pipette.move_to(source_well.top(-2))
-        left_pipette.touch_tip()
-
-        # Dispense Step
-        left_pipette.dispense(pipetting_settings_dict["substrates_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["substrates_dispense_rate"])
-
-        left_pipette.drop_tip()
 
 
     def dispense_wax_to_individual_replicate_set(dispense_well_list):
@@ -174,6 +194,11 @@ def run(protocol: protocol_api.ProtocolContext):
         # Looping through the different experiments
         for experiment_id in experiment_ids:
 
+
+            # retrieve the correct pipetting setting for that particular well
+            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
+
+
             # Defining the source well for the substrates master mix
             substrates_source_well = pcr_temp_plate[experiment_settings_dict[experiment_id]["substrates_source_well"]]
 
@@ -206,6 +231,10 @@ def run(protocol: protocol_api.ProtocolContext):
         # Looping through the different experiments
         for experiment_id in experiment_ids:
 
+
+            # retrieve the correct pipetting setting for that particular well
+            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
+
             # Outputting the name of the experiment that is being ran
             protocol.comment("Running experiment " + experiment_id)
 
@@ -236,6 +265,8 @@ def run(protocol: protocol_api.ProtocolContext):
     # Turning off temp module after all experiments have finished
     temperature_module.deactivate()
 
+    protocol.comment("end of plating")
+
     # adding the wax ontop
     protocol.pause("Check plate and spin down, before replacing for wax")
 
@@ -245,6 +276,9 @@ def run(protocol: protocol_api.ProtocolContext):
 
         # Looping through the different experiments
         for experiment_id in experiment_ids:
+
+            # retrieve the correct pipetting setting for that particular well
+            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
 
             # Defining a list of wells for dispensing
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]

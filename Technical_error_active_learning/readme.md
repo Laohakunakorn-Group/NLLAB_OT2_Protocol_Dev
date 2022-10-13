@@ -1,10 +1,10 @@
 # **Jobs:**
 
-* Write Parser to convert the design_real.csv into a nested json containing the new pipetting settings to be iterated over for each experiment/replicate. The doe script takes replicated into account in the design so this should be straightfordward.
+* ~Write Parser to convert the design_real.csv into a nested json containing the new pipetting settings to be iterated over for each experiment/replicate. The doe script takes replicated into account in the design so this should be straightforward.~
 * Convert pipetting script to iterate over the pipetting settings nested json.
 * Build doe script for screening parameters.
 * Write scripts to analyse experimental design.
-* Randomise replicates across plate.
+* ~Randomise replicates across plate.~
 * Test multiple lysates
 
 
@@ -111,13 +111,22 @@ The DoE workflow in */src* consists of the following components:
   * Exports the design as a .csv
 * ***design_real.csv*** : The output of the experimental design with the real values of the parameters encoded.
 * ***design_coded.csv*** : The output of the experimental design in coded values.
+* ***base_pipetting_settings.json*** : The naïve pipetting settings.
+* ***experiment_design_to_json_parser.py*** : Python script that:
+  * Takes the *design_real.csv*
+  * Counts the number of runs and works out how any plates to spread them over.
+  * Assigns plates and Wells to each.
+  * Uses the *base_pipetting_settings.json* as a template and updates the values for each variable in each one as appropriate.
+  * Exports a *plate_#_pipetting_settings.json* which contains the nested settings for each run under the assigned well name as a key.
 
 ## **Workflow**
 
 1. Set Up the environment using the instructions above.  
    **Note:** *In the Docker Container, be sure to navigate into /src to find the files*
 2. Change ***components.json*** for the parameters you want to modulate and provide min and max values.
-3. Execute ***doe.r*** using the instructions above in **Executing Scripts**.
+3. Update the parameters inside ***doe.r*** to change the experimental design.
+4. Execute ***doe.r*** using the instructions above in **Executing Scripts**.
+5. Execute ***experiment_design_to_json_parser.py*** to generate the *_pipetting_settings.json* to feed to the OT2 for each experiment.
 
 
 

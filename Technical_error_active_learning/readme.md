@@ -8,7 +8,9 @@
 * ~Randomise replicates across plate.~
 * Test multiple lysates
 
-
+* automate the writing of experiment_metadata.json
+* sort the filing out
+* 
 # **Introduction**
 
 Instructions for deploying the analysis environment and descriptions of the code and workflows within.

@@ -10,7 +10,7 @@
 
 * automate the writing of experiment_metadata.json
 * sort the filing out
-* 
+*
 # **Introduction**
 
 Instructions for deploying the analysis environment and descriptions of the code and workflows within.
@@ -149,11 +149,11 @@ ssh-keygen
 @{key = Get-Content [ssh key file path] | Out-String} | ConvertTo-Json | Invoke-WebRequest -Method Post -ContentType 'application/json' -Uri [OT2 ip]:31950/server/ssh_keys -UseBasicParsing
 
 ```bash
-@{key = Get-Content C:\users\s1530400\.ssh\id_rsa | Out-String} | ConvertTo-Json | Invoke-WebRequest -Method Post -ContentType 'application/json' -Uri 169.254.156.218:31950/server/ssh_keys -UseBasicParsing
+@{key = Get-Content C:\users\nllab_ot2\.ssh\id_rsa | Out-String} | ConvertTo-Json | Invoke-WebRequest -Method Post -ContentType 'application/json' -Uri 169.254.60.172:31950/server/ssh_keys -UseBasicParsing
 ```
 
 ## Transferring a file over
-
+C:\Users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Bradford
 ### Note!!!
 Can't transfer files from M:\ datastore folder path for some reason. Transfer files from C:\.
 
@@ -161,7 +161,7 @@ Can't transfer files from M:\ datastore folder path for some reason. Transfer fi
 scp -i [ssh key file path] [file_path_from_local] root@[OT2 IP (may change - find in OT2 UI)]:[file_path_on_ot2]
 
 ```bash
-scp -i C:\users\s1530400\.ssh\id_rsa C:\users\s1530400\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\OT2_settings\test.json root@169.254.156.218:/data/user_storage/al_cell_free
+scp -i C:\users\s1530400\.ssh\id_rsa C:\users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\OT2_settings\test.json root@169.254.60.172:/data/user_storage/al_cell_free
 ```
 
 ## Transferring a folder over
@@ -172,14 +172,14 @@ scp -r -i [ssh key file path] [file_path_from_local] root@[OT2 IP (may change - 
 ### This example transfers a whole folder called ALTE007 which contains the protocol .py file, the experiment settings json file,
 ### the labware settings json file and the pipetting settings json files
 ```bash
-scp -r -i C:\users\nllab_ot2\.ssh\ot2_ssh_key C:\users\nllab_ot2\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\ALTE007\ root@169.254.156.218:/data/user_storage/
+scp -r -i C:\users\nllab_ot2\.ssh\ot2_ssh_key C:\users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\ALTE009\ root@169.254.60.172:/data/user_storage/
 ```
 
 ## Connecting to the OT2 raspberry pi
 ssh -i ot2_ssh_key root@[OT2 IP]
 
 ```bash
-ssh -i C:\Users\nllab_ot2\.ssh\ot2_ssh_key root@169.254.156.218
+ssh -i C:\Users\nllab_ot2\.ssh\ot2_ssh_key root@169.254.60.172
 ```
 
 ## Running the protocol from the command line (on raspberry pi)

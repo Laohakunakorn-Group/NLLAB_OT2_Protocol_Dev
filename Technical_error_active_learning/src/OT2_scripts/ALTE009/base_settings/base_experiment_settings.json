@@ -1,9 +1,9 @@
 {
-  "lysate_source_well": "A1",
+  "lysate_source_well": "B1",
 
-  "substrates_source_well": "B1",
+  "substrates_source_well": "A1",
 
-  "wax_source_well": "A1",
+  "wax_source_well": "D1",
 
   "dispense_well_list": "placeholder"
 }

@@ -8,9 +8,9 @@
 
   "nunc_384_pos": "7",
 
-  "eppendorf_1500ul_x24_rack_name": "opentrons_24_tuberack_eppendorf_1.5ml_safelock_snapcap",
+  "eppendorf_2ml_x24_rack_name": "opentrons_24_tuberack_eppendorf_2ml_safelock_snapcap",
 
-  "eppendorf_1500ul_x24_rack_pos": "11",
+  "eppendorf_2ml_x24_rack_pos": "11",
 
   "tiprack_20ul_1_name": "opentrons_96_tiprack_20ul",
 

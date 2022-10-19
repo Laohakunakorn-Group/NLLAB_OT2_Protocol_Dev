@@ -228,9 +228,11 @@ for plate in range(1, plates_required+1,1):
         "substrate_source_tubes_required": round(experiment_number/24),
         "substrate_source_tubes_list": substrate_source_list_possibles[0:round(experiment_number/24)],
         "substrate_source_volume": 200,
+        "substrates_source_well": "B2",
         "lysate_source_tubes_required": round(experiment_number/24),
         "lysate_source_tubes_list": lysate_source_list_possibles[0:round(experiment_number/24)],
-        "lysate_source_volume": 75
+        "lysate_source_volume": 75,
+        "lysate_source_well": "B3"
     }
 
     # store the number of substrate source tubes needed

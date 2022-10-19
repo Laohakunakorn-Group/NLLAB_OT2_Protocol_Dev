@@ -9,7 +9,7 @@ metadata = {
     "author": "Alex Perkins",
     "email": "a.j.p.perkins@sms.ed.ac.uk",
     "description": "First draft of script to plate out 10x lysate reactions",
-    "apiLevel": "2.3",
+    "apiLevel": "2.8",
 }
 
 # Add 35ul of lysate to a PCR tube to A1 in cold block
@@ -34,16 +34,16 @@ def run(protocol: protocol_api.ProtocolContext):
     # Defining the file paths of raspberry pi
     #
     #experiment_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
-    experiment_settings_dict_path = experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
+    experiment_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
     print(experiment_settings_dict_path)
     #
     #labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_labware_settings.json"
-    labware_settings_dict_path = experiment_prefix + "_labware_settings.json"
+    labware_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_labware_settings.json"
     #
     #master_pipetting_settings_dict_path = "/data/user_storage/" + experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
-    master_pipetting_settings_dict_path = experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
+    master_pipetting_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
 
-    pre_experiment_compilation_dict_path = experiment_prefix + "_pre_experiment_compilations.json"
+    pre_experiment_compilation_dict_path = "processed_ot2_settings/" + experiment_prefix + "_pre_experiment_compilations.json"
 
     # Reading in json json_settings_file
 
@@ -68,52 +68,75 @@ def run(protocol: protocol_api.ProtocolContext):
     # Defining the booleans for the protocol. This controls which parts of
     # the protocol to run.
     protocol_pre_experiment_compilations = True
-    protocol_dispense_lysate = True
-    protocol_dispense_substrates = True
-    protocol_dispense_wax = True
-
+    protocol_dispense_lysate = False
+    protocol_dispense_substrates = False
+    protocol_dispense_wax = False
     # labware
 
     # Defining the temperature module
-    temperature_module = protocol.load_module(labware_settings_dict["temp_module_name"], labware_settings_dict["temp_module_pos"])
+    temperature_module = protocol.load_module(labware_settings_dict["temp_module"]["name"], labware_settings_dict["temp_module"]["pos"])
 
 
     # Defining the pcr plate ontop of the temperature module
-    pcr_temp_plate = temperature_module.load_labware(
-        labware_settings_dict["pcr_temp_plate_name"],
+    pcr_source_tubes = temperature_module.load_labware(
+        labware_settings_dict["pcr_source_tubes"]["name"],
         label="Temperature-Controlled Tubes",
     )
     # Defining the 384 nunc well plate
-    nunc_384 = protocol.load_labware(labware_settings_dict["nunc_384_name"], labware_settings_dict["nunc_384_pos"])
+    nunc_384 = protocol.load_labware(labware_settings_dict["nunc_384"]["name"], labware_settings_dict["nunc_384"]["pos"])
 
     # Defining the 1.5ul eppendorf rack
-    eppendorf_2ml_x24_rack = protocol.load_labware(
-        labware_settings_dict["eppendorf_2ml_x24_rack_name"], labware_settings_dict["eppendorf_2ml_x24_rack_pos"]
+    eppendorf_2ml_x24_icebox_rack = protocol.load_labware(
+        labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["name"], labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["pos"]
     )
 
     # Defining the 20ul tip rack
-    tiprack_20ul_1 = protocol.load_labware(labware_settings_dict["tiprack_20ul_1_name"], labware_settings_dict["tiprack_20ul_1_pos"])
-    tiprack_20ul_2 = protocol.load_labware(labware_settings_dict["tiprack_20ul_2_name"], labware_settings_dict["tiprack_20ul_2_pos"])
-    tiprack_20ul_3 = protocol.load_labware(labware_settings_dict["tiprack_20ul_3_name"], labware_settings_dict["tiprack_20ul_3_pos"])
-    tiprack_20ul_4 = protocol.load_labware(labware_settings_dict["tiprack_20ul_4_name"], labware_settings_dict["tiprack_20ul_4_pos"])
-    tiprack_20ul_5 = protocol.load_labware(labware_settings_dict["tiprack_20ul_5_name"], labware_settings_dict["tiprack_20ul_5_pos"])
+    tiprack_20ul_1 = protocol.load_labware(labware_settings_dict["tiprack_20ul_1"]["name"], labware_settings_dict["tiprack_20ul_1"]["pos"])
+    tiprack_20ul_2 = protocol.load_labware(labware_settings_dict["tiprack_20ul_2"]["name"], labware_settings_dict["tiprack_20ul_2"]["pos"])
+    tiprack_20ul_3 = protocol.load_labware(labware_settings_dict["tiprack_20ul_3"]["name"], labware_settings_dict["tiprack_20ul_3"]["pos"])
+    tiprack_20ul_4 = protocol.load_labware(labware_settings_dict["tiprack_20ul_4"]["name"], labware_settings_dict["tiprack_20ul_4"]["pos"])
+    tiprack_20ul_5 = protocol.load_labware(labware_settings_dict["tiprack_20ul_5"]["name"], labware_settings_dict["tiprack_20ul_5"]["pos"])
 
 
     # Defining left_pipette (p20)
     left_pipette = protocol.load_instrument(
-        labware_settings_dict["left_pipette_name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
+        labware_settings_dict["left_pipette"]["name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
     )
 
     # Defining the 300ul tip rack
-    tiprack_300ul_1 = protocol.load_labware(labware_settings_dict["tiprack_300ul_1_name"], labware_settings_dict["tiprack_300ul_1_pos"])
-    tiprack_300ul_2 = protocol.load_labware(labware_settings_dict["tiprack_300ul_2_name"], labware_settings_dict["tiprack_300ul_2_pos"])
-    tiprack_300ul_3 = protocol.load_labware(labware_settings_dict["tiprack_300ul_3_name"], labware_settings_dict["tiprack_300ul_3_pos"])
+    tiprack_300ul_1 = protocol.load_labware(labware_settings_dict["tiprack_300ul_1"]["name"], labware_settings_dict["tiprack_300ul_1"]["pos"])
+    tiprack_300ul_2 = protocol.load_labware(labware_settings_dict["tiprack_300ul_2"]["name"], labware_settings_dict["tiprack_300ul_2"]["pos"])
+    tiprack_300ul_3 = protocol.load_labware(labware_settings_dict["tiprack_300ul_3"]["name"], labware_settings_dict["tiprack_300ul_3"]["pos"])
 
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
-        labware_settings_dict["right_pipette_name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
+        labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
     )
     # 2. Defining functions used in this protocol------------------------------
+
+
+
+    def dispense_substrates_from_source_to_pcr_tubes(substrates_source_well, substrate_source_volume, substrate_source_tubes_list):
+
+        """ defines the function that distributes the substrate mix from it's eppendorf tube stock into pcr tubes from where it can be better distributed to the plate """
+
+        substrates_aspirate_volume = substrate_source_volume + 20
+
+        right_pipette.pick_up_tip()
+
+        for pcr_tube in substrate_source_tubes_list:
+
+            right_pipette.aspirate(substrates_aspirate_volume, substrates_source_well, rate=0.5)
+            right_pipette.touch_tip()
+
+            right_pipette.dispense(substrate_source_volume, pcr_source_tubes.wells_by_name()[pcr_tube], rate=0.5)
+            right_pipette.touch_tip()
+
+            right_pipette.dispense(20, substrates_source_well.top(-1), rate=0.5)
+            protocol.delay(seconds=2)
+
+        right_pipette.drop_tip()
+
 
     # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.
     def distribute_substrates(well, source_well, substrates_aspirate_height):
@@ -199,22 +222,9 @@ def run(protocol: protocol_api.ProtocolContext):
         substrate_source_volume = pre_experiment_compilation_dict["substrate_source_volume"]
         substrate_source_tubes_list = pre_experiment_compilation_dict["substrate_source_tubes_list"]
 
-        right_pipette.distribute(
-            substrate_source_volume,
-            # source well here,
-            # need to refer to the right rack substrate_source_tubes_list,
-            new_tip = True,
-            touch_tip = True,
-            air_gap = 10,
-            disposal_volume = False,
-        )
+        substrates_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[pre_experiment_compilation_dict["substrates_source_well"]]
 
-
-
-
-
-
-
+        dispense_substrates_from_source_to_pcr_tubes(substrates_source_well, substrate_source_volume, substrate_source_tubes_list)
 
 
 
@@ -238,7 +248,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
             # Defining the source well for the substrates master mix
-            substrates_source_well = eppendorf_2ml_x24_rack[experiment_settings_dict[experiment_id]["substrates_source_well"]]
+            substrates_source_well = eppendorf_2ml_x24_icebox_rack[experiment_settings_dict[experiment_id]["substrates_source_well"]]
 
             # Defining a list of wells for dispensing
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
@@ -279,7 +289,7 @@ def run(protocol: protocol_api.ProtocolContext):
             protocol.comment("Running experiment " + experiment_id)
 
             # Defining the source wells for the different components in this experiment
-            lysate_source_well = eppendorf_2ml_x24_rack[experiment_settings_dict[experiment_id]["lysate_source_well"]]
+            lysate_source_well = eppendorf_2ml_x24_icebox_rack[experiment_settings_dict[experiment_id]["lysate_source_well"]]
 
             # Defining a list of wells for dispensing
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
@@ -324,7 +334,7 @@ def run(protocol: protocol_api.ProtocolContext):
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
 
             # Defining the source well for the wax
-            wax_source_well = eppendorf_2ml_x24_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
+            wax_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
 
             dispense_wax_to_individual_replicate_set(dispense_well_list)
 

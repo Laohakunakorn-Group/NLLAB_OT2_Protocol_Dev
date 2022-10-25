@@ -40,7 +40,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Defining the 1.5ul eppendorf rack
     eppendorf_2ml_x24_icebox_rack = protocol.load_labware(
-        "opentrons_24_tuberack_eppendorf_2ml_safelock_snapcap",
+        "nllab3dprinted_24_tuberack_2000ul",
          "11")
 
     # Defining the 20ul tip rack

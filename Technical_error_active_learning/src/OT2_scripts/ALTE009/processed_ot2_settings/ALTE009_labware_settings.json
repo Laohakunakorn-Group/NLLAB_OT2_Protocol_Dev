@@ -5,57 +5,58 @@
 
   "pcr_source_tubes":{
     "name": "opentrons_96_aluminumblock_generic_pcr_strip_200ul",
-    "offsets":{"x": 0.20, "y": 1.30, "z": 0.90}},
+    "offsets":{"x": 0.20, "y": 1.90, "z": 0.90}},
 
   "nunc_384":{
     "name": "corning_384_wellplate_112ul_flat",
     "pos":"7",
-    "offsets":{"x": -0.10, "y": 0.60, "z": 0.50}},
+    "offsets":{"x": -0.40, "y": 0.90, "z": 0.70}},
 
   "eppendorf_2ml_x24_icebox_rack":{
-    "name": "opentrons_24_tuberack_eppendorf_2ml_safelock_snapcap",
+    "name": "nllab3dprinted_24_tuberack_2000ul",
     "pos": "11",
-    "offsets":{"x": 0.30, "y": 0.40, "z": 1.90}},
+    "offsets":{"x": 1.60, "y": 1.10, "z": 2.60}},
 
   "tiprack_20ul_1":{
     "name": "opentrons_96_tiprack_20ul",
     "pos": "9",
-    "offsets":{"x": 0.20, "y": 1.40, "z": 0.60}},
+    "offsets":{"x": 0.00, "y": 1.10, "z": 0.80}},
+
 
   "tiprack_20ul_2": {
     "name": "opentrons_96_tiprack_20ul",
     "pos": "6",
-    "offsets":{"x": 0.20, "y": 1.40, "z": 0.60}},
+    "offsets":{"x": 0.00, "y": 1.10, "z": 0.80}},
 
   "tiprack_20ul_3": {
     "name": "opentrons_96_tiprack_20ul",
     "pos": "3",
-    "offsets":{"x": 0.20, "y": 1.40, "z": 0.60}},
+    "offsets":{"x": 0.00, "y": 1.10, "z": 0.80}},
 
   "tiprack_20ul_4": {
     "name": "opentrons_96_tiprack_20ul",
     "pos": "2",
-    "offsets":{"x": 0.20, "y": 1.40, "z": 0.60}},
+    "offsets":{"x": 0.00, "y": 1.10, "z": 0.80}},
 
   "tiprack_20ul_5":{
     "name": "opentrons_96_tiprack_20ul",
     "pos": "4",
-    "offsets":{"x": 0.20, "y": 1.40, "z": 0.60}},
+    "offsets":{"x": 0.00, "y": 1.10, "z": 0.80}},
 
   "tiprack_300ul_1": {
     "name": "opentrons_96_tiprack_300ul",
     "pos": "8",
-    "offsets":{"x": 0.60, "y": 0.50, "z": -0.30}},
+    "offsets":{"x": 0.30, "y": 0.60, "z": -0.10}}, 	
 
   "tiprack_300ul_2":{
     "name": "opentrons_96_tiprack_300ul",
     "pos": "5",
-    "offsets":{"x": 0.60, "y": 0.50, "z": -0.30}},
+    "offsets":{"x": 0.30, "y": 0.60, "z": -0.10}}, 	
 
   "tiprack_300ul_3":{
     "name": "opentrons_96_tiprack_300ul",
     "pos": "1",
-    "offsets":{"x": 0.60, "y": 0.50, "z": -0.30}},
+    "offsets":{"x": 0.30, "y": 0.60, "z": -0.10}}, 	
 
   "left_pipette":{
     "name": "p20_single_gen2"},

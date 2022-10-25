@@ -82,20 +82,63 @@ def run(protocol: protocol_api.ProtocolContext):
         labware_settings_dict["pcr_source_tubes"]["name"],
         label="Temperature-Controlled Tubes",
     )
+    pcr_source_tubes.set_offset(x = labware_settings_dict["pcr_source_tubes"]["offsets"]["x"],
+                                y = labware_settings_dict["pcr_source_tubes"]["offsets"]["y"],
+                                z = labware_settings_dict["pcr_source_tubes"]["offsets"]["z"]
+                                )
+
     # Defining the 384 nunc well plate
     nunc_384 = protocol.load_labware(labware_settings_dict["nunc_384"]["name"], labware_settings_dict["nunc_384"]["pos"])
+    nunc_384.set_offset(x = labware_settings_dict["nunc_384"]["offsets"]["x"],
+                        y = labware_settings_dict["nunc_384"]["offsets"]["y"],
+                        z = labware_settings_dict["nunc_384"]["offsets"]["z"]
+                        )
 
-    # Defining the 1.5ul eppendorf rack
-    eppendorf_2ml_x24_icebox_rack = protocol.load_labware(
-        labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["name"], labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["pos"]
-    )
+    # Defining the eppendorf_2ml_x24_icebox_rack.
+    # Because this is a custom labware definition, it needs to be loaded in manually to be used with opentrons_execute
+
+    def load_custom_labware(file_path,location):
+        with open(file_path) as labware_file:
+            labware_def = json.load(labware_file)
+        return protocol.load_labware_from_definition(labware_def, location)
+
+    custom_labware_on_ot2_path = "maintenance/custom_labware/nllab3dprinted_24_tuberack_2000ul.json"
+    eppendorf_2ml_x24_icebox_rack = load_custom_labware(custom_labware_on_ot2_path, labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["pos"])
+    eppendorf_2ml_x24_icebox_rack.set_offset(x = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["x"],
+                                             y = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["y"],
+                                             z = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["z"]
+                                             )    
 
     # Defining the 20ul tip rack
     tiprack_20ul_1 = protocol.load_labware(labware_settings_dict["tiprack_20ul_1"]["name"], labware_settings_dict["tiprack_20ul_1"]["pos"])
+    tiprack_20ul_1.set_offset(x = labware_settings_dict["tiprack_20ul_1"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_20ul_1"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_20ul_1"]["offsets"]["z"]
+                              )    
+
     tiprack_20ul_2 = protocol.load_labware(labware_settings_dict["tiprack_20ul_2"]["name"], labware_settings_dict["tiprack_20ul_2"]["pos"])
+    tiprack_20ul_2.set_offset(x = labware_settings_dict["tiprack_20ul_2"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_20ul_2"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_20ul_2"]["offsets"]["z"]
+                              )    
+
     tiprack_20ul_3 = protocol.load_labware(labware_settings_dict["tiprack_20ul_3"]["name"], labware_settings_dict["tiprack_20ul_3"]["pos"])
+    tiprack_20ul_3.set_offset(x = labware_settings_dict["tiprack_20ul_3"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_20ul_3"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_20ul_3"]["offsets"]["z"]
+                              )
+
     tiprack_20ul_4 = protocol.load_labware(labware_settings_dict["tiprack_20ul_4"]["name"], labware_settings_dict["tiprack_20ul_4"]["pos"])
+    tiprack_20ul_4.set_offset(x = labware_settings_dict["tiprack_20ul_4"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_20ul_4"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_20ul_4"]["offsets"]["z"]
+                              )
+
     tiprack_20ul_5 = protocol.load_labware(labware_settings_dict["tiprack_20ul_5"]["name"], labware_settings_dict["tiprack_20ul_5"]["pos"])
+    tiprack_20ul_5.set_offset(x = labware_settings_dict["tiprack_20ul_5"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_20ul_5"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_20ul_5"]["offsets"]["z"]
+                              )
 
 
     # Defining left_pipette (p20)
@@ -105,8 +148,22 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Defining the 300ul tip rack
     tiprack_300ul_1 = protocol.load_labware(labware_settings_dict["tiprack_300ul_1"]["name"], labware_settings_dict["tiprack_300ul_1"]["pos"])
+    tiprack_300ul_1.set_offset(x = labware_settings_dict["tiprack_300ul_1"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_300ul_1"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_300ul_1"]["offsets"]["z"]
+                              )
+
     tiprack_300ul_2 = protocol.load_labware(labware_settings_dict["tiprack_300ul_2"]["name"], labware_settings_dict["tiprack_300ul_2"]["pos"])
+    tiprack_300ul_2.set_offset(x = labware_settings_dict["tiprack_300ul_2"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_300ul_2"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_300ul_2"]["offsets"]["z"]
+                              )
+
     tiprack_300ul_3 = protocol.load_labware(labware_settings_dict["tiprack_300ul_3"]["name"], labware_settings_dict["tiprack_300ul_3"]["pos"])
+    tiprack_300ul_3.set_offset(x = labware_settings_dict["tiprack_300ul_3"]["offsets"]["x"],
+                              y = labware_settings_dict["tiprack_300ul_3"]["offsets"]["y"],
+                              z = labware_settings_dict["tiprack_300ul_3"]["offsets"]["z"]
+                              )
 
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
@@ -129,7 +186,7 @@ def run(protocol: protocol_api.ProtocolContext):
             right_pipette.aspirate(substrates_aspirate_volume, substrates_source_well, rate=0.5)
             right_pipette.touch_tip()
 
-            right_pipette.dispense(substrate_source_volume, pcr_source_tubes.wells_by_name()[pcr_tube], rate=0.5)
+            right_pipette.dispense(substrate_source_volume, pcr_source_tubes.wells_by_name()[pcr_tube].top(-6.7), rate=0.5)
             right_pipette.touch_tip()
 
             right_pipette.dispense(20, substrates_source_well.top(-1), rate=0.5)

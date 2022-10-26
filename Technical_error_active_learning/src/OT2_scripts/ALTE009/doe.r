@@ -23,7 +23,7 @@ number_of_variables <- nrow(components_df)
 # intialises experimental design_coded
 design_coded <- ccd(basis = number_of_variables,
                 n0 = 4,
-                wbreps = 6,
+                wbreps = 5,
                 blocks = "Block",
                 alpha = "orthogonal",
                 oneblock = TRUE,
@@ -34,7 +34,7 @@ design_coded <- ccd(basis = number_of_variables,
 design_coded <- as.data.frame(design_coded)
 
 # write the basic design to disk
-write.csv(design_coded,"design_coded.csv", row.names = TRUE)
+write.csv(design_coded,"processed_data_files/design_coded.csv", row.names = TRUE)
 
 ## Now insert real values
 
@@ -89,4 +89,4 @@ design_real <-design_real %>%
             select(-starts_with('x'))
 
 # write both to disk as .csv
-write.csv(design_real,"design_real.csv", row.names = TRUE)
+write.csv(design_real,"processed_data_files/design_real.csv", row.names = TRUE)

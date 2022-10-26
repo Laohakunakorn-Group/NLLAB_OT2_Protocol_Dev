@@ -25,7 +25,9 @@ def generate_well_list_384():
 
 
 # import the design
-experiment_design_df = pd.read_csv("design_real.csv")
+experiment_design_df = pd.read_csv("processed_data_files/design_real.csv")
+
+print(experiment_design_df.head())
 
 # generate the well well_list_384
 well_list_384 = generate_well_list_384()
@@ -39,6 +41,8 @@ if num_of_runs <= 384:
     experiment_design_df['Plate'] = 1
 
     print("plates_required: " +str(1))
+    plates_required = 1
+
     print("runs_per_plate: " +str(num_of_runs))
 
 
@@ -253,7 +257,7 @@ for plate in range(1, plates_required+1,1):
     # segregate dicts
     pipetting_save_dict = master_plate_pipetting_settings_dict[plate]
     # use the experiment_prefix and the plate number to name the file
-    pipetting_filename = experiment_prefix +"_plate_"+str(plate)+"_pipetting_settings.json"
+    pipetting_filename = "processed_ot2_settings/" + experiment_prefix +"_plate_"+str(plate)+"_pipetting_settings.json"
     with open(pipetting_filename, 'w') as fp:
         json.dump(pipetting_save_dict, fp)
 
@@ -261,10 +265,19 @@ for plate in range(1, plates_required+1,1):
     # segregate dicts
     experiment_save_dict = master_plate_experiment_settings_dict[plate]
     # use the experiment_prefix and the plate number to name the file
-    experiment_filename = experiment_prefix +"_plate_"+str(plate)+"_experiment_settings.json"
+    experiment_filename = "processed_ot2_settings/" + experiment_prefix +"_plate_"+str(plate)+"_experiment_settings.json"
     with open(experiment_filename, 'w') as fp:
         json.dump(experiment_save_dict, fp)
 
+
+
+# save the pre_experiment_compilation_dict
+
+# use the experiment_prefix and the plate number to name the file
+pre_experiment_filename = "processed_ot2_settings/" + experiment_prefix +"_pre_experiment_compilations.json"
+with open(pre_experiment_filename, 'w') as fp:
+    json.dump(pre_experiment_compilation_dict, fp)
+    
 
 # save the experiment_design_df
 
@@ -273,10 +286,3 @@ experiment_design_df = experiment_design_df.iloc[:,1:]
 # save the updated design
 experiment_design_df.to_csv("processed_data_files/design_real_assigned.csv", index=False)
 
-
-# save the pre_experiment_compilation_dict
-
-# use the experiment_prefix and the plate number to name the file
-pre_experiment_filename = experiment_prefix +"_pre_experiment_compilations.json"
-with open(pre_experiment_filename, 'w') as fp:
-    json.dump(pre_experiment_compilation_dict, fp)

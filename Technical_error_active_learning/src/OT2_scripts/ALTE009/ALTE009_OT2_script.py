@@ -67,12 +67,15 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Defining the booleans for the protocol. This controls which parts of
     # the protocol to run.
+
+    temp_toggle =False
+
     protocol_pre_experiment_compilations = True
-    protocol_pre_experiment_substrate_mix = False
+    protocol_pre_experiment_substrate_mix = True
     protocol_pre_experiment_lysate = True
 
-    protocol_dispense_lysate = False
-    protocol_dispense_substrates = False
+    protocol_dispense_lysate = True
+    protocol_dispense_substrates = True
     protocol_dispense_wax = False
     # labware
 
@@ -297,7 +300,8 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Set temperature of temperature module to 4 degrees. The protocol will pause
     # until this is reached.
-    #temperature_module.set_temperature(16)
+    if temp_toggle:
+        temperature_module.set_temperature(4)
 
 
 
@@ -349,7 +353,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
             # Defining the source well for the substrates master mix
-            substrates_source_well = eppendorf_2ml_x24_icebox_rack[experiment_settings_dict[experiment_id]["substrates_source_well"]]
+            substrates_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["substrates_source_well"]]
 
             # Defining a list of wells for dispensing
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
@@ -390,7 +394,7 @@ def run(protocol: protocol_api.ProtocolContext):
             protocol.comment("Running experiment " + experiment_id)
 
             # Defining the source wells for the different components in this experiment
-            lysate_source_well = eppendorf_2ml_x24_icebox_rack[experiment_settings_dict[experiment_id]["lysate_source_well"]]
+            lysate_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["lysate_source_well"]]
 
             # Defining a list of wells for dispensing
             dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
@@ -414,7 +418,8 @@ def run(protocol: protocol_api.ProtocolContext):
     # Pausing protocol so the plate can be span down in the centrifuge before
 
     # Turning off temp module after all experiments have finished
-    temperature_module.deactivate()
+    if temp_toggle:
+        temperature_module.deactivate()
 
     protocol.comment("end of plating")
 

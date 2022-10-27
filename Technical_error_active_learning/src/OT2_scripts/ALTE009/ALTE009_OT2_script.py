@@ -2,6 +2,7 @@ from re import T
 from opentrons import protocol_api
 import json
 import os
+import math
 
 # metadata
 metadata = {
@@ -68,14 +69,14 @@ def run(protocol: protocol_api.ProtocolContext):
     # Defining the booleans for the protocol. This controls which parts of
     # the protocol to run.
 
-    temp_toggle =False
+    temp_toggle = False
 
     protocol_pre_experiment_compilations = True
     protocol_pre_experiment_substrate_mix = True
     protocol_pre_experiment_lysate = True
 
-    protocol_dispense_lysate = True
     protocol_dispense_substrates = True
+    protocol_dispense_lysate = True
     protocol_dispense_wax = False
     # labware
 
@@ -189,14 +190,50 @@ def run(protocol: protocol_api.ProtocolContext):
 
         right_pipette.pick_up_tip()
 
+        
+
         for pcr_tube in substrate_source_tubes_list:
 
             right_pipette.aspirate(substrates_aspirate_volume, substrates_source_well, rate=0.5)
             right_pipette.touch_tip()
 
-            right_pipette.dispense(substrate_source_volume, pcr_source_tubes.wells_by_name()[pcr_tube].top(-6.5), rate=0.5)
+            ### calculate how many rising dispense steps are necessary.
+
+            # calulate the modulo
+            vol_mod_50 = substrate_source_volume % 50
+            
+            # define the rising inc list of distances from the bottom when dispensing
+            rising_inc_list = [5, 9, 11.4, 12]
+
+            # if the vol doesn't divide perfectly by 50ul then:
+            if vol_mod_50 != 0:
+
+                # the first pipetting step is the remainder at 1mm above the bottom
+                right_pipette.dispense(vol_mod_50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(1), rate=0.5)
+
+                # get the rounded down divide product.
+                num_of_50ul = math.floor(substrate_source_volume/50)
+                
+                # make a range and iterate over it
+                for step in range(0, num_of_50ul,1):
+                    
+                    # followed by 50ul increments rising at by changing increments in the rising_inc_list
+                    right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
 
 
+            # if it does divide perfectly by 50:
+            else:
+                # get the divide product.
+                num_of_50ul = substrate_source_volume/50
+                
+                # make a range and iterate over it
+                for step in range(0, num_of_50ul,1):
+                    
+                    # followed by 50ul increments rising at by changing increments in the rising_inc_list
+                    right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
+
+
+            # eject the reverse pipetting buffer over the top.
             right_pipette.dispense(additional_pipetting_buffer_vol, substrates_source_well.top(-1), rate=0.5)
             protocol.delay(seconds=2)
 
@@ -262,26 +299,25 @@ def run(protocol: protocol_api.ProtocolContext):
 
         # Dispense Step
         left_pipette.dispense(pipetting_settings_dict["lysate_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
-        left_pipette.touch_tip()
 
         left_pipette.drop_tip()
 
 
 
-    def dispense_wax_to_individual_replicate_set(dispense_well_list):
+    def dispense_wax_to_individual_replicate_set(dispense_well):
 
         """ defines the dispense wax function """
 
         # Pick up a 300ul tip
         #right_pipette.pick_up_tip()
 
-        # Distributing 35ul of wax ontop of each well in dispense_well_list
+        # Distributing 35ul of wax ontop of each well in dispense_well
         right_pipette.distribute(
             pipetting_settings_dict["wax_dispense_volume"],
             wax_source_well,
             [
                 nunc_384.wells_by_name()[well_name].top(pipetting_settings_dict["wax_dispense_height"])
-                for well_name in dispense_well_list
+                for well_name in dispense_well
             ],
             new_tip = pipetting_settings_dict["wax_new_tip"],
             touch_tip = pipetting_settings_dict["wax_touch_tip"],
@@ -344,38 +380,71 @@ def run(protocol: protocol_api.ProtocolContext):
     # Running the substrate dispense step if protocol_dispense_substrates = True
     if protocol_dispense_substrates:
 
+        protocol.comment("first thing in master dict " + str(list(master_pipetting_settings_dict.keys())[0]))
+
+        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_init
+        substrates_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_init"]
+        protocol.comment("substrates_aspirate_height_init init: " + str(substrates_aspirate_height_init_val))
+
+        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_inc
+        substrates_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_inc"]
+        protocol.comment("substrates_aspirate_height_inc init: " + str(substrates_aspirate_height_inc_val))
+
+        # Defining the initial lysate aspiration height
+        substrates_aspirate_height_actual = substrates_aspirate_height_init_val
+
+        # initalise substrates_source_well_tracker
+        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_source_well
+        substrates_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["substrates_source_well"]
+
+
+        protocol.comment("substrates_source_well_tracker init: " + str(substrates_source_well_tracker))
+
+
         # Looping through the different experiments
         for experiment_id in experiment_ids:
+
+            # Defining the source well for the substrates master mix
+            substrates_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["substrates_source_well"]]
+
+
+            # compare the source well of this experiment with the last one (tracker). If they are not the same..
+            if substrates_source_well != substrates_source_well_tracker:
+
+                # Reset the substrates_aspirate_height_actual to the init value
+                substrates_aspirate_height_actual = substrates_aspirate_height_init_val
+
+                # Update the tracker
+                substrates_source_well_tracker = substrates_source_well
+
+                protocol.comment("substrates_source_well_tracker updated: " + str(substrates_source_well_tracker))
 
 
             # retrieve the correct pipetting setting for that particular well
             pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
 
 
-            # Defining the source well for the substrates master mix
-            substrates_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["substrates_source_well"]]
-
             # Defining a list of wells for dispensing
-            dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
+            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
 
-            # Defining the initial lysate aspiration height
-            substrates_aspirate_height = pipetting_settings_dict["substrates_aspirate_height_init"]
 
-            # Dispensing substrates into each of the wells in dispense well list
-            for well in dispense_well_list:
+            # Caliing function to distribute substrates
+            distribute_substrates(dispense_well, substrates_source_well, substrates_aspirate_height_actual)
 
-                # Caliing function to distribute substrates
-                distribute_substrates(
-                    well, substrates_source_well, substrates_aspirate_height
-                )
+            protocol.comment("_inc: " + str(substrates_aspirate_height_inc_val))
+            protocol.comment("substrates_aspirate_height before : " + str(substrates_aspirate_height_actual))
 
-                # Reducing the aspiration height by subsrates_aspirate_height_inc
-                substrates_aspirate_height -= pipetting_settings_dict["substrates_aspirate_height_inc"]
+            # reduce the substrates_aspirate_height_actual by the increment
+            substrates_aspirate_height_actual = substrates_aspirate_height_actual - substrates_aspirate_height_inc_val
 
-                protocol.comment("substrates_aspirate_height: " + str(substrates_aspirate_height))
+            protocol.comment("substrates_aspirate_height after: " + str(substrates_aspirate_height_actual))
 
+            protocol.comment(" ")
 
             protocol.comment("Substrate dispense step complete for experiment " + experiment_id)
+            protocol.comment(" ")
+            protocol.comment(" ")
+            protocol.comment(" ")
 
 
 
@@ -383,35 +452,69 @@ def run(protocol: protocol_api.ProtocolContext):
     # Running the lysate dispense step if protocol_dispense_lysate = True
     if protocol_dispense_lysate:
 
+
+        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_init
+        lysate_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_init"]
+        protocol.comment("lysate_aspirate_height_init init: " + str(lysate_aspirate_height_init_val))
+
+        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_inc
+        lysate_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_inc"]
+        protocol.comment("lysate_aspirate_height_inc init: " + str(lysate_aspirate_height_inc_val))
+
+        # Defining the initial lysate aspiration height
+        lysate_aspirate_height_actual = lysate_aspirate_height_init_val
+
+        # initalise lysate_source_well_tracker
+        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_source_well
+        lysate_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["lysate_source_well"]
+
+
+        protocol.comment("lysate_source_well_tracker init: " + str(lysate_source_well_tracker))
+
+
         # Looping through the different experiments
         for experiment_id in experiment_ids:
+
+            # Defining the source well for the lysate master mix
+            lysate_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["lysate_source_well"]]
+
+
+            # compare the source well of this experiment with the last one (tracker). If they are not the same..
+            if lysate_source_well != lysate_source_well_tracker:
+
+                # Reset the lysate_aspirate_height_actual to the init value
+                lysate_aspirate_height_actual = lysate_aspirate_height_init_val
+
+                # Update the tracker
+                lysate_source_well_tracker = lysate_source_well
+
+                protocol.comment("lysate_source_well_tracker updated: " + str(lysate_source_well_tracker))
 
 
             # retrieve the correct pipetting setting for that particular well
             pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
 
-            # Outputting the name of the experiment that is being ran
-            protocol.comment("Running experiment " + experiment_id)
-
-            # Defining the source wells for the different components in this experiment
-            lysate_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["lysate_source_well"]]
 
             # Defining a list of wells for dispensing
-            dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
+            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
 
-            # Defining the initial lysate aspiration height
-            lysate_aspirate_height = pipetting_settings_dict["lysate_aspirate_height_init"]
 
-            # Dispensing lysate into each of the wells in dispense well list
-            for well in dispense_well_list:
+            # Caliing function to distribute lysate
+            distribute_lysate(dispense_well, lysate_source_well, lysate_aspirate_height_actual)
 
-                # Caliing function to distribute lysate
-                distribute_lysate(well, lysate_source_well, lysate_aspirate_height)
+            protocol.comment("_inc: " + str(lysate_aspirate_height_inc_val))
+            protocol.comment("lysate_aspirate_height before : " + str(lysate_aspirate_height_actual))
 
-                # Reducing the aspiration height by lysate_aspirate_height_inc
-                lysate_aspirate_height -= pipetting_settings_dict["lysate_aspirate_height_inc"]
+            # reduce the lysate_aspirate_height_actual by the increment
+            lysate_aspirate_height_actual = lysate_aspirate_height_actual - lysate_aspirate_height_inc_val
+
+            protocol.comment("lysate_aspirate_height after: " + str(lysate_aspirate_height_actual))
+
+            protocol.comment(" ")
 
             protocol.comment("Lysate dispense step complete for experiment " + experiment_id)
+            protocol.comment(" ")
+            protocol.comment(" ")
 
 
 
@@ -437,11 +540,11 @@ def run(protocol: protocol_api.ProtocolContext):
             pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
 
             # Defining a list of wells for dispensing
-            dispense_well_list = experiment_settings_dict[experiment_id]["dispense_well_list"]
+            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
 
             # Defining the source well for the wax
             wax_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
 
-            dispense_wax_to_individual_replicate_set(dispense_well_list)
+            dispense_wax_to_individual_replicate_set(dispense_well)
 
             protocol.comment("Wax dispense step complete for experiment " + experiment_id)

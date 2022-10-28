@@ -231,7 +231,7 @@ for plate in range(1, plates_required+1,1):
     platewise_pre_experiment_compliation_dict = {
         "substrate_source_tubes_required": math.ceil(experiment_number/24),
         "substrate_source_tubes_list": substrate_source_list_possibles[0:math.ceil(experiment_number/24)],
-        "substrate_source_volume": 205,
+        "substrate_source_volume": 210,
         "substrates_source_well": "B2",
         "lysate_source_tubes_required": math.ceil(experiment_number/24),
         "lysate_source_tubes_list": lysate_source_list_possibles[0:math.ceil(experiment_number/24)],

@@ -73,10 +73,10 @@ def run(protocol: protocol_api.ProtocolContext):
 
     protocol_pre_experiment_compilations = True
     protocol_pre_experiment_substrate_mix = True
-    protocol_pre_experiment_lysate = True
+    protocol_pre_experiment_lysate = False
 
-    protocol_dispense_substrates = True
-    protocol_dispense_lysate = True
+    protocol_dispense_substrates = False
+    protocol_dispense_lysate = False
     protocol_dispense_wax = False
     # labware
 

@@ -1,7 +1,7 @@
 {
-  "lysate_aspirate_height_init" : 4.5,
+  "lysate_aspirate_height_init" : 3.0,
 
-  "lysate_aspirate_height_inc" : 0.4,
+  "lysate_aspirate_height_inc" : 0.1,
 
   "lysate_aspirate_volume" : 3,
 
@@ -13,9 +13,9 @@
 
   "lysate_dispense_well_bottom_clearance" : 0.1,
 
-  "substrates_aspirate_height_init" : 8.6,
+  "substrates_aspirate_height_init" : 7.8,
 
-  "substrates_aspirate_height_inc" : 0.7,
+  "substrates_aspirate_height_inc" : 0.3,
 
   "substrates_aspirate_volume" : 8,
 

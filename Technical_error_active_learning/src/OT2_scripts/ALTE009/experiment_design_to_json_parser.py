@@ -145,7 +145,7 @@ for plate in range(1, plates_required+1,1):
         # copy the base_experiment_settings_dict:
         run_experiment_settings_dict = base_experiment_settings_dict.copy()
         # use the run_name to assign the dispense well.
-        run_experiment_settings_dict['dispense_well_list'] = [run_name]
+        run_experiment_settings_dict['dispense_well'] = run_name
 
         ### attaching the correct substrates_source_well
         ### each 200ul PCR tube can supply 25x reactions. So progress every 24 (1x row of nunc plate)
@@ -229,13 +229,13 @@ for plate in range(1, plates_required+1,1):
     lysate_source_list_possibles = ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16"]
 
     platewise_pre_experiment_compliation_dict = {
-        "substrate_source_tubes_required": round(experiment_number/24),
-        "substrate_source_tubes_list": substrate_source_list_possibles[0:round(experiment_number/24)],
-        "substrate_source_volume": 200,
+        "substrate_source_tubes_required": math.ceil(experiment_number/24),
+        "substrate_source_tubes_list": substrate_source_list_possibles[0:math.ceil(experiment_number/24)],
+        "substrate_source_volume": 210,
         "substrates_source_well": "B2",
-        "lysate_source_tubes_required": round(experiment_number/24),
-        "lysate_source_tubes_list": lysate_source_list_possibles[0:round(experiment_number/24)],
-        "lysate_source_volume": 75,
+        "lysate_source_tubes_required": math.ceil(experiment_number/24),
+        "lysate_source_tubes_list": lysate_source_list_possibles[0:math.ceil(experiment_number/24)],
+        "lysate_source_volume": 85,
         "lysate_source_well": "B3"
     }
 
@@ -277,7 +277,7 @@ for plate in range(1, plates_required+1,1):
 pre_experiment_filename = "processed_ot2_settings/" + experiment_prefix +"_pre_experiment_compilations.json"
 with open(pre_experiment_filename, 'w') as fp:
     json.dump(pre_experiment_compilation_dict, fp)
-    
+
 
 # save the experiment_design_df
 

@@ -25,7 +25,7 @@
 
   "substrates_dispense_rate" : 1,
 
-  "substrates_dispense_well_bottom_clearance" : 0.2,
+  "substrates_dispense_well_bottom_clearance" : 0.1,
 
   "wax_dispense_volume" : 35,
 

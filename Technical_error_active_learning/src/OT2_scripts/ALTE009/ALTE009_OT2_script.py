@@ -72,11 +72,11 @@ def run(protocol: protocol_api.ProtocolContext):
     temp_toggle = False
 
     protocol_pre_experiment_compilations = True
-    protocol_pre_experiment_substrate_mix = True
-    protocol_pre_experiment_lysate = False
+    protocol_pre_experiment_substrate_mix = False
+    protocol_pre_experiment_lysate = True
 
-    protocol_dispense_substrates = False
-    protocol_dispense_lysate = False
+    protocol_dispense_substrates = True
+    protocol_dispense_lysate = True
     protocol_dispense_wax = False
     # labware
 
@@ -114,20 +114,20 @@ def run(protocol: protocol_api.ProtocolContext):
     eppendorf_2ml_x24_icebox_rack.set_offset(x = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["x"],
                                              y = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["y"],
                                              z = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["z"]
-                                             )    
+                                             )
 
     # Defining the 20ul tip rack
     tiprack_20ul_1 = protocol.load_labware(labware_settings_dict["tiprack_20ul_1"]["name"], labware_settings_dict["tiprack_20ul_1"]["pos"])
     tiprack_20ul_1.set_offset(x = labware_settings_dict["tiprack_20ul_1"]["offsets"]["x"],
                               y = labware_settings_dict["tiprack_20ul_1"]["offsets"]["y"],
                               z = labware_settings_dict["tiprack_20ul_1"]["offsets"]["z"]
-                              )    
+                              )
 
     tiprack_20ul_2 = protocol.load_labware(labware_settings_dict["tiprack_20ul_2"]["name"], labware_settings_dict["tiprack_20ul_2"]["pos"])
     tiprack_20ul_2.set_offset(x = labware_settings_dict["tiprack_20ul_2"]["offsets"]["x"],
                               y = labware_settings_dict["tiprack_20ul_2"]["offsets"]["y"],
                               z = labware_settings_dict["tiprack_20ul_2"]["offsets"]["z"]
-                              )    
+                              )
 
     tiprack_20ul_3 = protocol.load_labware(labware_settings_dict["tiprack_20ul_3"]["name"], labware_settings_dict["tiprack_20ul_3"]["pos"])
     tiprack_20ul_3.set_offset(x = labware_settings_dict["tiprack_20ul_3"]["offsets"]["x"],
@@ -190,7 +190,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
         right_pipette.pick_up_tip()
 
-        
+
 
         for pcr_tube in substrate_source_tubes_list:
 
@@ -201,7 +201,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
             # calulate the modulo
             vol_mod_50 = substrate_source_volume % 50
-            
+
             # define the rising inc list of distances from the bottom when dispensing
             rising_inc_list = [5, 9, 11.4, 12]
 
@@ -213,10 +213,10 @@ def run(protocol: protocol_api.ProtocolContext):
 
                 # get the rounded down divide product.
                 num_of_50ul = math.floor(substrate_source_volume/50)
-                
+
                 # make a range and iterate over it
                 for step in range(0, num_of_50ul,1):
-                    
+
                     # followed by 50ul increments rising at by changing increments in the rising_inc_list
                     right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
 
@@ -225,10 +225,10 @@ def run(protocol: protocol_api.ProtocolContext):
             else:
                 # get the divide product.
                 num_of_50ul = substrate_source_volume/50
-                
+
                 # make a range and iterate over it
                 for step in range(0, num_of_50ul,1):
-                    
+
                     # followed by 50ul increments rising at by changing increments in the rising_inc_list
                     right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
 
@@ -368,8 +368,8 @@ def run(protocol: protocol_api.ProtocolContext):
             #call the function
             dispense_lysate_from_source_to_pcr_tubes(lysate_source_well, lysate_source_volume, lysate_source_tubes_list)
 
-   
-   
+
+
     # 4. Conduct plating -------------------------------------------------------------------
 
     # Extracting the different experiments from the experiments

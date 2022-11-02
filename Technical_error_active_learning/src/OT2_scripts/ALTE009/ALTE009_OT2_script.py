@@ -72,7 +72,7 @@ def run(protocol: protocol_api.ProtocolContext):
     temp_toggle = False
 
     protocol_pre_experiment_compilations = True
-    protocol_pre_experiment_substrate_mix = False
+    protocol_pre_experiment_substrate_mix = True
     protocol_pre_experiment_lysate = True
 
     protocol_dispense_substrates = True
@@ -380,15 +380,11 @@ def run(protocol: protocol_api.ProtocolContext):
     # Running the substrate dispense step if protocol_dispense_substrates = True
     if protocol_dispense_substrates:
 
-        protocol.comment("first thing in master dict " + str(list(master_pipetting_settings_dict.keys())[0]))
-
         # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_init
         substrates_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_init"]
-        protocol.comment("substrates_aspirate_height_init init: " + str(substrates_aspirate_height_init_val))
 
         # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_inc
         substrates_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_inc"]
-        protocol.comment("substrates_aspirate_height_inc init: " + str(substrates_aspirate_height_inc_val))
 
         # Defining the initial lysate aspiration height
         substrates_aspirate_height_actual = substrates_aspirate_height_init_val
@@ -398,11 +394,9 @@ def run(protocol: protocol_api.ProtocolContext):
         substrates_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["substrates_source_well"]
 
 
-        protocol.comment("substrates_source_well_tracker init: " + str(substrates_source_well_tracker))
-
 
         # Looping through the different experiments
-        for experiment_id in experiment_ids:
+        for i, experiment_id in enumerate(experiment_ids):
 
             # Defining the source well for the substrates master mix
             substrates_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["substrates_source_well"]]
@@ -417,8 +411,6 @@ def run(protocol: protocol_api.ProtocolContext):
                 # Update the tracker
                 substrates_source_well_tracker = substrates_source_well
 
-                protocol.comment("substrates_source_well_tracker updated: " + str(substrates_source_well_tracker))
-
 
             # retrieve the correct pipetting setting for that particular well
             pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
@@ -431,18 +423,15 @@ def run(protocol: protocol_api.ProtocolContext):
             # Caliing function to distribute substrates
             distribute_substrates(dispense_well, substrates_source_well, substrates_aspirate_height_actual)
 
-            protocol.comment("_inc: " + str(substrates_aspirate_height_inc_val))
-            protocol.comment("substrates_aspirate_height before : " + str(substrates_aspirate_height_actual))
 
             # reduce the substrates_aspirate_height_actual by the increment
             substrates_aspirate_height_actual = substrates_aspirate_height_actual - substrates_aspirate_height_inc_val
 
-            protocol.comment("substrates_aspirate_height after: " + str(substrates_aspirate_height_actual))
-
-            protocol.comment(" ")
 
             protocol.comment("Substrate dispense step complete for experiment " + experiment_id)
             protocol.comment(" ")
+
+            protocol.comment("Completed Substrate Dispense Steps: " + str(i+1) + "/"+ str(len(experiment_ids)))
             protocol.comment(" ")
             protocol.comment(" ")
 
@@ -455,11 +444,9 @@ def run(protocol: protocol_api.ProtocolContext):
 
         # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_init
         lysate_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_init"]
-        protocol.comment("lysate_aspirate_height_init init: " + str(lysate_aspirate_height_init_val))
 
         # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_inc
         lysate_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_inc"]
-        protocol.comment("lysate_aspirate_height_inc init: " + str(lysate_aspirate_height_inc_val))
 
         # Defining the initial lysate aspiration height
         lysate_aspirate_height_actual = lysate_aspirate_height_init_val
@@ -469,11 +456,8 @@ def run(protocol: protocol_api.ProtocolContext):
         lysate_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["lysate_source_well"]
 
 
-        protocol.comment("lysate_source_well_tracker init: " + str(lysate_source_well_tracker))
-
-
         # Looping through the different experiments
-        for experiment_id in experiment_ids:
+        for i, experiment_id in enumerate(experiment_ids):
 
             # Defining the source well for the lysate master mix
             lysate_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["lysate_source_well"]]
@@ -488,9 +472,6 @@ def run(protocol: protocol_api.ProtocolContext):
                 # Update the tracker
                 lysate_source_well_tracker = lysate_source_well
 
-                protocol.comment("lysate_source_well_tracker updated: " + str(lysate_source_well_tracker))
-
-
             # retrieve the correct pipetting setting for that particular well
             pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
 
@@ -502,20 +483,14 @@ def run(protocol: protocol_api.ProtocolContext):
             # Caliing function to distribute lysate
             distribute_lysate(dispense_well, lysate_source_well, lysate_aspirate_height_actual)
 
-            protocol.comment("_inc: " + str(lysate_aspirate_height_inc_val))
-            protocol.comment("lysate_aspirate_height before : " + str(lysate_aspirate_height_actual))
-
             # reduce the lysate_aspirate_height_actual by the increment
             lysate_aspirate_height_actual = lysate_aspirate_height_actual - lysate_aspirate_height_inc_val
 
-            protocol.comment("lysate_aspirate_height after: " + str(lysate_aspirate_height_actual))
-
-            protocol.comment(" ")
-
             protocol.comment("Lysate dispense step complete for experiment " + experiment_id)
+            protocol.comment("")
+            protocol.comment("Completed Lysate Dispense Steps: " + str(i+1) + "/" + str(len(experiment_ids)))
             protocol.comment(" ")
             protocol.comment(" ")
-
 
 
     # Pausing protocol so the plate can be span down in the centrifuge before

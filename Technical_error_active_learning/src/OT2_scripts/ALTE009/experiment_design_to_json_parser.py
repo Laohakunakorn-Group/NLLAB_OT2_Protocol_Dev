@@ -89,7 +89,7 @@ with open('components.json') as json_file:
 with open('base_settings/base_experiment_settings.json') as json_file:
     base_experiment_settings_dict = json.load(json_file)
 
-print(base_experiment_settings_dict)
+
 
 # import the base settings
 with open('base_settings/base_pipetting_settings.json') as json_file:
@@ -238,6 +238,10 @@ for plate in range(1, plates_required+1,1):
         "lysate_source_volume": 85,
         "lysate_source_well": "B3"
     }
+
+    print("")
+    print("lysate_source_tubes_required: "+str(platewise_pre_experiment_compliation_dict["lysate_source_tubes_required"]))
+    print("substrate_source_tubes_required: "+str(platewise_pre_experiment_compliation_dict["substrate_source_tubes_required"]))
 
     # store the number of substrate source tubes needed
     pre_experiment_compilation_dict[plate] = platewise_pre_experiment_compliation_dict

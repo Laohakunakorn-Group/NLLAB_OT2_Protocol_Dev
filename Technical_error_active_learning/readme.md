@@ -141,10 +141,13 @@ The DoE workflow in */src* consists of the following components:
 
 ## Generating key pair
 ```bash
-ssh-keygen
+ssh-keygen -f ot2_ssh_key
 ```
 
 ## Sending public key to raspberry pi
+
+## Windows
+
 
 ### Command template - This needs to be ran in Powershell
 @{key = Get-Content [ssh key file path] | Out-String} | ConvertTo-Json | Invoke-WebRequest -Method Post -ContentType 'application/json' -Uri [OT2 ip]:31950/server/ssh_keys -UseBasicParsing
@@ -152,6 +155,23 @@ ssh-keygen
 ```bash
 @{key = Get-Content C:\users\nllab_ot2\.ssh\id_rsa | Out-String} | ConvertTo-Json | Invoke-WebRequest -Method Post -ContentType 'application/json' -Uri 169.254.60.172:31950/server/ssh_keys -UseBasicParsing
 ```
+
+## linux
+
+**In the most recent linux distros, SSH RSA has been disabled. You must enable it by adding a config file: /home/nllab-ot2/.ssh/config**
+The file must contain: `PubkeyAcceptedAlgorithms +ssh-rsa`
+
+Then send the generated key over
+
+```bash
+curl -H 'Content-Type: application/json' -d "{\"key\":\"$(cat ot2_ssh_key.pub)\"}" 169.254.156.218:31950/server/ssh_keys
+```
+
+```bash
+scp -i C:\users\s1530400\.ssh\id_rsa C:\users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\OT2_settings\test.json root@169.254.60.172:/data/user_storage/al_cell_free
+```
+
+
 
 ## Transferring a file over
 C:\Users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Bradford
@@ -161,10 +181,11 @@ Can't transfer files from M:\ datastore folder path for some reason. Transfer fi
 ### Command template
 scp -i [ssh key file path] [file_path_from_local] root@[OT2 IP (may change - find in OT2 UI)]:[file_path_on_ot2]
 
+### This example transfers a whole folder called ALTE007 which contains the protocol .py file, the experiment settings json file,
+### the labware settings json file and the pipetting settings json files
 ```bash
-scp -i C:\users\s1530400\.ssh\id_rsa C:\users\nllab_ot2\Desktop\OT2_Protocols\NLLAB_OT2_Protocol_Dev\Technical_error_active_learning\src\OT2_scripts\OT2_settings\test.json root@169.254.60.172:/data/user_storage/al_cell_free
+scp -r -i /home/nllab-ot2/.ssh/ot2_ssh_key /home/nllab-ot2/Desktop/opentrons_protocols/NLLAB_OT2_Protocol_Dev/Technical_error_active_learning/src/OT2_scripts/ALTE009/ root@169.254.156.218:/data/user_storage/
 ```
-
 ## Transferring a folder over
 
 ### Command template

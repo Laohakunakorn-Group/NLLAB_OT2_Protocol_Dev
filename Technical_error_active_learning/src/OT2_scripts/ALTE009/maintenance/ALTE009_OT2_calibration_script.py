@@ -44,11 +44,11 @@ def run(protocol: protocol_api.ProtocolContext):
          "11")
 
     # Defining the 20ul tip rack
-    tiprack_20ul_1 = protocol.load_labware("opentrons_96_tiprack_20ul", "4")
-    tiprack_20ul_2 = protocol.load_labware("opentrons_96_tiprack_20ul", "5")
-    tiprack_20ul_3 = protocol.load_labware("opentrons_96_tiprack_20ul", "1")
-    tiprack_20ul_4 = protocol.load_labware("opentrons_96_tiprack_20ul", "2")
-    tiprack_20ul_5 = protocol.load_labware("opentrons_96_tiprack_20ul", "3")
+    tiprack_20ul_1 = protocol.load_labware("opentrons_96_tiprack_20ul", "8")
+    tiprack_20ul_2 = protocol.load_labware("opentrons_96_tiprack_20ul", "9")
+    tiprack_20ul_3 = protocol.load_labware("opentrons_96_tiprack_20ul", "6")
+    tiprack_20ul_4 = protocol.load_labware("opentrons_96_tiprack_20ul", "5")
+    tiprack_20ul_5 = protocol.load_labware("opentrons_96_tiprack_20ul", "4")
 
 
     # Defining left_pipette (p20)
@@ -57,9 +57,9 @@ def run(protocol: protocol_api.ProtocolContext):
     )
 
     # Defining the 300ul tip rack
-    tiprack_300ul_1 = protocol.load_labware("opentrons_96_tiprack_300ul", "8")
-    tiprack_300ul_2 = protocol.load_labware("opentrons_96_tiprack_300ul", "9")
-    tiprack_300ul_3 = protocol.load_labware("opentrons_96_tiprack_300ul", "6")
+    tiprack_300ul_1 = protocol.load_labware("opentrons_96_tiprack_300ul", "1")
+    tiprack_300ul_2 = protocol.load_labware("opentrons_96_tiprack_300ul", "2")
+    tiprack_300ul_3 = protocol.load_labware("opentrons_96_tiprack_300ul", "3")
 
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(

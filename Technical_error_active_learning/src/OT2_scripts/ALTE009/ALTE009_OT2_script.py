@@ -71,13 +71,13 @@ def run(protocol: protocol_api.ProtocolContext):
 
     temp_toggle = False
 
-    protocol_pre_experiment_compilations = True
+    protocol_pre_experiment_compilations = False
     protocol_pre_experiment_substrate_mix = True
     protocol_pre_experiment_lysate = True
 
-    protocol_dispense_substrates = True
-    protocol_dispense_lysate = True
-    protocol_dispense_wax = False
+    protocol_dispense_substrates = False
+    protocol_dispense_lysate = False
+    protocol_dispense_wax = True
     # labware
 
     # Defining the temperature module
@@ -304,7 +304,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    def dispense_wax_to_individual_replicate_set(dispense_well):
+    def dispense_wax_to_individual_replicate_set(wax_source_well, dispense_well_list, pipetting_settings_dict):
 
         """ defines the dispense wax function """
 
@@ -316,8 +316,8 @@ def run(protocol: protocol_api.ProtocolContext):
             pipetting_settings_dict["wax_dispense_volume"],
             wax_source_well,
             [
-                nunc_384.wells_by_name()[well_name].top(pipetting_settings_dict["wax_dispense_height"])
-                for well_name in dispense_well
+                nunc_384.wells_by_name()[individual_well].top(pipetting_settings_dict["wax_dispense_height"])
+                for individual_well in dispense_well_list
             ],
             new_tip = pipetting_settings_dict["wax_new_tip"],
             touch_tip = pipetting_settings_dict["wax_touch_tip"],
@@ -508,18 +508,47 @@ def run(protocol: protocol_api.ProtocolContext):
     # Running the wax dispense step if protocol_dispense_wax = True
     if protocol_dispense_wax:
 
+        # get the experiment ids dispense wells as a list.
+        total_list_of_dispense_wells_for_plate = []
+
         # Looping through the different experiments
         for experiment_id in experiment_ids:
 
-            # retrieve the correct pipetting setting for that particular well
-            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
-
             # Defining a list of wells for dispensing
-            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
+            total_list_of_dispense_wells_for_plate.append(experiment_settings_dict[experiment_id]["dispense_well"])
+
+
+        ### As the wax pipetting settings are generally the same, we can use the first one in the dict to get the info we need
+        wax_dispense_volume = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["wax_dispense_volume"]
+
+        #### Now use a counter to loop over sets of dispense wells.
+        
+        # length of sets = (300ul / 35ul) rounded down
+        len_of_dispense_set = math.floor(300/wax_dispense_volume)
+
+        # number of sets in the total list:
+        num_of_dispense_sets = math.ceil(len(total_list_of_dispense_wells_for_plate)/len_of_dispense_set)
+
+
+        for set_idx in range(1, num_of_dispense_sets,1):
+
+            # set the counters as appropriate
+            aft_counter = (set_idx-1) * len_of_dispense_set
+            fore_counter = set_idx * len_of_dispense_set
+            # retrive the list
+            dispense_well_list = total_list_of_dispense_wells_for_plate[aft_counter:fore_counter]
+
+            # as all the wax pipetting steps are supposed to be the same - I'll just pull out the first one.
+            pipetting_settings_dict = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]
+
 
             # Defining the source well for the wax
-            wax_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
+            #wax_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
 
-            dispense_wax_to_individual_replicate_set(dispense_well)
+            dispense_wax_to_individual_replicate_set(wax_source_well, dispense_well_list, pipetting_settings_dict)
 
             protocol.comment("Wax dispense step complete for experiment " + experiment_id)
+
+
+
+            ################ NEED TO USE A TUBE THAT CAN HOLD A PLATE OF 384 * 35ul = 15ml falcon.

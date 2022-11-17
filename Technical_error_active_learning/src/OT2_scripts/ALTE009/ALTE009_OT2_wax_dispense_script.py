@@ -32,8 +32,8 @@ def run(protocol: protocol_api.ProtocolContext):
     experiment_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
     print(experiment_settings_dict_path)
     #
-    #labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_labware_settings.json"
-    labware_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_labware_settings.json"
+    #wax_labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_wax_labware_settings.json"
+    wax_labware_settings_dict_path = "ot2_labware_settings/" + experiment_prefix + "_wax_labware_settings.json"
     #
     #master_pipetting_settings_dict_path = "/data/user_storage/" + experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
     master_pipetting_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
@@ -46,7 +46,7 @@ def run(protocol: protocol_api.ProtocolContext):
     experiment_settings_dict = json.load(open(experiment_settings_dict_path, 'r'))
     protocol.comment("Experiment settings json file was read in")
 
-    labware_settings_dict = json.load(open(labware_settings_dict_path, 'r'))
+    wax_labware_settings_dict = json.load(open(wax_labware_settings_dict_path, 'r'))
     protocol.comment("Labware settings json file was read in")
 
     master_pipetting_settings_dict = json.load(open(master_pipetting_settings_dict_path, 'r'))
@@ -69,15 +69,15 @@ def run(protocol: protocol_api.ProtocolContext):
     # labware
 
     # Defining the temperature module
-    temperature_module = protocol.load_module(labware_settings_dict["temp_module"]["name"], labware_settings_dict["temp_module"]["pos"])
+    temperature_module = protocol.load_module(wax_labware_settings_dict["temp_module"]["name"], wax_labware_settings_dict["temp_module"]["pos"])
 
 
     # Defining the pcr plate ontop of the temperature module
     # Defining the 384 nunc well plate
-    nunc_384 = temperature_module.load_labware(labware_settings_dict["nunc_384"]["name"], labware_settings_dict["nunc_384"]["pos"])
-    nunc_384.set_offset(x = labware_settings_dict["nunc_384"]["offsets"]["x"],
-                        y = labware_settings_dict["nunc_384"]["offsets"]["y"],
-                        z = labware_settings_dict["nunc_384"]["offsets"]["z"]
+    nunc_384 = temperature_module.load_labware(wax_labware_settings_dict["nunc_384"]["name"], wax_labware_settings_dict["nunc_384"]["pos"])
+    nunc_384.set_offset(x = wax_labware_settings_dict["nunc_384"]["offsets"]["x"],
+                        y = wax_labware_settings_dict["nunc_384"]["offsets"]["y"],
+                        z = wax_labware_settings_dict["nunc_384"]["offsets"]["z"]
                         )
 
 
@@ -92,40 +92,40 @@ def run(protocol: protocol_api.ProtocolContext):
 
     custom_labware_on_ot2_path = "maintenance/custom_labware/trevor_6_tuberack_50000ul.json"
 
-    custom_15_50_tube_rack = load_custom_labware(custom_labware_on_ot2_path, labware_settings_dict["custom_15_50_tube_rack"]["pos"])
-    custom_15_50_tube_rack.set_offset(x = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["x"],
-                                             y = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["y"],
-                                             z = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["z"]
+    custom_15_50_tube_rack = load_custom_labware(custom_labware_on_ot2_path, wax_labware_settings_dict["custom_15_50_tube_rack"]["pos"])
+    custom_15_50_tube_rack.set_offset(x = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["x"],
+                                             y = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["y"],
+                                             z = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["z"]
                                              )
 
 
     # Defining left_pipette (p20)
     #left_pipette = protocol.load_instrument(
-    #    labware_settings_dict["left_pipette"]["name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
+    #    wax_labware_settings_dict["left_pipette"]["name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
     #)
 
     # Defining the 300ul tip rack
-    tiprack_300ul_1 = protocol.load_labware(labware_settings_dict["tiprack_300ul_1"]["name"], labware_settings_dict["tiprack_300ul_1"]["pos"])
-    tiprack_300ul_1.set_offset(x = labware_settings_dict["tiprack_300ul_1"]["offsets"]["x"],
-                              y = labware_settings_dict["tiprack_300ul_1"]["offsets"]["y"],
-                              z = labware_settings_dict["tiprack_300ul_1"]["offsets"]["z"]
+    tiprack_300ul_1 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_1"]["name"], wax_labware_settings_dict["tiprack_300ul_1"]["pos"])
+    tiprack_300ul_1.set_offset(x = wax_labware_settings_dict["tiprack_300ul_1"]["offsets"]["x"],
+                              y = wax_labware_settings_dict["tiprack_300ul_1"]["offsets"]["y"],
+                              z = wax_labware_settings_dict["tiprack_300ul_1"]["offsets"]["z"]
                               )
 
-    tiprack_300ul_2 = protocol.load_labware(labware_settings_dict["tiprack_300ul_2"]["name"], labware_settings_dict["tiprack_300ul_2"]["pos"])
-    tiprack_300ul_2.set_offset(x = labware_settings_dict["tiprack_300ul_2"]["offsets"]["x"],
-                              y = labware_settings_dict["tiprack_300ul_2"]["offsets"]["y"],
-                              z = labware_settings_dict["tiprack_300ul_2"]["offsets"]["z"]
+    tiprack_300ul_2 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_2"]["name"], wax_labware_settings_dict["tiprack_300ul_2"]["pos"])
+    tiprack_300ul_2.set_offset(x = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["x"],
+                              y = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["y"],
+                              z = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["z"]
                               )
 
-    tiprack_300ul_3 = protocol.load_labware(labware_settings_dict["tiprack_300ul_3"]["name"], labware_settings_dict["tiprack_300ul_3"]["pos"])
-    tiprack_300ul_3.set_offset(x = labware_settings_dict["tiprack_300ul_3"]["offsets"]["x"],
-                              y = labware_settings_dict["tiprack_300ul_3"]["offsets"]["y"],
-                              z = labware_settings_dict["tiprack_300ul_3"]["offsets"]["z"]
+    tiprack_300ul_3 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_3"]["name"], wax_labware_settings_dict["tiprack_300ul_3"]["pos"])
+    tiprack_300ul_3.set_offset(x = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["x"],
+                              y = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["y"],
+                              z = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["z"]
                               )
 
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
-        labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
+        wax_labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
     )
 
 

@@ -30,7 +30,7 @@ def run(protocol: protocol_api.ProtocolContext):
     #
     #experiment_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
     experiment_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
-    print(experiment_settings_dict_path)
+
     #
     #wax_labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_wax_labware_settings.json"
     wax_labware_settings_dict_path = "ot2_labware_settings/" + experiment_prefix + "_wax_labware_settings.json"

@@ -82,7 +82,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    # Defining the eppendorf_2ml_x24_icebox_rack.
+    # Defining the custom_15_50_tube_rack.
     # Because this is a custom labware definition, it needs to be loaded in manually to be used with opentrons_execute
 
     def load_custom_labware(file_path,location):
@@ -90,11 +90,12 @@ def run(protocol: protocol_api.ProtocolContext):
             labware_def = json.load(labware_file)
         return protocol.load_labware_from_definition(labware_def, location)
 
-    custom_labware_on_ot2_path = "maintenance/custom_labware/nllab3dprinted_24_tuberack_2000ul.json"
-    eppendorf_2ml_x24_icebox_rack = load_custom_labware(custom_labware_on_ot2_path, labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["pos"])
-    eppendorf_2ml_x24_icebox_rack.set_offset(x = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["x"],
-                                             y = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["y"],
-                                             z = labware_settings_dict["eppendorf_2ml_x24_icebox_rack"]["offsets"]["z"]
+    custom_labware_on_ot2_path = "maintenance/custom_labware/trevor_6_tuberack_50000ul.json"
+
+    custom_15_50_tube_rack = load_custom_labware(custom_labware_on_ot2_path, labware_settings_dict["custom_15_50_tube_rack"]["pos"])
+    custom_15_50_tube_rack.set_offset(x = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["x"],
+                                             y = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["y"],
+                                             z = labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["z"]
                                              )
 
 
@@ -169,7 +170,6 @@ def run(protocol: protocol_api.ProtocolContext):
         temperature_module.set_temperature(4)
 
 
-
     # Running the wax dispense step if protocol_dispense_wax = True
     if protocol_dispense_wax:
 
@@ -208,7 +208,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
             # Defining the source well for the wax
-            #wax_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
+            wax_source_well = custom_15_50_tube_rack.wells_by_name()[experiment_settings_dict[experiment_id]["wax_source_well"]]
 
             dispense_wax_to_individual_replicate_set(wax_source_well, dispense_well_list, pipetting_settings_dict)
 
@@ -218,5 +218,7 @@ def run(protocol: protocol_api.ProtocolContext):
     if temp_toggle:
         temperature_module.deactivate()
 
-
-            ################ NEED TO USE A TUBE THAT CAN HOLD A PLATE OF 384 * 35ul = 15ml falcon.
+    protocol.comment("")
+    protocol.comment("All wax dispense steps complete.")
+    protocol.comment("")
+    protocol.comment("Place film over plate and start measurement.")

@@ -52,7 +52,7 @@ docker run -p 8888:8888 -v ${pwd}:/app --name data_analysis_r_python_ctnr data_a
 If you're on Mac or Linux:
 
 ```bash
-docker run -p 8888:8888 -v $pwd:/app --name data_analysis_r_python_ctnr data_analysis_r_python_img
+docker run -p 8888:8888 -v $(pwd):/app --name data_analysis_r_python_ctnr data_analysis_r_python_img
 ```
 
 The way it works is by:

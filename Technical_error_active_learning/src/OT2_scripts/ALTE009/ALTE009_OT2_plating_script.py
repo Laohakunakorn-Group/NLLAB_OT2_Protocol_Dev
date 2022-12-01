@@ -69,7 +69,7 @@ def run(protocol: protocol_api.ProtocolContext):
     # Defining the booleans for the protocol. This controls which parts of
     # the protocol to run.
 
-    temp_toggle = False
+    temp_toggle = True
 
     protocol_pre_experiment_compilations = True
     protocol_pre_experiment_substrate_mix = True

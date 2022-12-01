@@ -1,3 +1,13 @@
+1st Dec 22
+
+* Finished package ready for pipetting settings modulation
+* Increased reaction volume to 20ul to account for evaporation in the absence of discontinued wax.
+
+Next steps:
+
+Master Mix Modulation.
+Different protein component mixes.
+
 
 1st Nov 22
 

@@ -41,23 +41,13 @@ plate_capacity = len(well_list_384)
 #  store the number of runs - the num of rows of the df
 num_of_runs = experiment_design_df.shape[0]
 
-print(" ")
-print(" ")
-print("Experiment breakdown:")
-print(" ")
-print("Number of total runs: "+str(num_of_runs))
-print("Plate capacity due to well spacing: "+ str(plate_capacity)+ " runs.")
 
 # if there are fewer experiments than or exactly 384 or 77 or whatever (the plate capacity), then just label the with enough wells
 if num_of_runs <= plate_capacity:
     experiment_design_df['Well'] = well_list_384[:num_of_runs]
     experiment_design_df['Plate'] = 1
 
-    print("plates_required: " +str(1))
     plates_required = 1
-
-    print("runs_per_plate: " +str(num_of_runs))
-
 
 elif num_of_runs > plate_capacity:
 
@@ -80,8 +70,7 @@ elif num_of_runs > plate_capacity:
     experiment_design_df['Well'] = exp_wells
     experiment_design_df['Plate'] = exp_plates
 
-    print("plates_required: " +str(plates_required))
-    print("runs_per_plate: " +str(runs_per_plate))
+
 
 
 else:
@@ -178,16 +167,7 @@ for plate in range(1, plates_required+1,1):
         # add one because of python indexing
 
         # check reaction volume here
-        if base_pipetting_settings_dict['substrates_dispense_volume'] ==  7.5:
-            # sanity check volume
-            if (base_pipetting_settings_dict['substrates_dispense_volume'] + base_pipetting_settings_dict['lysate_dispense_volume']) == 10:
-                total_reaction_volume = 10
-            else:
-                print("Error: lysate and substrate volumes don't seem to add up")
-                print("Lysate volume: "+ str(base_pipetting_settings_dict['lysate_dispense_volume']))
-                print("Substrate volume: "+ str(base_pipetting_settings_dict['substrates_dispense_volume']))
-
-        elif base_pipetting_settings_dict['substrates_dispense_volume'] ==  15:
+        if base_pipetting_settings_dict['substrates_dispense_volume'] ==  15:
             # sanity check volume
             if (base_pipetting_settings_dict['substrates_dispense_volume'] + base_pipetting_settings_dict['lysate_dispense_volume']) == 20:
                 total_reaction_volume = 20
@@ -202,9 +182,14 @@ for plate in range(1, plates_required+1,1):
 
         #### now generate the list of experiments per pcr tube list.
         if total_reaction_volume == 20:
-            experiments_per_pcr_tube_list = list(range(12, 385,12))
-        if total_reaction_volume == 10:
-            experiments_per_pcr_tube_list = list(range(24, 385,24))
+            reactions_per_pcr_tube = 12
+
+        elif total_reaction_volume == 10:
+            reactions_per_pcr_tube = 24
+        else:
+            print("Error: unknown total reaction volume.")
+
+        experiments_per_pcr_tube_list = list(range(reactions_per_pcr_tube, 385, reactions_per_pcr_tube))
 
 
         # simply adding one for python indexing
@@ -243,12 +228,12 @@ for plate in range(1, plates_required+1,1):
 
     ## organising the platewise_pre_experiment_compliation_dict
     platewise_pre_experiment_compliation_dict = {
-        "substrate_source_tubes_required": math.ceil(experiment_number/24),
-        "substrate_source_tubes_list": substrate_source_list_possibles[0:math.ceil(experiment_number/24)],
+        "substrate_source_tubes_required": math.ceil(experiment_number/reactions_per_pcr_tube),
+        "substrate_source_tubes_list": substrate_source_list_possibles[0:math.ceil(experiment_number/reactions_per_pcr_tube)],
         "substrate_source_volume": 210,
         "substrates_source_well": "B2",
-        "lysate_source_tubes_required": math.ceil(experiment_number/24),
-        "lysate_source_tubes_list": lysate_source_list_possibles[0:math.ceil(experiment_number/24)],
+        "lysate_source_tubes_required": math.ceil(experiment_number/reactions_per_pcr_tube),
+        "lysate_source_tubes_list": lysate_source_list_possibles[0:math.ceil(experiment_number/reactions_per_pcr_tube)],
         "lysate_source_volume": 85,
         "lysate_source_well": "B3"
     }
@@ -288,10 +273,24 @@ for plate in range(1, plates_required+1,1):
 print("")
 print("Assigning complete.")
 print("")
+print(" ")
+print(" ")
+print("Experiment breakdown:")
+print(" ")
+print("Number of total runs: "+str(num_of_runs))
+print("Plate capacity due to well spacing: "+ str(plate_capacity)+ " runs.")
 print("Total rxn volume: " +str(total_reaction_volume)+ "ul")
+print("plates_required: " +str(plates_required))
+print("runs_per_plate: " +str(runs_per_plate))
 print("")
-print("lysate_source_tubes_required for each plate: "+str(platewise_pre_experiment_compliation_dict["lysate_source_tubes_required"]))
-print("substrate_source_tubes_required for each plate: "+str(platewise_pre_experiment_compliation_dict["substrate_source_tubes_required"]))
+print("")
+print("Instructions for each plate:")
+print("")
+print("lysate_source_tubes_required: "+str(platewise_pre_experiment_compliation_dict["lysate_source_tubes_required"]))
+print("substrate_source_tubes_required: "+str(platewise_pre_experiment_compliation_dict["substrate_source_tubes_required"]))
+print("")
+print("Prepare a substrate master mix in " + platewise_pre_experiment_compliation_dict["substrates_source_well"] +" of the icebox totalling: " + str(210*platewise_pre_experiment_compliation_dict["substrate_source_tubes_required"]*1.2)+"ul.")
+print("Aliquot "+ str(85*platewise_pre_experiment_compliation_dict["substrate_source_tubes_required"]*1.2) + "ul of lysate into "+platewise_pre_experiment_compliation_dict["lysate_source_well"] +" of the icebox.")
 
 
 

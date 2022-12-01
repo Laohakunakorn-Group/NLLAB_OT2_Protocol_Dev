@@ -71,13 +71,13 @@ def run(protocol: protocol_api.ProtocolContext):
 
     temp_toggle = False
 
-    protocol_pre_experiment_compilations = False
+    protocol_pre_experiment_compilations = True
     protocol_pre_experiment_substrate_mix = True
     protocol_pre_experiment_lysate = True
 
-    protocol_dispense_substrates = False
-    protocol_dispense_lysate = False
-    protocol_dispense_wax = True
+    protocol_dispense_substrates = True
+    protocol_dispense_lysate = True
+
     # labware
 
     # Defining the temperature module
@@ -292,30 +292,6 @@ def run(protocol: protocol_api.ProtocolContext):
         left_pipette.drop_tip()
 
 
-
-    def dispense_wax_to_individual_replicate_set(wax_source_well, dispense_well_list, pipetting_settings_dict):
-
-        """ defines the dispense wax function """
-
-        # Pick up a 300ul tip
-        #right_pipette.pick_up_tip()
-
-        # Distributing 35ul of wax ontop of each well in dispense_well
-        right_pipette.distribute(
-            pipetting_settings_dict["wax_dispense_volume"],
-            wax_source_well,
-            [
-                nunc_384.wells_by_name()[individual_well].top(pipetting_settings_dict["wax_dispense_height"])
-                for individual_well in dispense_well_list
-            ],
-            new_tip = pipetting_settings_dict["wax_new_tip"],
-            touch_tip = pipetting_settings_dict["wax_touch_tip"],
-            air_gap = pipetting_settings_dict["wax_air_gap"],
-            disposal_volume = pipetting_settings_dict["wax_disposal_volume"],
-        )
-
-        # Drops tip
-        #right_pipette.drop_tip()
 
 
     # 3. Running protocol------------------------------------------------------

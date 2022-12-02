@@ -48,6 +48,8 @@ if num_of_runs <= plate_capacity:
     experiment_design_df['Plate'] = 1
 
     plates_required = 1
+    # calculate runs per plate
+    runs_per_plate = int(num_of_runs/plates_required)
 
 elif num_of_runs > plate_capacity:
 

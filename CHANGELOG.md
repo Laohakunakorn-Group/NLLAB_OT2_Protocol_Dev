@@ -1,8 +1,25 @@
 # Protocol development for OT2 Opentron
 
 
+
 # Project Planning & Management
 
+# **Jobs:**
+
+* ~Write Parser to convert the design_real.csv into a nested json containing the new pipetting settings to be iterated over for each experiment/replicate. The doe script takes replicated into account in the design so this should be straightforward.~
+* ~Convert pipetting script to iterate over the pipetting settings nested json.~
+  * ~**Note:** now the _experiment_settings are sorted =  use those to look them up in pipetting_settings_dict~
+* Build doe script for screening parameters.
+* Write scripts to analyse experimental design.
+* ~Randomise replicates across plate.~
+* Test multiple lysates
+
+* automate the writing of experiment_metadata.json
+* ~sort the filing out~
+* replicate substrate distributor func to pcr tubes for lysate
+
+
+# Change log
 
 ## 23/06/2022
 

@@ -58,6 +58,11 @@ def run(protocol: protocol_api.ProtocolContext):
     pre_experiment_compilation_dict = pre_experiment_compilation_dict[plate_number_string]
     protocol.comment("Pre experiment compilations Plate: "+plate_number_string +" Selected.")
 
+
+    # Extracting the different experiments from the experiments
+    # settings file
+    experiment_ids = experiment_settings_dict.keys()
+
     # 1. Defining variables used in protocol-----------------------------------
 
     # Defining the booleans for the protocol. This controls which parts of
@@ -74,35 +79,23 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # Defining the pcr plate ontop of the temperature module
     # Defining the 384 nunc well plate
-    nunc_384 = temperature_module.load_labware(wax_labware_settings_dict["nunc_384"]["name"], wax_labware_settings_dict["nunc_384"]["pos"])
+    nunc_384 = temperature_module.load_labware(wax_labware_settings_dict["nunc_384"]["name"])
     nunc_384.set_offset(x = wax_labware_settings_dict["nunc_384"]["offsets"]["x"],
                         y = wax_labware_settings_dict["nunc_384"]["offsets"]["y"],
                         z = wax_labware_settings_dict["nunc_384"]["offsets"]["z"]
                         )
 
 
-
-    # Defining the custom_15_50_tube_rack.
-    # Because this is a custom labware definition, it needs to be loaded in manually to be used with opentrons_execute
-
-    def load_custom_labware(file_path,location):
-        with open(file_path) as labware_file:
-            labware_def = json.load(labware_file)
-        return protocol.load_labware_from_definition(labware_def, location)
-
-    custom_labware_on_ot2_path = "maintenance/custom_labware/trevor_6_tuberack_50000ul.json"
-
-    custom_15_50_tube_rack = load_custom_labware(custom_labware_on_ot2_path, wax_labware_settings_dict["custom_15_50_tube_rack"]["pos"])
+    # Defining the custom_15_50_tube_rack
+    # 3d printed by uses offical api def: opentrons_10_tuberack_falcon_4x50ml_6x15ml_conical
+    custom_15_50_tube_rack = protocol.load_labware(wax_labware_settings_dict["custom_15_50_tube_rack"]["name"], wax_labware_settings_dict["custom_15_50_tube_rack"]["pos"])
     custom_15_50_tube_rack.set_offset(x = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["x"],
                                              y = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["y"],
                                              z = wax_labware_settings_dict["custom_15_50_tube_rack"]["offsets"]["z"]
                                              )
 
 
-    # Defining left_pipette (p20)
-    #left_pipette = protocol.load_instrument(
-    #    wax_labware_settings_dict["left_pipette"]["name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
-    #)
+
 
     # Defining the 300ul tip rack
     tiprack_300ul_1 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_1"]["name"], wax_labware_settings_dict["tiprack_300ul_1"]["pos"])
@@ -111,21 +104,9 @@ def run(protocol: protocol_api.ProtocolContext):
                               z = wax_labware_settings_dict["tiprack_300ul_1"]["offsets"]["z"]
                               )
 
-    tiprack_300ul_2 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_2"]["name"], wax_labware_settings_dict["tiprack_300ul_2"]["pos"])
-    tiprack_300ul_2.set_offset(x = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["x"],
-                              y = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["y"],
-                              z = wax_labware_settings_dict["tiprack_300ul_2"]["offsets"]["z"]
-                              )
-
-    tiprack_300ul_3 = protocol.load_labware(wax_labware_settings_dict["tiprack_300ul_3"]["name"], wax_labware_settings_dict["tiprack_300ul_3"]["pos"])
-    tiprack_300ul_3.set_offset(x = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["x"],
-                              y = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["y"],
-                              z = wax_labware_settings_dict["tiprack_300ul_3"]["offsets"]["z"]
-                              )
-
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
-        wax_labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1, tiprack_300ul_2, tiprack_300ul_3]
+        wax_labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1]
     )
 
 
@@ -189,7 +170,9 @@ def run(protocol: protocol_api.ProtocolContext):
         #### Now use a counter to loop over sets of dispense wells.
         
         # length of sets = (300ul / 35ul) rounded down
-        len_of_dispense_set = math.floor(300/wax_dispense_volume)
+        # Max pipette can do is 7
+        len_of_dispense_set = math.floor(300/wax_dispense_volume) - 1
+        # 7
 
         # number of sets in the total list:
         num_of_dispense_sets = math.ceil(len(total_list_of_dispense_wells_for_plate)/len_of_dispense_set)
@@ -198,10 +181,14 @@ def run(protocol: protocol_api.ProtocolContext):
         for set_idx in range(1, num_of_dispense_sets,1):
 
             # set the counters as appropriate
+            # selects the well before the start of that set according to python indexing
             aft_counter = (set_idx-1) * len_of_dispense_set
-            fore_counter = set_idx * len_of_dispense_set
+            # selects the well at the top of that set but then minuses 1 for python indexing
+            fore_counter = (set_idx * len_of_dispense_set)
             # retrive the list
             dispense_well_list = total_list_of_dispense_wells_for_plate[aft_counter:fore_counter]
+            print("dispense well list")
+            print(dispense_well_list)
 
             # as all the wax pipetting steps are supposed to be the same - I'll just pull out the first one.
             pipetting_settings_dict = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]

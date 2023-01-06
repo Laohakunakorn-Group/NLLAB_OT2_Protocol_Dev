@@ -3,11 +3,11 @@
 
   "lysate_aspirate_height_inc" : 0.1,
 
-  "lysate_aspirate_volume" : 3,
+  "lysate_aspirate_volume" : 5.5,
 
   "lysate_aspirate_rate" : 0.2,
 
-  "lysate_dispense_volume" : 2.5,
+  "lysate_dispense_volume" : 5,
 
   "lysate_dispense_rate" : 0.1,
 
@@ -17,11 +17,11 @@
 
   "substrates_aspirate_height_inc" : 0.3,
 
-  "substrates_aspirate_volume" : 8,
+  "substrates_aspirate_volume" : 15.5,
 
   "substrates_aspirate_rate" : 1,
 
-  "substrates_dispense_volume" : 7.5,
+  "substrates_dispense_volume" : 15,
 
   "substrates_dispense_rate" : 1,
 

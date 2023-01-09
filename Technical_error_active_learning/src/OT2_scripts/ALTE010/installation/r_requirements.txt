@@ -1,0 +1,5 @@
+data.table
+rsm
+ggplot2
+rjson
+dplyr

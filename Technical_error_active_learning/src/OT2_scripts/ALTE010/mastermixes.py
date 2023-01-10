@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import math
+import numpy as np
 
 
 ############
@@ -56,7 +57,7 @@ substrate_source_list_possibles = generate_MasterMixWells_96("Aqueous")
 lysate_source_list_possibles = generate_MasterMixWells_96("Components")
 
 # import the design
-experiment_design_df = pd.read_csv("processed_data_files/design_real.csv", index_col=0)
+experiment_design_df = pd.read_csv("processed_data_files/Experiment_Designs/design_skeleton.csv", index_col=0)
 
 # drop std order and run order
 experiment_design_df = experiment_design_df.drop('std.order', axis=1)
@@ -176,7 +177,6 @@ elif num_of_runs > plate_capacity:
 else:
     print("There is an error with the number of experiments")
 
-print(experiment_design_df)
 
 
 #### Assign Master Mixes to experiments
@@ -201,8 +201,6 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     # drop Original Order
     plate_df = plate_df.drop(["Original_Order", "Well", "Plate"], axis=1)
 
-    print("plate_df")
-    print(plate_df)
 
     ### Split design in to aqueous and components columns
 
@@ -351,18 +349,146 @@ for plate_number in plates_list:
 
 
 
-
-
-
-
-aqueous_master_mixes = pd.read_pickle("processed_data_files/aqueous_master_mixes.pkl")
-print(aqueous_master_mixes.loc[0, "Tubes"][0])
-print(components_master_mixes)
-
+############Add master mix tubes to experimental design 
 
 print(" ")
 print("Assigning reagent sources and wells...")
 print(" ")
+
+
+# use this list to concat together when it's done.
+plate_df_list = []
+
+
+
+# iterate over and feed the number to reading in the pickled dfs
+for plate_number in plates_list:
+
+
+    aqueous_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes.pkl")
+    components_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes.pkl")
+
+    # slice the experimental design
+    plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number].reset_index(drop=True)
+
+    # initialise two lists of zeros of length plate df rows to be populated later.
+    Aqueous_MasterMix_Tube = list(np.zeros(plate_df.shape[0]))
+    Components_MasterMix_Tube = list(np.zeros(plate_df.shape[0]))
+
+
+
+    ### Aqueous
+    # drop unnecessary columns
+    Aqueous_plate_df = plate_df[aqueous_variables]
+
+    # iterate over the rows
+    for mastermix_idx, mastermix_row in aqueous_master_mixes.iterrows():
+
+        # extract and segregate key info
+        # Have to convert series to dictionaries for comparison bc pandas has thrown a tantrum.
+        MasterMixElements = mastermix_row[aqueous_variables].to_dict()
+        Tubes = mastermix_row["Tubes"]
+
+        # initialise counter
+        mastermix_allocation_counter = 0
+        Working_Tube_idx = 0
+
+        for run_idx, run_row in Aqueous_plate_df.iterrows():
+
+            # Have to convert series to dictionaries for comparison bc pandas has thrown a tantrum.
+            run_row = run_row.to_dict()
+
+            # Check if Working_Tube_idx needs progressing
+            if mastermix_allocation_counter == 12:
+                # reset
+                mastermix_allocation_counter = 0
+                Working_Tube_idx += 1
+
+            if run_row == MasterMixElements:
+
+                # look up the current tube using the mastermix_allocation_counter
+                Working_Tube = Tubes[Working_Tube_idx]
+
+                # look up the correct index in the array using run_idx and insert the tube at the position.
+                Aqueous_MasterMix_Tube[run_idx] = Working_Tube
+
+
+                #progress the counter
+                mastermix_allocation_counter += 1
+
+    
+    plate_df.loc[:, "AqueousMasterMixTube"] = Aqueous_MasterMix_Tube
+
+
+
+    ### Components
+
+    # drop unnecessary columns
+    Components_plate_df = plate_df[components_variables]
+
+    # iterate over the rows
+    for mastermix_idx, mastermix_row in components_master_mixes.iterrows():
+
+        # extract and segregate key info
+        # Have to convert series to dictionaries for comparison bc pandas has thrown a tantrum.
+        MasterMixElements = mastermix_row[components_variables].to_dict()
+        Tubes = mastermix_row["Tubes"]
+
+        # initialise counter
+        mastermix_allocation_counter = 0
+        Working_Tube_idx = 0
+
+        for run_idx, run_row in Components_plate_df.iterrows():
+
+            # Have to convert series to dictionaries for comparison bc pandas has thrown a tantrum.
+            run_row = run_row.to_dict()
+
+            # Check if Working_Tube_idx needs progressing
+            if mastermix_allocation_counter == 12:
+                # reset
+                mastermix_allocation_counter = 0
+                Working_Tube_idx += 1
+
+            if run_row == MasterMixElements:
+
+                # look up the current tube using the mastermix_allocation_counter
+                Working_Tube = Tubes[Working_Tube_idx]
+
+                # look up the correct index in the array using run_idx and insert the tube at the position.
+                Components_MasterMix_Tube[run_idx] = Working_Tube
+
+                #progress the counter
+                mastermix_allocation_counter += 1
+
+    
+    plate_df.loc[:,"ComponentsMasterMixTube"] = Components_MasterMix_Tube
+
+
+    plate_df_list.append(plate_df)
+
+## Concat plate_dfs together
+
+experiment_design_df = pd.concat(plate_df_list, axis=0).reset_index(drop=True)
+
+
+print()
+print("Assignment Complete.")
+print()
+
+
+### save the full design
+experiment_design_df.to_csv("processed_data_files/Experiment_Designs/design_full.csv", index=False)
+
+
+#############################################################################################################################################
+
+
+
+#aqueous_master_mixes = pd.read_pickle("processed_data_files/aqueous_master_mixes.pkl")
+#print(aqueous_master_mixes.loc[0, "Tubes"][0])
+#print(components_master_mixes)
+
+
 
 
 #### Creating the nested master pipetting settings JSON

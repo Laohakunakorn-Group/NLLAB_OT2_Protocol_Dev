@@ -330,14 +330,31 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     aqueous_master_mixes = DesignateMasterMixTubes(aqueous_master_mixes, substrate_source_list_possibles)
     components_master_mixes = DesignateMasterMixTubes(components_master_mixes, lysate_source_list_possibles)
 
+    # save binaries of these working concentration designs
+    aqueous_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
+    components_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Working_Concs.pkl")
+
+
+    #### Prepare the master mix stock concentrations
+
+    # create a copy
+    aqueous_master_mixes_stocks = aqueous_master_mixes.copy()
+    components_master_mixes_stocks = components_master_mixes.copy()
+
+    # x4 the final concentrations
+    aqueous_master_mixes_stocks[aqueous_variables] = aqueous_master_mixes_stocks[aqueous_variables] * 4
+    components_master_mixes_stocks[components_variables] = components_master_mixes_stocks[components_variables] * 4
+
+
     # save human readable CSVs
-    aqueous_master_mixes.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes_human_readable"+".csv", index=False)
-    components_master_mixes.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes_human_readable"+".csv", index=False)
+    aqueous_master_mixes_stocks.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Stocks_human_readable"+".csv", index=False)
+    components_master_mixes_stocks.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Stocks_human_readable"+".csv", index=False)
 
     # save machine readable binaries
-    aqueous_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes.pkl")
-    components_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes.pkl")
+    aqueous_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Stocks.pkl")
+    components_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Stocks.pkl")
 
+    return aqueous_master_mixes, components_master_mixes
 
 #### Execute
 ## get a list of the plate numbers
@@ -346,7 +363,6 @@ plates_list = list(experiment_design_df["Plate"].unique())
 # iterate over and feed the number to master mix function
 for plate_number in plates_list:
     Designate_MasterMix_Tubes_by_Plate(plate_number=plate_number)
-
 
 
 ############Add master mix tubes to experimental design 
@@ -365,8 +381,8 @@ plate_df_list = []
 for plate_number in plates_list:
 
 
-    aqueous_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes.pkl")
-    components_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes.pkl")
+    aqueous_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
+    components_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Working_Concs.pkl")
 
     # slice the experimental design
     plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number].reset_index(drop=True)
@@ -477,16 +493,11 @@ print()
 
 
 ### save the full design
-experiment_design_df.to_csv("processed_data_files/Experiment_Designs/design_full.csv", index=False)
+experiment_design_df.to_csv("processed_data_files/Experiment_Designs/design_final.csv", index=False)
 
 
 #############################################################################################################################################
 
-
-
-#aqueous_master_mixes = pd.read_pickle("processed_data_files/aqueous_master_mixes.pkl")
-#print(aqueous_master_mixes.loc[0, "Tubes"][0])
-#print(components_master_mixes)
 
 
 

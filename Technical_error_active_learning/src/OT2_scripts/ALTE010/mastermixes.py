@@ -31,12 +31,29 @@ def generate_well_list_384(spacing):
     return well_list_384
 
 
+# function to generate Master Mix Possibles lists
+def generate_MasterMixWells_96(MasterMix):
+
+    # choose well spacing:
+    if MasterMix == "Aqueous":
+        Letters = ["A", "C", "E", "G",]
+        Numbers = list(range(1, 17,1))
+
+    if MasterMix == "Components":
+        Letters = ["B", "D", "F", "H"]
+        Numbers = list(range(1, 17,1))
+
+    MasterMixWells_96 = []
+    for let in Letters:
+        for num in Numbers:
+            well_name = let + str(num)
+            MasterMixWells_96.append(well_name)
+
+    return MasterMixWells_96
+
 #### defining the source tube lists
-substrate_source_list_possibles = ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15", "A16",
-                                   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13", "C14", "C15", "C16"]
-                                   
-lysate_source_list_possibles = ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16",
-                                "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13", "D14", "D15", "D16"]
+substrate_source_list_possibles = generate_MasterMixWells_96("Aqueous")
+lysate_source_list_possibles = generate_MasterMixWells_96("Components")
 
 # import the design
 experiment_design_df = pd.read_csv("processed_data_files/design_real.csv", index_col=0)
@@ -54,6 +71,9 @@ number_of_experiments = experiment_design_df.shape[0]
 # import experimental design parameters
 with open('design_parameters.json') as json_file:
     design_parameters = json.load(json_file)
+
+
+total_reaction_volume = design_parameters["Reaction_Volume"]
 
 # Check Technical replicates is <= 12 if reaction volume is 20 or Technical replicates is <= 24 if reaction volume is 10
 ### each 200ul PCR tube can supply:
@@ -83,8 +103,6 @@ else:
     print("Reaction_Volume: "+str(design_parameters["Reaction_Volume"]))
 
 
-#### Assign Master Mixes to experiments
-
 # import experiment_variables
 with open('experiment_variables.json') as json_file:
     experiment_variables = json.load(json_file)
@@ -92,98 +110,29 @@ experiment_variables = pd.DataFrame(experiment_variables)
 
 
 
-
-### Split design in to aqueous and components columns
-
-## Aqueous
-
-# get the experiment_variables == "Aqueous" and get the list of names
-aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
-aqueous_variables = list(aqueous_lookup_table["Variable"])
-
-# select aqueous variables in experimental design
-experiment_design_df_aqueous = experiment_design_df[aqueous_variables]
-
-# tag the experiments with an index to make reordering easier later
-experiment_design_df_aqueous = experiment_design_df_aqueous.reset_index()
+#### Expand the experimental design to include technical replicates
 
 
-## Components
+# initialise empty df with the columns of the original
+expanded_experimental_design = pd.DataFrame(columns=list(experiment_design_df.columns))
 
-# get the experiment_variables == "Components" and get the list of names
-Components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
-Components_variables = list(Components_lookup_table["Variable"])
+# iterate over the rows and for append that row for Nx the number of technical replicates
+for idx, row in experiment_design_df.iterrows():
 
-# select Components variables in experimental design
-experiment_design_df_Components = experiment_design_df[Components_variables]
+    for rep in range(design_parameters["Technical_Replicates"]):
+        expanded_experimental_design = pd.concat([expanded_experimental_design, row.to_frame().T], axis=0, ignore_index=True)
 
-# tag the experiments with an index to make reordering easier later
-experiment_design_df_Components = experiment_design_df_Components.reset_index()
+#### Shuffle the runs
+if design_parameters["Randomise"] == 1:
+    expanded_experimental_design = expanded_experimental_design.sample(
+                                                                        frac=1,
+                                                                        random_state=123
+                                                                      ).reset_index(names="Original_Order")
 
+# rename
+experiment_design_df = expanded_experimental_design
 
-
-##### build master mix dfs
-
-## aqueous
-
-# Get unique rows
-aqueous_master_mixes = experiment_design_df_aqueous.copy()
-# drop index
-aqueous_master_mixes = aqueous_master_mixes.drop("index", axis=1)
-# Get unique rows
-aqueous_master_mixes = aqueous_master_mixes.drop_duplicates()
-
-## components
-
-# Get unique rows
-components_master_mixes = experiment_design_df_Components.copy()
-# drop index
-components_master_mixes = components_master_mixes.drop("index", axis=1)
-# Get unique rows
-components_master_mixes = components_master_mixes.drop_duplicates()
-
-
-## row wise, count the number of instances that that master mix has in the total design
-def CountExperimentsPerMasterMix(MasterMixDF, ExperimentDF):
-
-    master_mix_experiment_counter_list = []
-
-    for idx, master_mix in MasterMixDF.iterrows():
-
-        master_mix_experiment_counter = 0
-
-        for idx, exp in ExperimentDF.iterrows():
-
-            exp = exp.drop("index")
-            
-            if exp.equals(master_mix) == True:
-                master_mix_experiment_counter += 1
-
-
-        master_mix_experiment_counter_list.append(master_mix_experiment_counter)
-    MasterMixDF["Experiments"] = master_mix_experiment_counter_list
-
-    return MasterMixDF
-
-aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, experiment_design_df_aqueous)
-components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, experiment_design_df_Components)
-
-
-###### sanity check to make sure the number of experiments per master mix == total experiments
-
-if aqueous_master_mixes["Experiments"].sum() == experiment_design_df.shape[0] and components_master_mixes["Experiments"].sum() == experiment_design_df.shape[0]:
-    print("Master Mix experiment counts check out..")
-else:
-    raise ValueError('Experiments per Master mix do not match total number of experiments.' )
-
-
-
-#print("experiment_design_df_aqueous.sort_values(by=aqueous_variables)")
-#print(aqueous_master_mixes.sort_values(by=aqueous_variables))
-
-
-
-
+#### Assign Plates and Plate Wells
 
 # generate the well well_list_384
 well_list_384 = generate_well_list_384(spacing = 1)
@@ -224,10 +173,191 @@ elif num_of_runs > plate_capacity:
     experiment_design_df['Plate'] = exp_plates
 
 
-
-
 else:
     print("There is an error with the number of experiments")
+
+print(experiment_design_df)
+
+
+#### Assign Master Mixes to experiments
+
+## retrieve variable types:
+
+# get the experiment_variables == "Aqueous" and get the list of names
+aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
+aqueous_variables = list(aqueous_lookup_table["Variable"])
+
+# get the experiment_variables == "Components" and get the list of names
+components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
+components_variables = list(components_lookup_table["Variable"])
+
+
+
+
+def Designate_MasterMix_Tubes_by_Plate(plate_number):
+    ### divide experiment_design_df by plate
+    plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number]
+
+    # drop Original Order
+    plate_df = plate_df.drop(["Original_Order", "Well", "Plate"], axis=1)
+
+    print("plate_df")
+    print(plate_df)
+
+    ### Split design in to aqueous and components columns
+
+    # select aqueous variables in experimental design
+    plate_df_aqueous = plate_df[aqueous_variables]
+
+    # select Components variables in experimental design
+    plate_df_components = plate_df[components_variables]
+
+
+    ##### build master mix dfs
+
+    ## aqueous
+
+    # Get unique rows
+    aqueous_master_mixes = plate_df_aqueous.copy()
+
+    # Get unique rows
+    aqueous_master_mixes = aqueous_master_mixes.drop_duplicates()
+
+    ## components
+
+    # Get unique rows
+    components_master_mixes = plate_df_components.copy()
+    # drop index
+    #components_master_mixes = components_master_mixes.drop("index", axis=1)
+    # Get unique rows
+    components_master_mixes = components_master_mixes.drop_duplicates()
+
+    ## row wise, count the number of instances that that master mix has in the total design
+    def CountExperimentsPerMasterMix(MasterMixDF, PlateDF):
+        """
+        Iterates over the master mix df rowwise and compares to experimental design df.
+        Everytime it pings, it adds one to the tally and at the end of each MM, it appends that count to the list.
+        Concludes by appending count list to master mix df as a Experiments column.
+        """
+
+        master_mix_experiment_counter_list = []
+
+        for idx, master_mix in MasterMixDF.iterrows():
+
+            master_mix_experiment_counter = 0
+
+            for idx, exp in PlateDF.iterrows():
+
+                if exp.equals(master_mix) == True:
+                    master_mix_experiment_counter += 1
+
+
+            master_mix_experiment_counter_list.append(master_mix_experiment_counter)
+        MasterMixDF["Experiments"] = master_mix_experiment_counter_list
+
+        return MasterMixDF
+
+    aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, plate_df_aqueous)
+    components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, plate_df_components)
+
+
+    ###### sanity check to make sure the number of experiments per master mix == total experiments on the plate
+
+    if aqueous_master_mixes["Experiments"].sum() == plate_df.shape[0] and components_master_mixes["Experiments"].sum() == plate_df.shape[0]:
+        print("Master Mix experiment counts check out..")
+    else:
+        raise ValueError('Experiments per Master mix do not match total number of experiments.' )
+
+
+    #### Assign Master Mix Tubes
+    def DesignateMasterMixTubes(MasterMixDf, MasterMix_Possible_Tubes):
+        """
+        Takes in the Master Mix DF and the Possible tube list.
+        Assigns the required amount of tubes to that master mix.
+        Takes in to account technical replicates..
+        """
+
+        # initialise counter to keep track of which tubes in the possibles list have been designated
+        tube_counter = 0
+
+        # initialise list of lists to append on df at the end.
+        list_of_individual_master_mix_tube_lists = []
+
+        # iterate over the Experiments number column in the Master Mix df
+        for int in MasterMixDf['Experiments']:
+
+            # Initialise a list to populate with the tubes for that master mix
+            individual_master_mix_tube_list = []
+
+            # set the max_runs_per_mastermix_tube based on reaction volume
+            if total_reaction_volume == 20:
+                max_runs_per_mastermix_tube = 12
+
+            elif total_reaction_volume == 10:
+                max_runs_per_mastermix_tube = 24
+
+            else:
+                raise Exception("Unknown total_reaction_volume.")
+
+            ### Assign the master mix tube based on the number of experiments * the number of technical replicates
+
+            # if its less than max_runs_per_mastermix_tube then just the current tube in the list then progress the counter
+            if (int * design_parameters["Technical_Replicates"]) <= max_runs_per_mastermix_tube:
+                individual_master_mix_tube_list.append(MasterMix_Possible_Tubes[tube_counter])
+                tube_counter += 1
+
+            # if its greater then..
+            elif (int * design_parameters["Technical_Replicates"]) > max_runs_per_mastermix_tube:
+
+                # calculate the number of tubes required rounded up
+                number_of_tubes_required = math.ceil((int * design_parameters["Technical_Replicates"])/max_runs_per_mastermix_tube)
+                # add that to the current tube counter to get the last index of the last required tube.
+                last_tube_selected_index = tube_counter + number_of_tubes_required
+                # look the tubes up
+                individual_master_mix_tube_list = MasterMix_Possible_Tubes[tube_counter:last_tube_selected_index]
+                # use the last index to progress the counter.
+                tube_counter = last_tube_selected_index
+
+            else:
+                raise Exception("Something is wrong the the tube assignment. Enough possibles?")
+
+            # append the individual_master_mix_tube_list to the list of lists
+            list_of_individual_master_mix_tube_lists.append(individual_master_mix_tube_list)
+
+        # append the list of lists to the Master Mix Df as a new column called Tubes
+        MasterMixDf["Tubes"] = list_of_individual_master_mix_tube_lists
+
+        return MasterMixDf
+        
+    aqueous_master_mixes = DesignateMasterMixTubes(aqueous_master_mixes, substrate_source_list_possibles)
+    components_master_mixes = DesignateMasterMixTubes(components_master_mixes, lysate_source_list_possibles)
+
+    # save human readable CSVs
+    aqueous_master_mixes.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes_human_readable"+".csv", index=False)
+    components_master_mixes.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes_human_readable"+".csv", index=False)
+
+    # save machine readable binaries
+    aqueous_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_master_mixes.pkl")
+    components_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_master_mixes.pkl")
+
+
+#### Execute
+## get a list of the plate numbers
+plates_list = list(experiment_design_df["Plate"].unique())
+
+# iterate over and feed the number to master mix function
+for plate_number in plates_list:
+    Designate_MasterMix_Tubes_by_Plate(plate_number=plate_number)
+
+
+
+
+
+
+
+aqueous_master_mixes = pd.read_pickle("processed_data_files/aqueous_master_mixes.pkl")
+print(aqueous_master_mixes.loc[0, "Tubes"][0])
+print(components_master_mixes)
 
 
 print(" ")

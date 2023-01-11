@@ -1,1 +1,18 @@
-{"1": {"substrate_source_tubes_required": 2, "substrate_source_tubes_list": ["A1", "A2"], "substrate_source_volume": 210, "substrates_source_well": "B2", "lysate_source_tubes_required": 2, "lysate_source_tubes_list": ["B1", "B2"], "lysate_source_volume": 85, "lysate_source_well": "B3"}}
+{
+  "1": {
+    "substrate_source_tubes_required": 2,
+    "substrate_source_tubes_list": [
+      "A1",
+      "A2"
+    ],
+    "substrate_source_volume": 210,
+    "substrates_source_well": "B2",
+    "lysate_source_tubes_required": 2,
+    "lysate_source_tubes_list": [
+      "B1",
+      "B2"
+    ],
+    "lysate_source_volume": 85,
+    "lysate_source_well": "B3"
+  }
+}

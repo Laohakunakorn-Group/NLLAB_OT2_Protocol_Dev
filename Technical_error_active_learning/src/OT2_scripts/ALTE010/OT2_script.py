@@ -9,7 +9,7 @@ metadata = {
     "protocolName": "Lysate CFPS Plating Script v1",
     "author": "Alex Perkins",
     "email": "a.j.p.perkins@sms.ed.ac.uk",
-    "description": "First draft of script to plate out 10x lysate reactions",
+    "description": "OT2 Script to compile variable mastermixes followed by the plating of CFPS reactions.",
     "apiLevel": "2.8",
 }
 
@@ -40,13 +40,18 @@ def run(protocol: protocol_api.ProtocolContext):
     #
     #plating_labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plating_labware_settings.json"
     plating_labware_settings_dict_path = "ot2_labware_settings/" + experiment_prefix + "_plating_labware_settings.json"
-    #
-    #master_pipetting_settings_dict_path = "/data/user_storage/" + experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
-    master_pipetting_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_pipetting_settings.json"
+
+    pipetting_settings_dict_path = "base_settings/base_pipetting_settings.json"
 
     pre_experiment_compilation_dict_path = "processed_ot2_settings/" + experiment_prefix + "_pre_experiment_compilations.json"
 
-    # Reading in json json_settings_file
+    # Reading in MasterMixCalculationsDict
+    MasterMixCalculationsPath = "processed_ot2_settings/mastermix_calculations.json"
+    MasterMixCalculationsDict = json.load(open(MasterMixCalculationsPath, 'r'))
+    
+    # Select only the calculations for the specified plate.
+    MasterMixCalculationsDict = MasterMixCalculationsDict[plate_number_string]
+    protocol.comment("MasterMixCalculations json file was read in")
 
 
     experiment_settings_dict = json.load(open(experiment_settings_dict_path, 'r'))
@@ -55,7 +60,7 @@ def run(protocol: protocol_api.ProtocolContext):
     plating_labware_settings_dict = json.load(open(plating_labware_settings_dict_path, 'r'))
     protocol.comment("Plating labware settings json file was read in")
 
-    master_pipetting_settings_dict = json.load(open(master_pipetting_settings_dict_path, 'r'))
+    pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
     protocol.comment("Pipetting settings json file was read in")
 
     pre_experiment_compilation_dict = json.load(open(pre_experiment_compilation_dict_path, 'r'))
@@ -290,6 +295,47 @@ def run(protocol: protocol_api.ProtocolContext):
         left_pipette.dispense(pipetting_settings_dict["lysate_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
 
         left_pipette.drop_tip()
+
+    
+    def CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict):
+
+        if VolumeUL > 20:
+            pipette = right_pipette
+        else:
+            pipette = left_pipette
+
+        
+        
+
+
+        pipette.pick_up_tip()
+
+        pipette.well_bottom_clearance.aspirate = lysate_aspirate_height
+        pipette.well_bottom_clearance.dispense = pipetting_settings_dict["lysate_dispense_well_bottom_clearance"]
+
+        # aspirate step
+        pipette.aspirate(pipetting_settings_dict["lysate_aspirate_volume"], source_well, rate=pipetting_settings_dict["lysate_aspirate_rate"])
+        pipette.move_to(source_well.top(-2))
+        protocol.delay(seconds=2)
+        pipette.touch_tip()
+
+        # Dispense Step
+        pipette.dispense(pipetting_settings_dict["lysate_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
+
+        pipette.drop_tip()
+
+    
+    #MasterMixCalculationsDict = MasterMixCalculationsDict["Aqueous"]
+
+    SolutionType = "Aqueous"
+    MasterMixWell = "A1"
+    VolumeUL = MasterMixCalculationsDict["Aqueous"]["A1"]["Template"]["Element_stock_volume_ul"]
+    StockWell = MasterMixCalculationsDict["Aqueous"]["A1"]["Template"]["Stock_source_well"]
+
+
+    CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict)
+
+
 
 
 

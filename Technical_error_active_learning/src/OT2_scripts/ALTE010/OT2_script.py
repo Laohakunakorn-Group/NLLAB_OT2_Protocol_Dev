@@ -3,6 +3,7 @@ from opentrons import protocol_api
 import json
 import os
 import math
+import pandas as pd
 
 # metadata
 metadata = {
@@ -33,10 +34,15 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
     # Defining the file paths of raspberry pi
-    #
-    #experiment_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
-    experiment_settings_dict_path = "processed_ot2_settings/" + experiment_prefix + "_plate_"+str(plate_number)+"_experiment_settings.json"
-    print(experiment_settings_dict_path)
+
+    # import the experimental design
+    experimental_design_path = "processed_data_files/Experiment_Designs/design_final.csv"
+    experimental_design_df = pd.read_csv(experimental_design_path)
+
+    # select only the experiments for the relevant plate
+    experimental_design_df = experimental_design_df[experimental_design_df["Plate"] == plate_number]
+
+
     #
     #plating_labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plating_labware_settings.json"
     plating_labware_settings_dict_path = "ot2_labware_settings/" + experiment_prefix + "_plating_labware_settings.json"
@@ -53,9 +59,6 @@ def run(protocol: protocol_api.ProtocolContext):
     MasterMixCalculationsDict = MasterMixCalculationsDict[plate_number_string]
     protocol.comment("MasterMixCalculations json file was read in")
 
-
-    experiment_settings_dict = json.load(open(experiment_settings_dict_path, 'r'))
-    protocol.comment("Experiment settings json file was read in")
 
     plating_labware_settings_dict = json.load(open(plating_labware_settings_dict_path, 'r'))
     protocol.comment("Plating labware settings json file was read in")
@@ -76,12 +79,13 @@ def run(protocol: protocol_api.ProtocolContext):
 
     temp_toggle = True
 
-    MasterMix_Toggle = False
+    MasterMix_Toggle = True
     Aqueous_MasterMix_Toggle = True
     Components_MasterMix_Toggle = True
 
-    protocol_dispense_substrates = True
-    protocol_dispense_lysate = True
+    Plating_Toggle = True
+    Aqueous_Plating_Toggle = True
+    Components_Plating_Toggle = True
 
     # labware
 
@@ -195,8 +199,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-
-
     # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.
     def distribute_substrates(well, source_well, substrates_aspirate_height):
 
@@ -235,6 +237,60 @@ def run(protocol: protocol_api.ProtocolContext):
 
         left_pipette.drop_tip()
 
+    def PlateMasterMix(PlateWell, MasterMixWell, SolutionType, pipetting_settings_dict = pipetting_settings_dict, tip_counter_dict = tip_counter_dict):
+        #### Set up.
+
+        # get the volume to be pipetted
+
+        VolumeUL = pipetting_settings_dict["Plating"][SolutionType]["volume"]
+
+        # the aspirate volume is 0.5ul greater than the intended volume for reverse pipetting
+        aspirate_volume = VolumeUL + 0.5
+
+        # Select pipette based on aspirate_volume
+        
+        pipette = left_pipette
+        pipette_type = "p20"
+        
+        # Check if tips need replacing
+        if tip_counter_dict[pipette_type] == 0:
+
+            # pause robot
+            protocol.pause('Replace all empty tipracks before resuming.')
+
+            # tell the robot that the tips have been refreshed for that pipette
+            pipette.reset_tipracks()
+
+            # reset only the selected pipette in the counter
+            tip_counter_dict[pipette_type] = tip_counter_init_dict[pipette_type]
+
+        else:
+            pass
+        
+
+        #### Actions
+
+        pipette.pick_up_tip()
+
+        pipette.well_bottom_clearance.aspirate = 4
+        pipette.well_bottom_clearance.dispense = pipetting_settings_dict["Plating"][SolutionType]["well_bottom_clearance"]
+
+        # aspirate step
+        pipette.aspirate(aspirate_volume, pcr_source_tubes[MasterMixWell], rate = pipetting_settings_dict["Plating"][SolutionType]["aspirate_rate"])
+        pipette.move_to(pcr_source_tubes[MasterMixWell].top(-2))
+        pipette.touch_tip()
+
+        # Dispense Step
+        pipette.dispense(VolumeUL, nunc_384[PlateWell], rate = pipetting_settings_dict["Plating"][SolutionType]["dispense_rate"])
+
+        pipette.drop_tip()
+
+        # decrement tip counter
+        tip_counter_dict[pipette_type] -= 1
+
+        return tip_counter_dict
+
+
     
     def CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict, tip_counter_dict = tip_counter_dict):
 
@@ -267,13 +323,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
         else:
             pass
-        
-        print()
-        print(pipette_type)
-        print(SolutionType)
-        print("tip_counter")
-        print(tip_counter_dict[pipette_type])
-
 
 
         #### Actions
@@ -284,7 +333,7 @@ def run(protocol: protocol_api.ProtocolContext):
         pipette.well_bottom_clearance.dispense = pipetting_settings_dict["MasterMix"][SolutionType]["MasterMix_Tube_bottom_clearance"]
 
         # aspirate step
-        pipette.aspirate(VolumeUL, eppendorf_2ml_x24_icebox_rack[StockWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["aspirate_rate"])
+        pipette.aspirate(aspirate_volume, eppendorf_2ml_x24_icebox_rack[StockWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["aspirate_rate"])
         pipette.move_to(eppendorf_2ml_x24_icebox_rack[StockWell].top(-2))
         protocol.delay(seconds = 
             float(pipetting_settings_dict["MasterMix"][SolutionType]["pause_time"])
@@ -292,7 +341,7 @@ def run(protocol: protocol_api.ProtocolContext):
         pipette.touch_tip()
 
         # Dispense Step
-        pipette.dispense(VolumeUL, nunc_384[MasterMixWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["dispense_rate"])
+        pipette.dispense(VolumeUL, pcr_source_tubes[MasterMixWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["dispense_rate"])
 
         pipette.drop_tip()
 
@@ -343,11 +392,13 @@ def run(protocol: protocol_api.ProtocolContext):
                         # Extract the Volume to be added
                         Element_stock_volume_ul = MasterMixCalculationsDict[SolutionType][MasterMixWell][Element]["Element_stock_volume_ul"]
 
-                        tip_counter_dict = CompileMasterMixComponent(MasterMixWell,
-                                                                     StockWell = Stock_source_well,
-                                                                     VolumeUL = Element_stock_volume_ul,
-                                                                     SolutionType = SolutionType,
-                                                                     pipetting_settings_dict = pipetting_settings_dict)
+                        tip_counter_dict = CompileMasterMixComponent(
+                            MasterMixWell,
+                            StockWell = Stock_source_well,
+                            VolumeUL = Element_stock_volume_ul,
+                            SolutionType = SolutionType,
+                            pipetting_settings_dict = pipetting_settings_dict
+                            )
 
 
 
@@ -355,125 +406,63 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # 4. Conduct plating -------------------------------------------------------------------
 
-    # Extracting the different experiments from the experiments
-    # settings file
-    experiment_ids = experiment_settings_dict.keys()
+    ### Constructing the MasterMix Tube Aspirate Height Dict to keep track of the decreasing heights
+
+    # use the Stock tubes from the MasterMixCalculationsDict as keys and initalise all with the appropriate aspirate_height_init
+
+    MasterMixTube_Aspiration_Heights_Dict = {}
+    
+    for SolutionType in pipetting_settings_dict["MasterMix"].keys():
+        
+        SolutionType_Dict = {}
+        for Tube in MasterMixCalculationsDict[SolutionType].keys():
+            SolutionType_Dict[Tube] = pipetting_settings_dict["Plating"][SolutionType]["aspirate_height_init"]
+        
+        MasterMixTube_Aspiration_Heights_Dict[SolutionType] = SolutionType_Dict
+        
 
 
     # Running the substrate dispense step if protocol_dispense_substrates = True
-    if protocol_dispense_substrates:
+    if Plating_Toggle:
 
-        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_init
-        substrates_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_init"]
+        # select Solution Type
+        for SolutionType in MasterMixCalculationsDict.keys():
+            
+            # toggles for ease of development
+            if SolutionType == "Aqueous" and not Aqueous_Plating_Toggle:
+                pass
 
-        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_aspirate_height_inc
-        substrates_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["substrates_aspirate_height_inc"]
+            elif SolutionType == "Components" and not Components_Plating_Toggle:
+                pass
 
-        # Defining the initial lysate aspiration height
-        substrates_aspirate_height_actual = substrates_aspirate_height_init_val
+            else:
 
-        # initalise substrates_source_well_tracker
-        # get the first key of the master dict and use it to index the first nested dict. then grab the substrates_source_well
-        substrates_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["substrates_source_well"]
+                # select correct mastermix tube in the df column
+                if SolutionType == "Aqueous":
 
-
-
-        # Looping through the different experiments
-        for i, experiment_id in enumerate(experiment_ids):
-
-            # Defining the source well for the substrates master mix
-            substrates_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["substrates_source_well"]]
+                    MasterMixTube_String = "AqueousMasterMixTube"
+                    
+                    protocol.comment("Starting Aqueous Plating..")
 
 
-            # compare the source well of this experiment with the last one (tracker). If they are not the same..
-            if substrates_source_well != substrates_source_well_tracker:
+                elif SolutionType == "Components":
 
-                # Reset the substrates_aspirate_height_actual to the init value
-                substrates_aspirate_height_actual = substrates_aspirate_height_init_val
+                    MasterMixTube_String = "ComponentsMasterMixTube"
 
-                # Update the tracker
-                substrates_source_well_tracker = substrates_source_well
+                    protocol.comment("Starting Components Plating..")
+                
+                for i, row in experimental_design_df.iterrows():
 
+                    tip_counter_dict = PlateMasterMix(
+                                            PlateWell = row.loc["Well"],
+                                            MasterMixWell = row.loc[MasterMixTube_String],
+                                            SolutionType = SolutionType,
+                                            pipetting_settings_dict = pipetting_settings_dict,
+                                            tip_counter_dict = tip_counter_dict
+                                            )
 
-            # retrieve the correct pipetting setting for that particular well
-            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
+                    protocol.comment("Completed " + SolutionType + " dispense steps: " + str(i)+"/"+str(experimental_design_df.shape[0]))
 
-
-            # Defining a list of wells for dispensing
-            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
-
-
-            # Caliing function to distribute substrates
-            distribute_substrates(dispense_well, substrates_source_well, substrates_aspirate_height_actual)
-
-
-            # reduce the substrates_aspirate_height_actual by the increment
-            substrates_aspirate_height_actual = substrates_aspirate_height_actual - substrates_aspirate_height_inc_val
-
-
-            protocol.comment("Substrate dispense step complete for experiment " + experiment_id)
-            protocol.comment(" ")
-
-            protocol.comment("Completed Substrate Dispense Steps: " + str(i+1) + "/"+ str(len(experiment_ids)))
-            protocol.comment(" ")
-            protocol.comment(" ")
-
-
-
-
-    # Running the lysate dispense step if protocol_dispense_lysate = True
-    if protocol_dispense_lysate:
-
-
-        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_init
-        lysate_aspirate_height_init_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_init"]
-
-        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_aspirate_height_inc
-        lysate_aspirate_height_inc_val = master_pipetting_settings_dict[list(master_pipetting_settings_dict.keys())[0]]["lysate_aspirate_height_inc"]
-
-        # Defining the initial lysate aspiration height
-        lysate_aspirate_height_actual = lysate_aspirate_height_init_val
-
-        # initalise lysate_source_well_tracker
-        # get the first key of the master dict and use it to index the first nested dict. then grab the lysate_source_well
-        lysate_source_well_tracker = experiment_settings_dict[list(experiment_settings_dict.keys())[0]]["lysate_source_well"]
-
-
-        # Looping through the different experiments
-        for i, experiment_id in enumerate(experiment_ids):
-
-            # Defining the source well for the lysate master mix
-            lysate_source_well = pcr_source_tubes[experiment_settings_dict[experiment_id]["lysate_source_well"]]
-
-
-            # compare the source well of this experiment with the last one (tracker). If they are not the same..
-            if lysate_source_well != lysate_source_well_tracker:
-
-                # Reset the lysate_aspirate_height_actual to the init value
-                lysate_aspirate_height_actual = lysate_aspirate_height_init_val
-
-                # Update the tracker
-                lysate_source_well_tracker = lysate_source_well
-
-            # retrieve the correct pipetting setting for that particular well
-            pipetting_settings_dict = master_pipetting_settings_dict[experiment_id]
-
-
-            # Defining a list of wells for dispensing
-            dispense_well = experiment_settings_dict[experiment_id]["dispense_well"]
-
-
-            # Caliing function to distribute lysate
-            distribute_lysate(dispense_well, lysate_source_well, lysate_aspirate_height_actual)
-
-            # reduce the lysate_aspirate_height_actual by the increment
-            lysate_aspirate_height_actual = lysate_aspirate_height_actual - lysate_aspirate_height_inc_val
-
-            protocol.comment("Lysate dispense step complete for experiment " + experiment_id)
-            protocol.comment("")
-            protocol.comment("Completed Lysate Dispense Steps: " + str(i+1) + "/" + str(len(experiment_ids)))
-            protocol.comment(" ")
-            protocol.comment(" ")
 
 
     # Pausing protocol so the plate can be span down in the centrifuge before

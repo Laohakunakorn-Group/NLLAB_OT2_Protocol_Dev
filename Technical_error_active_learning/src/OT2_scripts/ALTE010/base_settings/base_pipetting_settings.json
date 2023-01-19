@@ -31,36 +31,32 @@
 
     "Aqueous": {
 
-      "substrates_aspirate_height_init" : 7.8,
+      "aspirate_height_init" : 7.8,
 
-      "substrates_aspirate_height_inc" : 0.3,
+      "aspirate_height_inc" : 0.3,
     
-      "substrates_aspirate_volume" : 15.5,
+      "volume" : 15,
     
-      "aqueous_aspirate_rate" : 1,
+      "aspirate_rate" : 1,
     
-      "substrates_dispense_volume" : 15,
+      "dispense_rate" : 1,
     
-      "aqueous_dispense_rate" : 1,
-    
-      "aqueous_dispense_well_bottom_clearance" : 0.1
+      "well_bottom_clearance" : 0.1
     },
 
     "Components": {
 
-      "lysate_aspirate_height_init" : 3.0,
+      "aspirate_height_init" : 3.0,
 
-      "lysate_aspirate_height_inc" : 0.1,
+      "aspirate_height_inc" : 0.1,
     
-      "lysate_aspirate_volume" : 5.5,
+      "volume" : 5,
     
-      "lysate_aspirate_rate" : 0.2,
+      "aspirate_rate" : 0.2,
     
-      "lysate_dispense_volume" : 5,
+      "dispense_rate" : 0.1,
     
-      "lysate_dispense_rate" : 0.1,
-    
-      "lysate_dispense_well_bottom_clearance" : 0.1
+      "well_bottom_clearance" : 0.1
     },
 
     "Wax": {

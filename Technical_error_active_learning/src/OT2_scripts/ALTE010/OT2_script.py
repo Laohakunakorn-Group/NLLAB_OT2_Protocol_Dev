@@ -76,9 +76,9 @@ def run(protocol: protocol_api.ProtocolContext):
 
     temp_toggle = True
 
-    protocol_pre_experiment_compilations = True
-    protocol_pre_experiment_substrate_mix = True
-    protocol_pre_experiment_lysate = True
+    MasterMix_Toggle = True
+    Aqueous_MasterMix_Toggle = True
+    Components_MasterMix_Toggle = True
 
     protocol_dispense_substrates = True
     protocol_dispense_lysate = True
@@ -152,10 +152,13 @@ def run(protocol: protocol_api.ProtocolContext):
                               z = plating_labware_settings_dict["tiprack_20ul_5"]["offsets"]["z"]
                               )
 
+    # count the amount of tips
+    p20_tip_racks = [tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
+    p20_tip_count_init = len(p20_tip_racks * 96)
 
     # Defining left_pipette (p20)
     left_pipette = protocol.load_instrument(
-        plating_labware_settings_dict["left_pipette"]["name"], "left", tip_racks=[tiprack_20ul_1,tiprack_20ul_2, tiprack_20ul_3, tiprack_20ul_4, tiprack_20ul_5]
+        plating_labware_settings_dict["left_pipette"]["name"], "left", tip_racks = p20_tip_racks
     )
 
     # Defining the 300ul tip rack
@@ -166,10 +169,28 @@ def run(protocol: protocol_api.ProtocolContext):
                               )
 
 
+    # count the amount of tips
+    p300_tip_racks = [tiprack_300ul_1]
+    p300_tip_count_init = len(p300_tip_racks * 96)
+
     # Defining right_pipette (p300)
     right_pipette = protocol.load_instrument(
-        plating_labware_settings_dict["right_pipette"]["name"], "right", tip_racks=[tiprack_300ul_1]
+        plating_labware_settings_dict["right_pipette"]["name"], "right", tip_racks = p300_tip_racks
     )
+
+
+    #### tip counter dicts
+
+    tip_counter_init_dict = { "p20": p20_tip_count_init,
+        "p300": p300_tip_count_init
+    }
+
+    tip_counter_dict = {
+        "p20": tip_counter_init_dict["p20"],
+        "p300": tip_counter_init_dict["p300"]
+    }
+
+
     # 2. Defining functions used in this protocol------------------------------
 
 
@@ -297,70 +318,70 @@ def run(protocol: protocol_api.ProtocolContext):
         left_pipette.drop_tip()
 
     
-    def CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict):
+    def CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict, tip_counter_dict = tip_counter_dict):
 
+        #### Set up.
+
+        # the aspirate volume is 10% greater than the intended volume for reverse pipetting
         aspirate_volume = VolumeUL * 1.1
 
+        # Select pipette based on aspirate_volume
         if aspirate_volume > 20:
+
             pipette = right_pipette
+            pipette_type = "p300"
+
         else:
             pipette = left_pipette
-
+            pipette_type = "p20"
         
-        if SolutionType == "Aqueous":
+        # Check if tips need replacing
+        if tip_counter_dict[pipette_type] == 0:
 
-            aspirate_rate_string = "aqueous_aspirate_rate"
-            aspirate_height_string = "aqueous_aspirate_height"
+            # pause robot
+            protocol.pause('Replace all empty tipracks before resuming.')
 
-            dispense_rate_string = "aqueous_dispense_rate"
-            dispense_height_string = "aqueous_dispense_height"
+            # tell the robot that the tips have been refreshed for that pipette
+            pipette.reset_tipracks()
 
-            dispense_well_bottom_clearance_string = "aqueous_dispense_well_bottom_clearance"
-            aspirate_well_bottom_clearance_string = "aqueous_aspirate_well_bottom_clearance"
+            # reset only the selected pipette in the counter
+            tip_counter_dict[pipette_type] = tip_counter_init_dict[pipette_type]
 
-        elif SolutionType == "Components":
-
-            aspirate_rate_string = "components_aspirate_rate"
-            aspirate_height_string = "components_aspirate_height"
-
-            dispense_rate_string = "components_dispense_rate"
-            dispense_height_string = "components_dispense_height"
-
-            dispense_well_bottom_clearance_string = "components_dispense_well_bottom_clearance"
-            aspirate_well_bottom_clearance_string = "components_aspirate_well_bottom_clearance"
+        else:
+            pass
+        
+        print()
+        print(pipette_type)
+        print(SolutionType)
+        print("tip_counter")
+        print(tip_counter_dict[pipette_type])
 
 
+
+        #### Actions
 
         pipette.pick_up_tip()
 
-        pipette.well_bottom_clearance.aspirate = pipetting_settings_dict[aspirate_well_bottom_clearance_string]
-        pipette.well_bottom_clearance.dispense = pipetting_settings_dict[dispense_well_bottom_clearance_string]
+        pipette.well_bottom_clearance.aspirate = pipetting_settings_dict["MasterMix"][SolutionType]["Stock_Tube_bottom_clearance"]
+        pipette.well_bottom_clearance.dispense = pipetting_settings_dict["MasterMix"][SolutionType]["MasterMix_Tube_bottom_clearance"]
 
         # aspirate step
-        pipette.aspirate(VolumeUL, StockWell, rate=pipetting_settings_dict["aspirate_rate_string"])
-        pipette.move_to(StockWell.top(-2))
-        protocol.delay(seconds=2)
+        pipette.aspirate(VolumeUL, eppendorf_2ml_x24_icebox_rack[StockWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["aspirate_rate"])
+        pipette.move_to(eppendorf_2ml_x24_icebox_rack[StockWell].top(-2))
+        protocol.delay(seconds = 
+            float(pipetting_settings_dict["MasterMix"][SolutionType]["pause_time"])
+            )
         pipette.touch_tip()
 
         # Dispense Step
-        pipette.dispense(VolumeUL, nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
+        pipette.dispense(VolumeUL, nunc_384[MasterMixWell], rate = pipetting_settings_dict["MasterMix"][SolutionType]["dispense_rate"])
 
         pipette.drop_tip()
 
-    
-    #MasterMixCalculationsDict = MasterMixCalculationsDict["Aqueous"]
+        # decrement tip counter
+        tip_counter_dict[pipette_type] -= 1
 
-    SolutionType = "Aqueous"
-    MasterMixWell = "A1"
-    VolumeUL = MasterMixCalculationsDict["Aqueous"]["A1"]["Template"]["Element_stock_volume_ul"]
-    StockWell = MasterMixCalculationsDict["Aqueous"]["A1"]["Template"]["Stock_source_well"]
-
-
-    CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict)
-
-
-
-
+        return tip_counter_dict
 
 
     # 3. Running protocol------------------------------------------------------
@@ -375,34 +396,44 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    # 3. Pre experiment compliations-------------------------------------------------------------------
+    # 3. Master Mix Compilations-------------------------------------------------------------------
 
     # master switch for setup
-    if protocol_pre_experiment_compilations:
+    if MasterMix_Toggle:
 
-        # Substrates pcr tube distribution switch
-        if protocol_pre_experiment_substrate_mix:
+        # select Solution Type
+        for SolutionType in MasterMixCalculationsDict.keys():
+            
+            # toggles for ease of development
+            if SolutionType == "Aqueous" and not Aqueous_MasterMix_Toggle:
+                pass
 
-            # Substrates pcr tube distribution switch
-            substrate_source_volume = pre_experiment_compilation_dict["substrate_source_volume"]
-            substrate_source_tubes_list = pre_experiment_compilation_dict["substrate_source_tubes_list"]
-            substrates_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[pre_experiment_compilation_dict["substrates_source_well"]]
+            elif SolutionType == "Components" and not Components_MasterMix_Toggle:
+                pass
 
-            # call the function.
-            dispense_substrates_from_source_to_pcr_tubes(substrates_source_well, substrate_source_volume, substrate_source_tubes_list)
+            else:
 
-        # Substrates pcr tube distribution switch
-        if protocol_pre_experiment_lysate:
+                # Select Master Mix Well to be populated
+                for MasterMixWell in MasterMixCalculationsDict[SolutionType]:
 
-            # Lysate pcr tube distribution switch
-            lysate_source_volume = pre_experiment_compilation_dict["lysate_source_volume"]
-            lysate_source_tubes_list = pre_experiment_compilation_dict["lysate_source_tubes_list"]
-            lysate_source_well = eppendorf_2ml_x24_icebox_rack.wells_by_name()[pre_experiment_compilation_dict["lysate_source_well"]]
+                    # Select the reaction element
+                    for Element in MasterMixCalculationsDict[SolutionType][MasterMixWell]:
 
-            #call the function
-            dispense_lysate_from_source_to_pcr_tubes(lysate_source_well, lysate_source_volume, lysate_source_tubes_list)
+                        # Extract the Element Stock Well
+                        Stock_source_well = MasterMixCalculationsDict[SolutionType][MasterMixWell][Element]["Stock_source_well"]
+                        
+                        # Extract the Volume to be added
+                        Element_stock_volume_ul = MasterMixCalculationsDict[SolutionType][MasterMixWell][Element]["Element_stock_volume_ul"]
+
+                        tip_counter_dict = CompileMasterMixComponent(MasterMixWell,
+                                                                     StockWell = Stock_source_well,
+                                                                     VolumeUL = Element_stock_volume_ul,
+                                                                     SolutionType = SolutionType,
+                                                                     pipetting_settings_dict = pipetting_settings_dict)
 
 
+
+     
 
     # 4. Conduct plating -------------------------------------------------------------------
 

@@ -1,42 +1,83 @@
-{
-  "lysate_aspirate_height_init" : 3.0,
+{ "MasterMix": {
 
-  "lysate_aspirate_height_inc" : 0.1,
+  "Aqueous": {
 
-  "lysate_aspirate_volume" : 5.5,
+    "Stock_Tube_bottom_clearance" : 7.8,
+  
+    "aspirate_rate" : 1,
 
-  "lysate_aspirate_rate" : 0.2,
+    "pause_time": 1,
+  
+    "dispense_rate" : 1,
+  
+    "MasterMix_Tube_bottom_clearance" : 0.1
+  },
 
-  "lysate_dispense_volume" : 5,
+  "Components": {
 
-  "lysate_dispense_rate" : 0.1,
+    "Stock_Tube_bottom_clearance" : 7.8,
+  
+    "aspirate_rate" : 1,
 
-  "lysate_dispense_well_bottom_clearance" : 0.1,
+    "pause_time": 2,
+  
+    "dispense_rate" : 1,
+  
+    "MasterMix_Tube_bottom_clearance" : 0.1
+  }
+},
 
-  "substrates_aspirate_height_init" : 7.8,
+  "Plating": {
 
-  "substrates_aspirate_height_inc" : 0.3,
+    "Aqueous": {
 
-  "substrates_aspirate_volume" : 15.5,
+      "substrates_aspirate_height_init" : 7.8,
 
-  "substrates_aspirate_rate" : 1,
+      "substrates_aspirate_height_inc" : 0.3,
+    
+      "substrates_aspirate_volume" : 15.5,
+    
+      "aqueous_aspirate_rate" : 1,
+    
+      "substrates_dispense_volume" : 15,
+    
+      "aqueous_dispense_rate" : 1,
+    
+      "aqueous_dispense_well_bottom_clearance" : 0.1
+    },
 
-  "substrates_dispense_volume" : 15,
+    "Components": {
 
-  "substrates_dispense_rate" : 1,
+      "lysate_aspirate_height_init" : 3.0,
 
-  "substrates_dispense_well_bottom_clearance" : 0.1,
+      "lysate_aspirate_height_inc" : 0.1,
+    
+      "lysate_aspirate_volume" : 5.5,
+    
+      "lysate_aspirate_rate" : 0.2,
+    
+      "lysate_dispense_volume" : 5,
+    
+      "lysate_dispense_rate" : 0.1,
+    
+      "lysate_dispense_well_bottom_clearance" : 0.1
+    },
 
-  "wax_dispense_volume" : 35,
+    "Wax": {
+      "wax_dispense_volume" : 35,
 
-  "wax_dispense_height" : -3,
+      "wax_dispense_height" : -3,
+    
+      "wax_new_tip" : "always",
+    
+      "wax_touch_tip" : 0,
+    
+      "wax_air_gap" : 20,
+    
+      "wax_disposal_volume" : 30
+    }
+  }
 
-  "wax_new_tip" : "always",
 
-  "wax_touch_tip" : 0,
-
-  "wax_air_gap" : 20,
-
-  "wax_disposal_volume" : 30
 
 }

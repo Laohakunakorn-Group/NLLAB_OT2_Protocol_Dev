@@ -82,8 +82,9 @@ def run(protocol: protocol_api.ProtocolContext):
     MasterMix_Toggle = True
     Aqueous_MasterMix_Toggle = True
     Components_MasterMix_Toggle = True
+    MasterMix_Mix_Toggle = True
 
-    Plating_Toggle = True
+    Plating_Toggle = False
     Aqueous_Plating_Toggle = True
     Components_Plating_Toggle = True
 
@@ -199,44 +200,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.
-    def distribute_substrates(well, source_well, substrates_aspirate_height):
-
-        left_pipette.pick_up_tip()
-
-        left_pipette.well_bottom_clearance.aspirate = substrates_aspirate_height
-        left_pipette.well_bottom_clearance.dispense = pipetting_settings_dict["substrates_dispense_well_bottom_clearance"]
-
-        # aspirate step
-        left_pipette.aspirate(pipetting_settings_dict["substrates_aspirate_volume"], source_well, rate=pipetting_settings_dict["substrates_aspirate_rate"])
-        left_pipette.move_to(source_well.top(-2))
-        left_pipette.touch_tip()
-
-        # Dispense Step
-        left_pipette.dispense(pipetting_settings_dict["substrates_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["substrates_dispense_rate"])
-
-        left_pipette.drop_tip()
-
-
-    # Distributing lysate
-    def distribute_lysate(well, source_well, lysate_aspirate_height):
-
-        left_pipette.pick_up_tip()
-
-        left_pipette.well_bottom_clearance.aspirate = lysate_aspirate_height
-        left_pipette.well_bottom_clearance.dispense = pipetting_settings_dict["lysate_dispense_well_bottom_clearance"]
-
-        # aspirate step
-        left_pipette.aspirate(pipetting_settings_dict["lysate_aspirate_volume"], source_well, rate=pipetting_settings_dict["lysate_aspirate_rate"])
-        left_pipette.move_to(source_well.top(-2))
-        protocol.delay(seconds=2)
-        left_pipette.touch_tip()
-
-        # Dispense Step
-        left_pipette.dispense(pipetting_settings_dict["lysate_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
-
-        left_pipette.drop_tip()
-
     def PlateMasterMix(PlateWell, MasterMixWell, SolutionType, pipetting_settings_dict = pipetting_settings_dict, tip_counter_dict = tip_counter_dict):
         #### Set up.
 
@@ -350,6 +313,61 @@ def run(protocol: protocol_api.ProtocolContext):
 
         return tip_counter_dict
 
+    
+    def Mix_MasterMix_Tube(MasterMixTube, SolutionType, pipetting_settings_dict = pipetting_settings_dict, tip_counter_dict = tip_counter_dict):
+        
+        # define pipette
+        pipette = right_pipette
+        pipette_type = "p300"
+
+        # Check if tips need replacing
+        if tip_counter_dict[pipette_type] == 0:
+
+            # pause robot
+            protocol.pause('Replace all empty tipracks before resuming.')
+
+            # tell the robot that the tips have been refreshed for that pipette
+            pipette.reset_tipracks()
+
+            # reset only the selected pipette in the counter
+            tip_counter_dict[pipette_type] = tip_counter_init_dict[pipette_type]
+
+        else:
+            pass
+
+        pipette.pick_up_tip()
+
+        # aspirate step
+
+        # Mix Step
+        pipette.mix(
+            pipetting_settings_dict["MasterMix"][SolutionType]["mix_repetitions"],
+            pipetting_settings_dict["MasterMix"][SolutionType]["mix_volume"],
+            pcr_source_tubes[MasterMixTube].bottom(5),
+        )
+
+        # wait for liquid on outside of tip to pool and then touch tip.
+
+        pipette.move_to(pcr_source_tubes[MasterMixTube].top(-2))
+        protocol.delay(seconds = 
+            pipetting_settings_dict["MasterMix"][SolutionType]["post_mix_pause"]
+            )
+        pipette.touch_tip()
+
+
+
+
+        pipette.drop_tip()
+
+
+        # decrement tip counter
+        tip_counter_dict[pipette_type] -= 1
+
+        return tip_counter_dict
+
+
+        
+
 
     # 3. Running protocol------------------------------------------------------
 
@@ -400,9 +418,24 @@ def run(protocol: protocol_api.ProtocolContext):
                             pipetting_settings_dict = pipetting_settings_dict
                             )
 
+    # Mix step
+    if MasterMix_Mix_Toggle:
+
+        # select Solution Type
+        for SolutionType in MasterMixCalculationsDict.keys():
+
+            # Select Master Mix Well to be populated
+            for MasterMixWell in MasterMixCalculationsDict[SolutionType]:
+
+                tip_counter_dict = Mix_MasterMix_Tube(
+                                    MasterMixTube = MasterMixWell,
+                                    SolutionType = SolutionType,
+                                    pipetting_settings_dict = pipetting_settings_dict,
+                                    tip_counter_dict = tip_counter_dict
+                                    )
 
 
-     
+
 
     # 4. Conduct plating -------------------------------------------------------------------
 

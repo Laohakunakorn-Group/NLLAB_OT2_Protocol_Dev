@@ -10,7 +10,11 @@
   
     "dispense_rate" : 1,
   
-    "MasterMix_Tube_bottom_clearance" : 0.1
+    "MasterMix_Tube_bottom_clearance" : 0.1,
+
+    "mix_repetitions": 10,
+    "mix_volume": 50,
+    "post_mix_pause": 4
   },
 
   "Components": {
@@ -23,7 +27,11 @@
   
     "dispense_rate" : 1,
   
-    "MasterMix_Tube_bottom_clearance" : 0.1
+    "MasterMix_Tube_bottom_clearance" : 0.1,
+
+    "mix_repetitions": 10,
+    "mix_volume": 180,
+    "post_mix_pause": 4
   }
 },
 

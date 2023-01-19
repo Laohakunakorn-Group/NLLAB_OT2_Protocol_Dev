@@ -76,7 +76,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
     temp_toggle = True
 
-    MasterMix_Toggle = True
+    MasterMix_Toggle = False
     Aqueous_MasterMix_Toggle = True
     Components_MasterMix_Toggle = True
 
@@ -195,88 +195,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    def dispense_substrates_from_source_to_pcr_tubes(substrates_source_well, substrate_source_volume, substrate_source_tubes_list):
-
-        """ defines the function that distributes the substrate mix from it's eppendorf tube stock into pcr tubes from where it can be better distributed to the plate """
-
-        # bit of extra for reverse pipetting
-        additional_pipetting_buffer_vol = 10
-        substrates_aspirate_volume = substrate_source_volume + additional_pipetting_buffer_vol
-
-        right_pipette.pick_up_tip()
-
-
-
-        for pcr_tube in substrate_source_tubes_list:
-
-            right_pipette.aspirate(substrates_aspirate_volume, substrates_source_well, rate=0.5)
-            right_pipette.touch_tip()
-
-            ### calculate how many rising dispense steps are necessary.
-
-            # calulate the modulo
-            vol_mod_50 = substrate_source_volume % 50
-
-            # define the rising inc list of distances from the bottom when dispensing
-            rising_inc_list = [5, 9, 11.4, 12]
-
-            # if the vol doesn't divide perfectly by 50ul then:
-            if vol_mod_50 != 0:
-
-                # the first pipetting step is the remainder at 1mm above the bottom
-                right_pipette.dispense(vol_mod_50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(1), rate=0.5)
-
-                # get the rounded down divide product.
-                num_of_50ul = math.floor(substrate_source_volume/50)
-
-                # make a range and iterate over it
-                for step in range(0, num_of_50ul,1):
-
-                    # followed by 50ul increments rising at by changing increments in the rising_inc_list
-                    right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
-
-
-            # if it does divide perfectly by 50:
-            else:
-                # get the divide product.
-                num_of_50ul = substrate_source_volume/50
-
-                # make a range and iterate over it
-                for step in range(0, num_of_50ul,1):
-
-                    # followed by 50ul increments rising at by changing increments in the rising_inc_list
-                    right_pipette.dispense(50, pcr_source_tubes.wells_by_name()[pcr_tube].bottom(rising_inc_list[step]), rate=0.5)
-
-
-            # eject the reverse pipetting buffer over the top.
-            right_pipette.dispense(additional_pipetting_buffer_vol, substrates_source_well.top(-1), rate=0.5)
-            protocol.delay(seconds=2)
-
-        right_pipette.drop_tip()
-
-
-
-    def dispense_lysate_from_source_to_pcr_tubes(lysate_source_well, lysate_source_volume, lysate_source_tubes_list):
-
-        """ defines the function that distributes the lysate from it's eppendorf tube stock into pcr tubes from where it can be better distributed to the plate """
-        # bit of extra for reverse pipetting
-        additional_pipetting_buffer_vol = 5
-        lysate_aspirate_volume = lysate_source_volume + additional_pipetting_buffer_vol
-
-        right_pipette.pick_up_tip()
-
-        for pcr_tube in lysate_source_tubes_list:
-
-            right_pipette.aspirate(lysate_aspirate_volume, lysate_source_well, rate=0.2)
-            right_pipette.touch_tip()
-
-            right_pipette.dispense(lysate_source_volume, pcr_source_tubes.wells_by_name()[pcr_tube].top(-16), rate=0.2)
-
-
-            right_pipette.dispense(additional_pipetting_buffer_vol, lysate_source_well.top(-1), rate=0.2)
-            protocol.delay(seconds=2)
-
-        right_pipette.drop_tip()
 
 
     # Distributing master mix Energy Solution, Buffer A, DNA, chi6, water etc.

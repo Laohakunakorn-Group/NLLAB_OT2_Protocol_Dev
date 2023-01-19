@@ -38,11 +38,11 @@ def generate_MasterMixWells_96(MasterMix):
     # choose well spacing:
     if MasterMix == "Aqueous":
         Letters = ["A", "C", "E", "G",]
-        Numbers = list(range(1, 17,1))
+        Numbers = list(range(1, 13,1))
 
     if MasterMix == "Components":
         Letters = ["B", "D", "F", "H"]
-        Numbers = list(range(1, 17,1))
+        Numbers = list(range(1, 13,1))
 
     MasterMixWells_96 = []
     for let in Letters:

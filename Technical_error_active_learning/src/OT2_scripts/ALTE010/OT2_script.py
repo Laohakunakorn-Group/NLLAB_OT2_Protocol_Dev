@@ -299,28 +299,51 @@ def run(protocol: protocol_api.ProtocolContext):
     
     def CompileMasterMixComponent(MasterMixWell, StockWell, VolumeUL, SolutionType, pipetting_settings_dict = pipetting_settings_dict):
 
-        if VolumeUL > 20:
+        aspirate_volume = VolumeUL * 1.1
+
+        if aspirate_volume > 20:
             pipette = right_pipette
         else:
             pipette = left_pipette
 
         
-        
+        if SolutionType == "Aqueous":
+
+            aspirate_rate_string = "aqueous_aspirate_rate"
+            aspirate_height_string = "aqueous_aspirate_height"
+
+            dispense_rate_string = "aqueous_dispense_rate"
+            dispense_height_string = "aqueous_dispense_height"
+
+            dispense_well_bottom_clearance_string = "aqueous_dispense_well_bottom_clearance"
+            aspirate_well_bottom_clearance_string = "aqueous_aspirate_well_bottom_clearance"
+
+        elif SolutionType == "Components":
+
+            aspirate_rate_string = "components_aspirate_rate"
+            aspirate_height_string = "components_aspirate_height"
+
+            dispense_rate_string = "components_dispense_rate"
+            dispense_height_string = "components_dispense_height"
+
+            dispense_well_bottom_clearance_string = "components_dispense_well_bottom_clearance"
+            aspirate_well_bottom_clearance_string = "components_aspirate_well_bottom_clearance"
+
 
 
         pipette.pick_up_tip()
 
-        pipette.well_bottom_clearance.aspirate = lysate_aspirate_height
-        pipette.well_bottom_clearance.dispense = pipetting_settings_dict["lysate_dispense_well_bottom_clearance"]
+        pipette.well_bottom_clearance.aspirate = pipetting_settings_dict[aspirate_well_bottom_clearance_string]
+        pipette.well_bottom_clearance.dispense = pipetting_settings_dict[dispense_well_bottom_clearance_string]
 
         # aspirate step
-        pipette.aspirate(pipetting_settings_dict["lysate_aspirate_volume"], source_well, rate=pipetting_settings_dict["lysate_aspirate_rate"])
-        pipette.move_to(source_well.top(-2))
+        pipette.aspirate(VolumeUL, StockWell, rate=pipetting_settings_dict["aspirate_rate_string"])
+        pipette.move_to(StockWell.top(-2))
         protocol.delay(seconds=2)
         pipette.touch_tip()
 
         # Dispense Step
-        pipette.dispense(pipetting_settings_dict["lysate_dispense_volume"], nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
+        pipette.dispense(VolumeUL, nunc_384[well], rate=pipetting_settings_dict["lysate_dispense_rate"])
 
         pipette.drop_tip()
 

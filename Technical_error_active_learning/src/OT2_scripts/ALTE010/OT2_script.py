@@ -84,7 +84,7 @@ def run(protocol: protocol_api.ProtocolContext):
     Components_MasterMix_Toggle = True
     MasterMix_Mix_Toggle = True
 
-    Plating_Toggle = False
+    Plating_Toggle = True
     Aqueous_Plating_Toggle = True
     Components_Plating_Toggle = True
 
@@ -477,7 +477,6 @@ def run(protocol: protocol_api.ProtocolContext):
                     
                     protocol.comment("Starting Aqueous Plating..")
 
-
                 elif SolutionType == "Components":
 
                     MasterMixTube_String = "ComponentsMasterMixTube"
@@ -494,6 +493,10 @@ def run(protocol: protocol_api.ProtocolContext):
                                             tip_counter_dict = tip_counter_dict
                                             )
 
+                    # decrement the aspiration height for that MasterMixWell
+                    MasterMixTube_Aspiration_Heights_Dict[SolutionType][row.loc[MasterMixTube_String]] = MasterMixTube_Aspiration_Heights_Dict[SolutionType][row.loc[MasterMixTube_String]] - pipetting_settings_dict["Plating"][SolutionType]["aspirate_height_inc"]
+                    protocol.comment(" ")
+                    protocol.comment(row.loc[MasterMixTube_String])
                     protocol.comment("Completed " + SolutionType + " dispense steps: " + str(i)+"/"+str(experimental_design_df.shape[0]))
 
 
@@ -505,6 +508,9 @@ def run(protocol: protocol_api.ProtocolContext):
         temperature_module.deactivate()
 
     protocol.comment("end of plating")
+
+    with open("test.json", 'w') as fp:
+        json.dump(MasterMixTube_Aspiration_Heights_Dict, fp)
 
     # adding the wax ontop
     protocol.pause("Check plate and spin down. Then setup OT2 for wax dispense and run #### script.")

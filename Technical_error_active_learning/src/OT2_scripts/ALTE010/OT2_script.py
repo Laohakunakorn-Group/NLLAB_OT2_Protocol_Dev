@@ -28,8 +28,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # 0. Reading in json setting files-----------------------------------------
 
-    experiment_prefix = "ALTE009"
-    plate_number = 1
+    plate_number = 2
     plate_number_string = str(plate_number)
 
 
@@ -44,10 +43,9 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
     #
-    #plating_labware_settings_dict_path = "/data/user_storage/"+ experiment_prefix + "/" + experiment_prefix + "_plating_labware_settings.json"
-    plating_labware_settings_dict_path = "ot2_labware_settings/" + experiment_prefix + "_plating_labware_settings.json"
+    plating_labware_settings_dict_path = "base_settings/labware_settings.json"
 
-    pipetting_settings_dict_path = "base_settings/base_pipetting_settings.json"
+    pipetting_settings_dict_path = "base_settings/pipetting_settings.json"
 
     pre_experiment_compilation_dict_path = "processed_ot2_settings/" + experiment_prefix + "_pre_experiment_compilations.json"
 
@@ -503,9 +501,9 @@ def run(protocol: protocol_api.ProtocolContext):
     if temp_toggle:
         temperature_module.deactivate()
 
-    protocol.comment("end of plating")
+    protocol.comment("End of plating")
 
 
     # adding the wax ontop
-    protocol.pause("Check plate and spin down. Then setup OT2 for wax dispense and run #### script.")
+    protocol.pause("Check plate and spin down..")
 

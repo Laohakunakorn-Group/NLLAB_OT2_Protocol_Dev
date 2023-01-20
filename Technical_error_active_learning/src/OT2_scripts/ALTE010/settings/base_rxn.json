@@ -1,0 +1,89 @@
+{
+  "Metainfo": {
+    "Master_Mixes": {
+      "total_tube_volumes_ul": {
+        "aqueous": 210,
+        "components": 85
+      },
+      "rxns_per_MM": {
+        "aqueous": 12,
+        "components": 12
+      },
+      "Volumes_added_to_rxn": {
+        "aqueous": 15,
+        "components": 5
+      }
+    },
+    "total_reaction_volume_ul": 20
+  },
+  "rxn_aqueous_elements": {
+
+    "Buffer A DTT": {
+        "Type" : "Buffer",
+        "Stock_source_well": "A1"
+    },
+    
+    "Template": {
+      "Type": "Template",
+      "stock_conc_ng_per_ul": 100,
+      "len_base_pairs": 1400,
+      "avg_daltons_per_bp": 650,
+      "rxn_conc_nM": 10,
+      "Stock_source_well": "A2"
+    },
+
+    "Energy_solution_4x": {
+        "Type": "Standard",
+        "stock_conc_uM": 4,
+        "rxn_conc_uM": 1,
+        "Stock_source_well": "A3"
+      },
+    "Chi6": {
+      "Type": "Standard",
+      "stock_conc_uM": 50,
+      "rxn_conc_uM": 2,
+      "Stock_source_well": "A4"
+    },
+    "Malachite_Green": {
+      "Type": "Standard",
+      "stock_conc_uM": 100,
+      "rxn_conc_uM": 10,
+      "Stock_source_well": "A5"
+    },
+    "DTT": {
+        "Type": "Standard",
+        "stock_conc_uM": 100,
+        "Stock_source_well": "A6"
+      },
+
+    "MG_Glut": {
+        "Type": "Standard",
+        "stock_conc_uM": 1000,
+        "Stock_source_well": "B1"
+      },
+      "K_Glut": {
+        "Type": "Standard",
+        "stock_conc_uM": 9000,
+        "rxn_conc_uM": 10,
+        "Stock_source_well": "B2"
+      }
+
+  },
+  "rxn_components_elements": {
+    "Lysate": {
+        "Type": "Base_System",
+        "stock_conc_uM": 4,
+        "rxn_conc_nM": 1,
+        "Stock_source_well": "C1"
+      },
+    "Stock-60 BME": {
+        "Type" : "Buffer",
+        "Stock_source_well": "C2"
+    },
+    "T7_RNAP": {
+      "Type": "Standard",
+      "stock_conc_uM": 5,
+      "Stock_source_well": "C3"
+    }
+}
+}

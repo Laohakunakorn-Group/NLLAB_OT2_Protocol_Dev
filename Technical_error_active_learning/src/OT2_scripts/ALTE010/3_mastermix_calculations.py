@@ -29,7 +29,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     # extract the aqueous variables
     aqueous_variables = list(aqueous_master_mix_dataframe.columns)
-    aqueous_variables.remove("Tubes"); aqueous_variables.remove("Experiments")
+    aqueous_variables.remove("Tubes"); aqueous_variables.remove("Experiments"); aqueous_variables.remove("Total_Wells");
 
     # Components
     components_master_mix_dataframe_path = "processed_data_files/MasterMixes/" + str(plate_number)+ "_plate_components_MasterMix_Stocks.pkl"
@@ -37,7 +37,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     # extract the components variables
     components_variables = list(components_master_mix_dataframe.columns)
-    components_variables.remove("Tubes"); components_variables.remove("Experiments")
+    components_variables.remove("Tubes"); components_variables.remove("Experiments"); components_variables.remove("Total_Wells");
 
 
 

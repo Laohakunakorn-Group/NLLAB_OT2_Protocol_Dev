@@ -6,7 +6,7 @@ import numpy as np
 
 ############
 
-experiment_prefix = "ALTE009"
+# Intro
 
 ###########
 
@@ -175,7 +175,7 @@ elif num_of_runs > plate_capacity:
 
 
 else:
-    print("There is an error with the number of experiments")
+    raise Exception("There is an error with the number of experiments")
 
 
 
@@ -233,9 +233,10 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     ## row wise, count the number of instances that that master mix has in the total design
     def CountExperimentsPerMasterMix(MasterMixDF, PlateDF):
         """
-        Iterates over the master mix df rowwise and compares to experimental design df.
+        Iterates over the master mix df rowwise and compares to experimental design df of the plate.
         Everytime it pings, it adds one to the tally and at the end of each MM, it appends that count to the list.
         Concludes by appending count list to master mix df as a Experiments column.
+        Finally - Adds Total_Wells column = Experiments * design_parameters["Technical_Replicates"].
         """
 
         master_mix_experiment_counter_list = []
@@ -251,11 +252,19 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
 
 
             master_mix_experiment_counter_list.append(master_mix_experiment_counter)
+
         MasterMixDF["Experiments"] = master_mix_experiment_counter_list
+
+        MasterMixDF["Total_Wells"] = MasterMixDF["Experiments"] * design_parameters["Technical_Replicates"]
 
         return MasterMixDF
 
     aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, plate_df_aqueous)
+
+    print()
+    print("aqueous_master_mixes")
+    print(aqueous_master_mixes)
+
     components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, plate_df_components)
 
 

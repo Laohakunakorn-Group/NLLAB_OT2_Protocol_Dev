@@ -387,7 +387,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     all_plates_dict[str(plate_number)] = plate_dict
 
 #########################
-with open("processed_ot2_settings/mastermix_calculations.json", 'w') as fp:
+with open("processed_data_files/MasterMixes/mastermix_calculations.json", 'w') as fp:
     json.dump(all_plates_dict, fp)
 
 print("Saved mastermix_calculations.json")

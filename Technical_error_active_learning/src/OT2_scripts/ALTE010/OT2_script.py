@@ -493,8 +493,7 @@ def run(protocol: protocol_api.ProtocolContext):
                     # decrement the aspiration height for that MasterMixWell
                     MasterMixTube_Aspiration_Heights_Dict[SolutionType][row.loc[MasterMixTube_String]] = MasterMixTube_Aspiration_Heights_Dict[SolutionType][row.loc[MasterMixTube_String]] - pipetting_settings_dict["Plating"][SolutionType]["aspirate_height_inc"]
                     protocol.comment(" ")
-                    protocol.comment(row.loc[MasterMixTube_String])
-                    protocol.comment("Completed " + SolutionType + " dispense steps: " + str(i)+"/"+str(experimental_design_df.shape[0]))
+                    protocol.comment("Completed " + SolutionType + " dispense steps: " + str(i+1)+"/"+str(experimental_design_df.shape[0]))
 
 
 

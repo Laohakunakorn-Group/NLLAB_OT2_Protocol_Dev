@@ -123,12 +123,7 @@ for idx, row in experiment_design_df.iterrows():
         expanded_experimental_design = pd.concat([expanded_experimental_design, row.to_frame().T], axis=0, ignore_index=True)
 
 
-#### Shuffle the runs
-if design_parameters["Randomise"] == 1:
-    expanded_experimental_design = expanded_experimental_design.sample(
-                                                                        frac=1,
-                                                                        random_state=123
-                                                                      ).reset_index(names="Original_Order")
+
 
 # rename
 experiment_design_df = expanded_experimental_design
@@ -197,7 +192,7 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number]
 
     # drop Original Order
-    plate_df = plate_df.drop(["Original_Order", "Well", "Plate"], axis=1)
+    plate_df = plate_df.drop(["Well", "Plate"], axis=1)
 
 
     ### Split design in to aqueous and components columns
@@ -447,7 +442,6 @@ for plate_number in plates_list:
     plate_df.loc[:, "AqueousMasterMixTube"] = Aqueous_MasterMix_Tube
 
 
-
     ### Components
 
     # drop unnecessary columns
@@ -489,6 +483,15 @@ for plate_number in plates_list:
 
     
     plate_df.loc[:,"ComponentsMasterMixTube"] = Components_MasterMix_Tube
+
+
+    ####### Shuffle runs
+    
+    if design_parameters["Randomise"] == 1:
+        plate_df = plate_df.sample(
+                                    frac=1,
+                                    random_state=123
+                                    ).reset_index(names="Original_Order")
 
 
     plate_df_list.append(plate_df)

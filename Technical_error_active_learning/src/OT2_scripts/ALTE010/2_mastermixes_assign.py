@@ -66,7 +66,6 @@ experiment_design_df = experiment_design_df.drop('run.order', axis=1)
 #get the number of experiments
 number_of_experiments = experiment_design_df.shape[0]
 
-
 ##### Compatibility checks
 
 # import experimental design parameters
@@ -123,6 +122,7 @@ for idx, row in experiment_design_df.iterrows():
     for rep in range(design_parameters["Technical_Replicates"]):
         expanded_experimental_design = pd.concat([expanded_experimental_design, row.to_frame().T], axis=0, ignore_index=True)
 
+
 #### Shuffle the runs
 if design_parameters["Randomise"] == 1:
     expanded_experimental_design = expanded_experimental_design.sample(
@@ -141,7 +141,6 @@ plate_capacity = len(well_list_384)
 
 #  store the number of runs - the num of rows of the df
 num_of_runs = experiment_design_df.shape[0]
-
 
 # if there are fewer experiments than or exactly 384 or 77 or whatever (the plate capacity), then just label the with enough wells
 if num_of_runs <= plate_capacity:
@@ -190,7 +189,6 @@ aqueous_variables = list(aqueous_lookup_table["Variable"])
 # get the experiment_variables == "Components" and get the list of names
 components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
 components_variables = list(components_lookup_table["Variable"])
-
 
 
 
@@ -255,16 +253,9 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
 
         MasterMixDF["Experiments"] = master_mix_experiment_counter_list
 
-        MasterMixDF["Total_Wells"] = MasterMixDF["Experiments"] * design_parameters["Technical_Replicates"]
-
         return MasterMixDF
 
     aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, plate_df_aqueous)
-
-    print()
-    print("aqueous_master_mixes")
-    print(aqueous_master_mixes)
-
     components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, plate_df_components)
 
 
@@ -281,7 +272,6 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
         """
         Takes in the Master Mix DF and the Possible tube list.
         Assigns the required amount of tubes to that master mix.
-        Takes in to account technical replicates..
         """
 
         # initialise counter to keep track of which tubes in the possibles list have been designated
@@ -291,7 +281,7 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
         list_of_individual_master_mix_tube_lists = []
 
         # iterate over the Experiments number column in the Master Mix df
-        for int in MasterMixDf['Experiments']:
+        for exp_num in MasterMixDf['Experiments']:
 
             # Initialise a list to populate with the tubes for that master mix
             individual_master_mix_tube_list = []
@@ -306,18 +296,18 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
             else:
                 raise Exception("Unknown total_reaction_volume.")
 
-            ### Assign the master mix tube based on the number of experiments * the number of technical replicates
+            ### Assign the master mix tube based on the number of experiments
 
             # if its less than max_runs_per_mastermix_tube then just the current tube in the list then progress the counter
-            if (int * design_parameters["Technical_Replicates"]) <= max_runs_per_mastermix_tube:
+            if exp_num <= max_runs_per_mastermix_tube:
                 individual_master_mix_tube_list.append(MasterMix_Possible_Tubes[tube_counter])
                 tube_counter += 1
 
             # if its greater then..
-            elif (int * design_parameters["Technical_Replicates"]) > max_runs_per_mastermix_tube:
+            elif exp_num > max_runs_per_mastermix_tube:
 
                 # calculate the number of tubes required rounded up
-                number_of_tubes_required = math.ceil((int * design_parameters["Technical_Replicates"])/max_runs_per_mastermix_tube)
+                number_of_tubes_required = math.ceil(exp_num/max_runs_per_mastermix_tube)
                 # add that to the current tube counter to get the last index of the last required tube.
                 last_tube_selected_index = tube_counter + number_of_tubes_required
                 # look the tubes up
@@ -350,8 +340,9 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     aqueous_master_mixes_stocks = aqueous_master_mixes.copy()
     components_master_mixes_stocks = components_master_mixes.copy()
 
+    # x 1.333 the final concentrations
+    aqueous_master_mixes_stocks[aqueous_variables] = aqueous_master_mixes_stocks[aqueous_variables] * (20/15)
     # x4 the final concentrations
-    aqueous_master_mixes_stocks[aqueous_variables] = aqueous_master_mixes_stocks[aqueous_variables] * 4
     components_master_mixes_stocks[components_variables] = components_master_mixes_stocks[components_variables] * 4
 
 
@@ -363,7 +354,7 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number):
     aqueous_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Stocks.pkl")
     components_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Stocks.pkl")
 
-    return aqueous_master_mixes, components_master_mixes
+    # end of function
 
 #### Execute
 ## get a list of the plate numbers
@@ -374,7 +365,7 @@ for plate_number in plates_list:
     Designate_MasterMix_Tubes_by_Plate(plate_number=plate_number)
 
 
-############Add master mix tubes to experimental design 
+############ Add master mix tubes to experimental design 
 
 print(" ")
 print("Assigning reagent sources and wells...")
@@ -418,6 +409,8 @@ for plate_number in plates_list:
         mastermix_allocation_counter = 0
         Working_Tube_idx = 0
 
+        true = 0
+
         for run_idx, run_row in Aqueous_plate_df.iterrows():
 
             # Have to convert series to dictionaries for comparison bc pandas has thrown a tantrum.
@@ -434,13 +427,22 @@ for plate_number in plates_list:
                 # look up the current tube using the mastermix_allocation_counter
                 Working_Tube = Tubes[Working_Tube_idx]
 
+                #print(Working_Tube_idx)
+
                 # look up the correct index in the array using run_idx and insert the tube at the position.
                 Aqueous_MasterMix_Tube[run_idx] = Working_Tube
+
+                true = true + 1
 
 
                 #progress the counter
                 mastermix_allocation_counter += 1
 
+                #print(mastermix_allocation_counter)
+        #print()
+        #print(MasterMixElements)
+        #print("true")
+        #print(true)
     
     plate_df.loc[:, "AqueousMasterMixTube"] = Aqueous_MasterMix_Tube
 

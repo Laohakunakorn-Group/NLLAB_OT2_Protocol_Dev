@@ -440,7 +440,6 @@ def run(protocol: protocol_api.ProtocolContext):
     # 4. Conduct plating -------------------------------------------------------------------
 
     ### Constructing the MasterMix Tube Aspirate Height Dict to keep track of the decreasing heights
-
     # use the Stock tubes from the MasterMixCalculationsDict as keys and initalise all with the appropriate aspirate_height_init
 
     MasterMixTube_Aspiration_Heights_Dict = {}
@@ -453,8 +452,6 @@ def run(protocol: protocol_api.ProtocolContext):
         
         MasterMixTube_Aspiration_Heights_Dict[SolutionType] = SolutionType_Dict
         
-
-
     # Running the substrate dispense step if protocol_dispense_substrates = True
     if Plating_Toggle:
 
@@ -509,8 +506,6 @@ def run(protocol: protocol_api.ProtocolContext):
 
     protocol.comment("end of plating")
 
-    with open("test.json", 'w') as fp:
-        json.dump(MasterMixTube_Aspiration_Heights_Dict, fp)
 
     # adding the wax ontop
     protocol.pause("Check plate and spin down. Then setup OT2 for wax dispense and run #### script.")

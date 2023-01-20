@@ -1,1 +1,1370 @@
-{"1": {"Aqueous": {"A1": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.47555555555557}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}, "A2": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 67.07555555555557}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}, "A3": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 67.57333333333335}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A4": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 67.57333333333335}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A5": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.07111111111112}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A6": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 70.03111111111112}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A7": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 69.05733333333335}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.176}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A8": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.63111111111111}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A9": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 66.67111111111112}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A10": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 66.51555555555558}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}}, "Components": {"B1": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 6.8}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 8.2}}, "B2": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 6.8}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 8.2}}, "B3": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 6.8}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 8.2}}, "B4": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 0.6799999999999999}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 14.32}}, "B5": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 0.6799999999999999}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 14.32}}, "B6": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 4.08}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 10.92}}, "B7": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 4.08}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 10.92}}, "B8": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 10.2}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 4.800000000000001}}}}, "2": {"Aqueous": {"A1": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 65.93377777777779}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.9062222222222225}}, "A2": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.55333333333334}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A3": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 69.21288888888891}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 1.6271111111111107}}, "A4": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 67.07555555555557}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}, "A5": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.63111111111111}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 0.84}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A6": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 66.67111111111112}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}, "A7": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 66.08933333333334}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 4.144}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A8": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 66.51555555555558}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}, "A9": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 67.57333333333335}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 1.8199999999999998}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A10": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 65.50693333333335}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 2.66}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 3.8864}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 3.2666666666666666}}, "A11": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 65.11555555555557}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 3.36}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 4.044444444444443}}, "A12": {"Buffer A DTT": {"Stock_source_well": "A1", "Element_stock_volume_ul": 68.07111111111112}, "Template": {"Stock_source_well": "A2", "Element_stock_volume_ul": 25.48}, "Energy_solution_4x": {"Stock_source_well": "A3", "Element_stock_volume_ul": 70.0}, "Chi6": {"Stock_source_well": "A4", "Element_stock_volume_ul": 11.2}, "Malachite_Green": {"Stock_source_well": "A5", "Element_stock_volume_ul": 28.0}, "DTT": {"Stock_source_well": "A6", "Element_stock_volume_ul": 1.9599999999999997}, "MG_Glut": {"Stock_source_well": "B1", "Element_stock_volume_ul": 2.7999999999999994}, "K_Glut": {"Stock_source_well": "B2", "Element_stock_volume_ul": 2.4888888888888885}}}, "Components": {"B1": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 4.08}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 10.92}}, "B2": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 4.08}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 10.92}}, "B3": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 4.08}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 10.92}}, "B4": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 6.8}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 8.2}}, "B5": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 0.6799999999999999}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 14.32}}, "B6": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 0.6799999999999999}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 14.32}}, "B7": {"Lysate": {"Stock_source_well": "C1", "Element_stock_volume_ul": 70}, "T7_RNAP": {"Stock_source_well": "C3", "Element_stock_volume_ul": 0.6799999999999999}, "Stock-60 BME": {"Stock_source_well": "C2", "Element_stock_volume_ul": 14.32}}}}}
+{
+  "1": {
+    "Aqueous": {
+      "A1": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.47555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A2": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.07555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A3": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A4": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.07111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A5": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 70.03111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A6": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 69.05733333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.176
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A7": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.63111111111111
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      }
+    },
+    "Components": {
+      "B1": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B2": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B3": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B4": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B5": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B6": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B7": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      }
+    }
+  },
+  "2": {
+    "Aqueous": {
+      "A1": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 66.67111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A2": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 70.03111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A3": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A4": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A5": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A6": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.47555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A7": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 66.51555555555558
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      }
+    },
+    "Components": {
+      "B1": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B2": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B3": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B4": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B5": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 10.2
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 4.800000000000001
+        }
+      },
+      "B6": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B7": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      }
+    }
+  },
+  "3": {
+    "Aqueous": {
+      "A1": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 65.93377777777779
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.9062222222222225
+        }
+      },
+      "A2": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.55333333333334
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A3": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 69.21288888888891
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 1.6271111111111107
+        }
+      },
+      "A4": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.07555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A5": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.63111111111111
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 0.84
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A6": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 66.67111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      },
+      "A7": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 66.08933333333334
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 4.144
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      }
+    },
+    "Components": {
+      "B1": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B2": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B3": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B4": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B5": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      },
+      "B6": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B7": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      }
+    }
+  },
+  "4": {
+    "Aqueous": {
+      "A1": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 66.51555555555558
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A2": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A3": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 67.57333333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 1.8199999999999998
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A4": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 65.50693333333335
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 2.66
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 3.8864
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 3.2666666666666666
+        }
+      },
+      "A5": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 65.11555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A6": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 65.11555555555557
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 3.36
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 4.044444444444443
+        }
+      },
+      "A7": {
+        "Buffer A DTT": {
+          "Stock_source_well": "A1",
+          "Element_stock_volume_ul": 68.07111111111112
+        },
+        "Template": {
+          "Stock_source_well": "A2",
+          "Element_stock_volume_ul": 25.48
+        },
+        "Energy_solution_4x": {
+          "Stock_source_well": "A3",
+          "Element_stock_volume_ul": 70
+        },
+        "Chi6": {
+          "Stock_source_well": "A4",
+          "Element_stock_volume_ul": 11.2
+        },
+        "Malachite_Green": {
+          "Stock_source_well": "A5",
+          "Element_stock_volume_ul": 28
+        },
+        "DTT": {
+          "Stock_source_well": "A6",
+          "Element_stock_volume_ul": 1.9599999999999997
+        },
+        "MG_Glut": {
+          "Stock_source_well": "B1",
+          "Element_stock_volume_ul": 2.7999999999999994
+        },
+        "K_Glut": {
+          "Stock_source_well": "B2",
+          "Element_stock_volume_ul": 2.4888888888888885
+        }
+      }
+    },
+    "Components": {
+      "B1": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B2": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B3": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B4": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 0.6799999999999999
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 14.32
+        }
+      },
+      "B5": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B6": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 4.08
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 10.92
+        }
+      },
+      "B7": {
+        "Lysate": {
+          "Stock_source_well": "C1",
+          "Element_stock_volume_ul": 70
+        },
+        "T7_RNAP": {
+          "Stock_source_well": "C3",
+          "Element_stock_volume_ul": 6.8
+        },
+        "Stock-60 BME": {
+          "Stock_source_well": "C2",
+          "Element_stock_volume_ul": 8.2
+        }
+      }
+    }
+  }
+}

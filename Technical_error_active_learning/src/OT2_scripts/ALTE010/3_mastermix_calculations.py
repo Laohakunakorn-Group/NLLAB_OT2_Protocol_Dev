@@ -17,10 +17,10 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     print("Starting allocations for plate #: "+str(plate_number))
 
     # read in the jsons and dataframes
-    es_path = "base_settings/base_energy_solution.json"
+    es_path = "settings/base_energy_solution.json"
     es_dict = json.load(open(es_path, 'r'))
 
-    base_rxn_path = "base_settings/base_rxn.json"
+    base_rxn_path = "settings/base_rxn.json"
     base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
     # Aqueous

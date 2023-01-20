@@ -29,8 +29,8 @@ def run(protocol: protocol_api.ProtocolContext):
     # 0. Reading in json setting files-----------------------------------------
 
     # reading in OT2 Settings
-    plating_labware_settings_dict_path = "base_settings/labware_settings.json"
-    pipetting_settings_dict_path = "base_settings/pipetting_settings.json"
+    plating_labware_settings_dict_path = "settings/labware_settings.json"
+    pipetting_settings_dict_path = "settings/pipetting_settings.json"
 
     plating_labware_settings_dict = json.load(open(plating_labware_settings_dict_path, 'r'))
     protocol.comment("Plating labware settings json file was read in")

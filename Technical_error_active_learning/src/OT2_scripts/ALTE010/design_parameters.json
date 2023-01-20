@@ -1,6 +1,8 @@
 {
     "Randomise": 1,
-    "Technical_Replicates" : 5,
+    "Technical_Replicates" : 10,
     "Reaction_Volume": 20,
-    "Well_Spacing": 1
+    "Well_Spacing": 1,
+    "Plate_to_run": 1,
+    "Thermo_Module_Temp_oC": 4
 }

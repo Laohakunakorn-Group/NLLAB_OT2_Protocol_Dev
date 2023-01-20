@@ -28,35 +28,9 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # 0. Reading in json setting files-----------------------------------------
 
-    plate_number = 2
-    plate_number_string = str(plate_number)
-
-
-    # Defining the file paths of raspberry pi
-
-    # import the experimental design
-    experimental_design_path = "processed_data_files/Experiment_Designs/design_final.csv"
-    experimental_design_df = pd.read_csv(experimental_design_path)
-
-    # select only the experiments for the relevant plate
-    experimental_design_df = experimental_design_df[experimental_design_df["Plate"] == plate_number]
-
-
-    #
+    # reading in OT2 Settings
     plating_labware_settings_dict_path = "base_settings/labware_settings.json"
-
     pipetting_settings_dict_path = "base_settings/pipetting_settings.json"
-
-    pre_experiment_compilation_dict_path = "processed_ot2_settings/" + experiment_prefix + "_pre_experiment_compilations.json"
-
-    # Reading in MasterMixCalculationsDict
-    MasterMixCalculationsPath = "processed_ot2_settings/mastermix_calculations.json"
-    MasterMixCalculationsDict = json.load(open(MasterMixCalculationsPath, 'r'))
-    
-    # Select only the calculations for the specified plate.
-    MasterMixCalculationsDict = MasterMixCalculationsDict[plate_number_string]
-    protocol.comment("MasterMixCalculations json file was read in")
-
 
     plating_labware_settings_dict = json.load(open(plating_labware_settings_dict_path, 'r'))
     protocol.comment("Plating labware settings json file was read in")
@@ -64,13 +38,17 @@ def run(protocol: protocol_api.ProtocolContext):
     pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
     protocol.comment("Pipetting settings json file was read in")
 
-    pre_experiment_compilation_dict = json.load(open(pre_experiment_compilation_dict_path, 'r'))
-    protocol.comment("Pre experiment compilations json file was read in")
+    # reading in the design parameters
+    design_parameters_path = "design_parameters.json"
+    design_parameters_dict = json.load(open(design_parameters_path, 'r'))
 
-    pre_experiment_compilation_dict = pre_experiment_compilation_dict[plate_number_string]
-    protocol.comment("Pre experiment compilations Plate: "+plate_number_string +" Selected.")
+    #######################################
 
-    # 1. Defining variables used in protocol-----------------------------------
+    ##### Plate number to run
+    plate_number = design_parameters_dict["Plate_to_run"]
+    plate_number_string = str(plate_number)
+
+    #######################################
 
     # Defining the booleans for the protocol. This controls which parts of
     # the protocol to run.
@@ -85,6 +63,28 @@ def run(protocol: protocol_api.ProtocolContext):
     Plating_Toggle = True
     Aqueous_Plating_Toggle = True
     Components_Plating_Toggle = True
+
+
+    # Defining the file paths of raspberry pi
+
+    # import the experimental design
+    experimental_design_path = "processed_data_files/Experiment_Designs/design_final.csv"
+    experimental_design_df = pd.read_csv(experimental_design_path)
+
+    # select only the experiments for the relevant plate
+    experimental_design_df = experimental_design_df[experimental_design_df["Plate"] == plate_number]
+
+
+    # Reading in MasterMixCalculationsDict
+    MasterMixCalculationsPath = "processed_data_files/MasterMixes/mastermix_calculations.json"
+    MasterMixCalculationsDict = json.load(open(MasterMixCalculationsPath, 'r'))
+    
+    # Select only the calculations for the specified plate.
+    MasterMixCalculationsDict = MasterMixCalculationsDict[plate_number_string]
+    protocol.comment("MasterMixCalculations json file was read in")
+
+
+    # 1. Defining variables used in protocol-----------------------------------
 
     # labware
 
@@ -375,7 +375,7 @@ def run(protocol: protocol_api.ProtocolContext):
     # Set temperature of temperature module to 4 degrees. The protocol will pause
     # until this is reached.
     if temp_toggle:
-        temperature_module.set_temperature(4)
+        temperature_module.set_temperature(design_parameters_dict["Thermo_Module_Temp_oC"])
 
 
 
@@ -495,13 +495,16 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
 
-    # Pausing protocol so the plate can be span down in the centrifuge before
+    protocol.comment(" ")
+    protocol.comment("End of Plating: Plate #"+plate_number_string)
+    protocol.comment(" ")
+    protocol.comment("!!! Remember to update Plate_to_run in design_parameters.json for the next run.")
+    protocol.comment(" ")
 
     # Turning off temp module after all experiments have finished
     if temp_toggle:
         temperature_module.deactivate()
 
-    protocol.comment("End of plating")
 
 
     # adding the wax ontop

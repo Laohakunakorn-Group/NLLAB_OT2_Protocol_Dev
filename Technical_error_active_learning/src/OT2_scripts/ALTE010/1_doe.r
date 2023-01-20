@@ -13,12 +13,12 @@ library(ggplot2)
 library(dplyr)
 
 # Import the experiment_variables to modulate JSON
-experiment_variables_json <- fromJSON(file = "experiment_variables.json")
+experiment_variables_json <- fromJSON(file = "settings/experiment_variables.json")
 # convert to Dataframe
 experiment_variables_df <- as.data.frame(experiment_variables_json)
 
 # import design_parameters.json
-design_parameters_list <- fromJSON(file = "design_parameters.json")
+design_parameters_list <- fromJSON(file = "settings/design_parameters.json")
 
 
 # get the number of rows of the df to use as # of variables for generating design_coded

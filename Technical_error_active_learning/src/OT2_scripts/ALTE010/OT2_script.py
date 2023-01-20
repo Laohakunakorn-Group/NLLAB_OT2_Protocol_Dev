@@ -39,7 +39,7 @@ def run(protocol: protocol_api.ProtocolContext):
     protocol.comment("Pipetting settings json file was read in")
 
     # reading in the design parameters
-    design_parameters_path = "design_parameters.json"
+    design_parameters_path = "settings/design_parameters.json"
     design_parameters_dict = json.load(open(design_parameters_path, 'r'))
 
     #######################################

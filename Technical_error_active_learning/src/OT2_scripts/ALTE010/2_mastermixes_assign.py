@@ -69,7 +69,7 @@ number_of_experiments = experiment_design_df.shape[0]
 ##### Compatibility checks
 
 # import experimental design parameters
-with open('design_parameters.json') as json_file:
+with open('settings/design_parameters.json') as json_file:
     design_parameters = json.load(json_file)
 
 
@@ -104,7 +104,7 @@ else:
 
 
 # import experiment_variables
-with open('experiment_variables.json') as json_file:
+with open('settings/experiment_variables.json') as json_file:
     experiment_variables = json.load(json_file)
 experiment_variables = pd.DataFrame(experiment_variables)
 
@@ -486,7 +486,7 @@ for plate_number in plates_list:
 
 
     ####### Shuffle runs
-    
+
     if design_parameters["Randomise"] == 1:
         plate_df = plate_df.sample(
                                     frac=1,

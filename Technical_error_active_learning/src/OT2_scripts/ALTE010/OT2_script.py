@@ -68,7 +68,7 @@ def run(protocol: protocol_api.ProtocolContext):
     # Defining the file paths of raspberry pi
 
     # import the experimental design
-    experimental_design_path = "processed_data_files/Experiment_Designs/design_final.csv"
+    experimental_design_path = "output/Experiment_Designs/design_final.csv"
     experimental_design_df = pd.read_csv(experimental_design_path)
 
     # select only the experiments for the relevant plate
@@ -76,7 +76,7 @@ def run(protocol: protocol_api.ProtocolContext):
 
 
     # Reading in MasterMixCalculationsDict
-    MasterMixCalculationsPath = "processed_data_files/MasterMixes/mastermix_calculations.json"
+    MasterMixCalculationsPath = "tmp/MasterMixes/mastermix_calculations.json"
     MasterMixCalculationsDict = json.load(open(MasterMixCalculationsPath, 'r'))
     
     # Select only the calculations for the specified plate.

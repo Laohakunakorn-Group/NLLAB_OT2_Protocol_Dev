@@ -1,4 +1,2 @@
-T7_RNAP,Experiments,Tubes
-0.4,20,"['B1', 'B2']"
-0.04,40,"['B3', 'B4', 'B5', 'B6']"
-0.24,10,['B7']
+Components,Experiments,Tubes
+4.0,54,"['B1', 'B2', 'B3', 'B4', 'B5']"

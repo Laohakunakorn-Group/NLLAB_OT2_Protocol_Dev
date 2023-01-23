@@ -53,7 +53,7 @@ experiment_variables = pd.DataFrame(experiment_variables)
 
 
 
-### Determine if aqueous and or components are modulated.
+### Determine if aqueous and or Components are modulated.
 
 if ('Aqueous' in experiment_variables["Type"].values) and ('Components' in experiment_variables["Type"].values):
     MasterMixesModulated = "Both"
@@ -81,8 +81,8 @@ if MasterMixesModulated == "Both":
     aqueous_variables = list(aqueous_lookup_table["Variable"])
 
     # get the experiment_variables == "Components" and get the list of names
-    components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
-    components_variables = list(components_lookup_table["Variable"])
+    Components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
+    Components_variables = list(Components_lookup_table["Variable"])
 
 elif MasterMixesModulated == "Aqueous":
 
@@ -93,8 +93,8 @@ elif MasterMixesModulated == "Aqueous":
 elif MasterMixesModulated == "Components":
 
     # get the experiment_variables == "Components" and get the list of names
-    components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
-    components_variables = list(components_lookup_table["Variable"])
+    Components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
+    Components_variables = list(Components_lookup_table["Variable"])
 
 else:
     raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
@@ -167,7 +167,7 @@ def AllocatingMasterMixTubesBasedOnComparision(master_mix_df, Trimmed_plate_df, 
 
 def AddMasterMixTubesToExperimentDesign(plate_df, MasterMixesModulated = MasterMixesModulated):
 
-    # do Aqueous and then components
+    # do Aqueous and then Components
 
     AqueousComponents = ["Aqueous", "Components"]
     for MasterMixType in AqueousComponents:
@@ -205,9 +205,9 @@ def AddMasterMixTubesToExperimentDesign(plate_df, MasterMixesModulated = MasterM
             # and continue to the big comparison loop past this if statement.
 
             plate_df = AllocatingMasterMixTubesBasedOnComparision(
-                master_mix_df = components_master_mixes,
-                Trimmed_plate_df = plate_df[components_variables],
-                variables = components_variables,
+                master_mix_df = Components_master_mixes,
+                Trimmed_plate_df = plate_df[Components_variables],
+                variables = Components_variables,
                 col_name = "ComponentsMasterMixTube",
                 plate_df = plate_df
             )
@@ -218,8 +218,8 @@ def AddMasterMixTubesToExperimentDesign(plate_df, MasterMixesModulated = MasterM
             # and continue to the big comparison loop past this if statement.
 
             plate_df = AllocatingMasterMixTubesBasedOnComparision(
-                master_mix_df = components_master_mixes,
-                Trimmed_plate_df = plate_df[components_variables],
+                master_mix_df = Components_master_mixes,
+                Trimmed_plate_df = plate_df[Components_variables],
                 col_name = "ComponentsMasterMixTube",
                 plate_df = plate_df
             )
@@ -232,7 +232,7 @@ def AddMasterMixTubesToExperimentDesign(plate_df, MasterMixesModulated = MasterM
 
             if (MasterMixesModulated == "Aqueous" and MasterMixType == "Components"):
 
-                master_mix_df = components_master_mixes
+                master_mix_df = Components_master_mixes
                 col_name = "ComponentsMasterMixTube"
 
             elif (MasterMixesModulated == "Components" and MasterMixType == "Aqueous"):
@@ -286,8 +286,8 @@ plates_list = list(experiment_design_df["Plate"].unique())
 for plate_number in plates_list:
 
 
-    aqueous_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
-    components_master_mixes = pd.read_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Working_Concs.pkl")
+    aqueous_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
+    Components_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
 
     # slice the experimental design
     plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number].reset_index(drop=True)
@@ -318,7 +318,7 @@ print()
 
 
 ### save the full design
-experiment_design_df.to_csv("processed_data_files/Experiment_Designs/design_final.csv", index=False)
+experiment_design_df.to_csv("output/Experiment_Designs/design_final.csv", index=False)
 
 
 #############################################################################################################################################

@@ -3,12 +3,44 @@ import json
 import pandas as pd
 
 
+################################
+
+# Intro
+
+# Performs the dilution calculations for the master mixes.
+# Calculates 
+
+################################
+
 
 all_plates_dict = {}
 
 # retrieve the number of plates in the experiment
-design_final_df = pd.read_csv("processed_data_files/Experiment_Designs/design_final.csv")
+design_final_df = pd.read_csv("output/Experiment_Designs/design_final.csv")
 quantity_of_plates = design_final_df["Plate"].max()
+
+
+
+# import experiment_variables
+with open('settings/experiment_variables.json') as json_file:
+    experiment_variables = json.load(json_file)
+experiment_variables = pd.DataFrame(experiment_variables)
+
+
+### Determine if Aqueous and or Components are modulated.
+
+if ('Aqueous' in experiment_variables["Type"].values) and ('Components' in experiment_variables["Type"].values):
+    MasterMixesModulated = "Both"
+
+elif 'Aqueous' in experiment_variables["Type"].values:
+    MasterMixesModulated = "Aqueous"
+
+elif 'Components' in experiment_variables["Type"].values:
+    MasterMixesModulated = "Components"
+
+else:
+    raise Exception("Please check the Type of Reaction Elements to be modulated in experiemnt_variables.json")
+
 
 # iterate over the plate number and perform the allocations
 for plate_number in range(1, (quantity_of_plates+1), 1):
@@ -23,29 +55,58 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     base_rxn_path = "settings/base_rxn.json"
     base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
-    # Aqueous
-    aqueous_master_mix_dataframe_path = "processed_data_files/MasterMixes/" + str(plate_number)+ "_plate_aqueous_MasterMix_Stocks.pkl"
-    aqueous_master_mix_dataframe = pd.read_pickle(aqueous_master_mix_dataframe_path)
+    ## extract  variables depening on modulation status.
+    if MasterMixesModulated == "Both":
 
-    # extract the aqueous variables
-    aqueous_variables = list(aqueous_master_mix_dataframe.columns)
-    aqueous_variables.remove("Tubes"); aqueous_variables.remove("Experiments")
+        # Aqueous
+        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
 
-    # Components
-    components_master_mix_dataframe_path = "processed_data_files/MasterMixes/" + str(plate_number)+ "_plate_components_MasterMix_Stocks.pkl"
-    components_master_mix_dataframe = pd.read_pickle(components_master_mix_dataframe_path)
+        # extract the Aqueous variables
+        Aqueous_variables = list(Aqueous_master_mix_dataframe.columns)
+        Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
-    # extract the components variables
-    components_variables = list(components_master_mix_dataframe.columns)
-    components_variables.remove("Tubes"); components_variables.remove("Experiments")
+        # Components
+        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
+        # extract the Components variables
+        Components_variables = list(Components_master_mix_dataframe.columns)
+        Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
 
+    elif MasterMixesModulated == "Aqueous":
 
+        # Aqueous
+        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
+
+        # extract the Aqueous variables
+        Aqueous_variables = list(Aqueous_master_mix_dataframe.columns)
+        Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
+
+        # Placeholder
+        Components_variables = ["Components"]
+
+    elif MasterMixesModulated == "Components":
+
+        # Components
+        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
+
+        # extract the Components variables
+        Components_variables = list(Components_master_mix_dataframe.columns)
+        Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
+
+        # Placeholder
+        Aqueous_variables = ["Aqueous"]
+
+    else:
+        raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
 
 
     def CalculateVolumesForVariableFactors(
-        mastermixtype,
+        MasterMixType,
         list_variables,
         mastermix_dataframe,
         MasterMix_Tubes_dict,
@@ -54,19 +115,23 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         ):
 
         # extract the key identifiers based on master mix type
-        if mastermixtype == "aqueous":
-            mastermixtype_short = "aqueous"
-            rxn_elements_name = "rxn_aqueous_elements"
-        elif mastermixtype == "components":
-            mastermixtype_short = "components"
-            rxn_elements_name = "rxn_components_elements"
+        if MasterMixType == "Aqueous":
+            MasterMixType_short = "Aqueous"
+            rxn_elements_name = "rxn_Aqueous_elements"
+
+        elif MasterMixType == "Components":
+            MasterMixType_short = "Components"
+            rxn_elements_name = "rxn_Components_elements"
         else:
-            raise Exception("ArgsL Unknown mastermixtype, Select either 'aqueous' or 'components'")       
+            raise Exception("Args: Unknown MasterMixType, Select either 'Aqueous' or 'Components'")    
+
+
         # Iterate over the list_variables
         # perform the dilution calculation
         # add that volume
 
         for component in list_variables:
+
 
             for idx, Tube_list in mastermix_dataframe["Tubes"].items():
 
@@ -78,7 +143,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
                     # Calculate the ul to be added
                     Element_MasterMix_Volume_ul = dilution_calculator(stock_concentration = base_rxn_dict[rxn_elements_name][component]["stock_conc_uM"],
                                                     final_concentration = Element_Master_Mix_conc_uM, 
-                                                    final_total_volume = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][mastermixtype_short])
+                                                    final_total_volume = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType_short])
 
                     #### Check that the volume is 1.0 < x < 10
                     if not 0.5 <= Element_MasterMix_Volume_ul <= 15:
@@ -97,10 +162,10 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
                     MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] = MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] - Element_MasterMix_Volume_ul
 
 
-        #### Add Stock-30 BME Corresponding to the remaining residual volume
+        #### Add Buffer Corresponding to the remaining residual volume
         ## delete residual volume from each record
 
-        # find which element in rxn_components_elements has type Buffer
+        # find which element in rxn_Components_elements has type Buffer
         for element in base_rxn_dict[rxn_elements_name]:
 
             if base_rxn_dict[rxn_elements_name][element]["Type"] == "Buffer":
@@ -131,57 +196,58 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
 
 
-
-
     ############################
 
     # First do the Aqueous Elements
 
     aq_tubes = []
-    for idx, item in aqueous_master_mix_dataframe['Tubes'].items():
+    for idx, item in Aqueous_master_mix_dataframe['Tubes'].items():
         aq_tubes = aq_tubes + item
 
-    list_of_required_aqueous_mastermix_tubes = aq_tubes
-    number_of_required_aqueous_mastermix_tubes = len(aq_tubes)
+    list_of_required_Aqueous_mastermix_tubes = aq_tubes
+    number_of_required_Aqueous_mastermix_tubes = len(aq_tubes)
 
-    # Standard Components that go into every reaction
+
+
+
+    #### Standard Components that go into every reaction
 
     Aqueous_MasterMix_Tubes_dict = {}
 
-    for MasterMix_Tube in list_of_required_aqueous_mastermix_tubes:
+    for MasterMix_Tube in list_of_required_Aqueous_mastermix_tubes:
 
         # Also add the "residual_volume" to the top level of the tube dict
         # this makes the "make_up to the mark volume" easier to calculate and keep track of.
         Aqueous_MasterMix_Tubes_dict[MasterMix_Tube] = {}
-        Aqueous_MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]
+        Aqueous_MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Aqueous"]
 
 
         Elements_dict = {}
 
-        for element in base_rxn_dict["rxn_aqueous_elements"].keys():
+        for element in base_rxn_dict["rxn_Aqueous_elements"].keys():
 
             # check if it is to be added to the master mix or not by cross referencing with the variable list.
-            if element in aqueous_variables:
+            if element in Aqueous_variables:
                 #print(element + " is in the variables modulated, therefore skipping it's addition to the mastermix..")
                 pass
 
             else:
                 # if it's a template then execute this cell
-                if base_rxn_dict["rxn_aqueous_elements"][element]["Type"] == "Template":
+                if base_rxn_dict["rxn_Aqueous_elements"][element]["Type"] == "Template":
 
-                    Template_Aqueous_Master_Mix_conc_nM = required_concentration_in_Master_Mix(volume_of_MasterMix_to_rxn =base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["aqueous"],
-                                                                                    rxn_concentration= base_rxn_dict["rxn_aqueous_elements"][element]["rxn_conc_nM"],
+                    Template_Aqueous_Master_Mix_conc_nM = required_concentration_in_Master_Mix(volume_of_MasterMix_to_rxn =base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Aqueous"],
+                                                                                    rxn_concentration= base_rxn_dict["rxn_Aqueous_elements"][element]["rxn_conc_nM"],
                                                                                     total_rxn_volume = base_rxn_dict["Metainfo"]["total_reaction_volume_ul"])
 
 
-                    Element_MasterMix_Volume_ul = DNA_ul_to_add_to_aqueous_MasterMix_from_ng_per_ul_stock(stock_conc_ng_per_ul = base_rxn_dict["rxn_aqueous_elements"][element]["stock_conc_ng_per_ul"],
-                                                                                    len_base_pairs = base_rxn_dict["rxn_aqueous_elements"][element]["len_base_pairs"],
-                                                                                    avg_daltons_per_bp = base_rxn_dict["rxn_aqueous_elements"][element]["avg_daltons_per_bp"],
+                    Element_MasterMix_Volume_ul = DNA_ul_to_add_to_Aqueous_MasterMix_from_ng_per_ul_stock(stock_conc_ng_per_ul = base_rxn_dict["rxn_Aqueous_elements"][element]["stock_conc_ng_per_ul"],
+                                                                                    len_base_pairs = base_rxn_dict["rxn_Aqueous_elements"][element]["len_base_pairs"],
+                                                                                    avg_daltons_per_bp = base_rxn_dict["rxn_Aqueous_elements"][element]["avg_daltons_per_bp"],
                                                                                     Aqueous_Master_Mix_conc_nM = Template_Aqueous_Master_Mix_conc_nM,
-                                                                                    Aqueous_Master_mix_volume_ul =  base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"])
+                                                                                    Aqueous_Master_mix_volume_ul =  base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Aqueous"])
                     
                     Element_Pipetting_Instructions_dict =   {
-                                                                "Stock_source_well": base_rxn_dict["rxn_aqueous_elements"][element]["Stock_source_well"],
+                                                                "Stock_source_well": base_rxn_dict["rxn_Aqueous_elements"][element]["Stock_source_well"],
                                                                 "Element_stock_volume_ul": Element_MasterMix_Volume_ul
                                                             }
                     
@@ -190,19 +256,19 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
 
                 # if its a normal element...
-                elif base_rxn_dict["rxn_aqueous_elements"][element]["Type"] == "Standard":
+                elif base_rxn_dict["rxn_Aqueous_elements"][element]["Type"] == "Standard":
 
-                    Element_Aqueous_Master_Mix_conc_uM = required_concentration_in_Master_Mix(volume_of_MasterMix_to_rxn =base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["aqueous"],
-                                                                            rxn_concentration=base_rxn_dict["rxn_aqueous_elements"][element]["rxn_conc_uM"],
+                    Element_Aqueous_Master_Mix_conc_uM = required_concentration_in_Master_Mix(volume_of_MasterMix_to_rxn =base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Aqueous"],
+                                                                            rxn_concentration=base_rxn_dict["rxn_Aqueous_elements"][element]["rxn_conc_uM"],
                                                                             total_rxn_volume = base_rxn_dict["Metainfo"]["total_reaction_volume_ul"])
 
-                    Element_MasterMix_Volume_ul = dilution_calculator(stock_concentration = base_rxn_dict["rxn_aqueous_elements"][element]["stock_conc_uM"],
+                    Element_MasterMix_Volume_ul = dilution_calculator(stock_concentration = base_rxn_dict["rxn_Aqueous_elements"][element]["stock_conc_uM"],
                                                     final_concentration = Element_Aqueous_Master_Mix_conc_uM, 
-                                                    final_total_volume = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"])
+                                                    final_total_volume = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Aqueous"])
 
 
                     Element_Pipetting_Instructions_dict =   {
-                                                                "Stock_source_well": base_rxn_dict["rxn_aqueous_elements"][element]["Stock_source_well"],
+                                                                "Stock_source_well": base_rxn_dict["rxn_Aqueous_elements"][element]["Stock_source_well"],
                                                                 "Element_stock_volume_ul": Element_MasterMix_Volume_ul
                                                             }
                     
@@ -211,7 +277,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
 
 
-                elif base_rxn_dict["rxn_aqueous_elements"][element]["Type"] == "Buffer":
+                elif base_rxn_dict["rxn_Aqueous_elements"][element]["Type"] == "Buffer":
                     Element_Pipetting_Instructions_dict = "Placeholder"
                 else:
                     raise Exception("Unknown rxn element type: Check base_rxn.json for "+ element)
@@ -225,11 +291,11 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     # do the variable factors
 
     Aqueous_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
-    "aqueous",
-    aqueous_variables,
-    aqueous_master_mix_dataframe,
+    "Aqueous",
+    Aqueous_variables,
+    Aqueous_master_mix_dataframe,
     Aqueous_MasterMix_Tubes_dict,
-    list_of_required_aqueous_mastermix_tubes,
+    list_of_required_Aqueous_mastermix_tubes,
     base_rxn_dict = base_rxn_dict
     )
 
@@ -237,33 +303,38 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     ####
 
-    # sanity check by confirming that all the volumes add up tobase_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]
-    base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]
+    def VolumeSanityCheck(MasterMixType, MasterMix_Tubes_dict, base_rxn_dict = base_rxn_dict):
 
-    for tube in Aqueous_MasterMix_Tubes_dict:
+        # sanity check by confirming that all the volumes add up to
+        # base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["MasterMixType"]
 
-        tube_vol_list = []
-        for element in Aqueous_MasterMix_Tubes_dict[tube]:
-            tube_vol_list.append(Aqueous_MasterMix_Tubes_dict[tube][element]["Element_stock_volume_ul"])
+        for tube in MasterMix_Tubes_dict:
 
-        if round(sum(tube_vol_list)) == base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]:
-            pass
+            tube_vol_list = []
+            for element in MasterMix_Tubes_dict[tube]:
+                tube_vol_list.append(MasterMix_Tubes_dict[tube][element]["Element_stock_volume_ul"])
 
-        elif round(sum(tube_vol_list)) > base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]:
-            print(tube)
-            print(round(sum(tube_vol_list)))
-            raise Exception("The aqueous total volume is greater than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"])) 
-        
-        elif round(sum(tube_vol_list)) < base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]:
-            print(tube)
-            print(round(sum(tube_vol_list)))
-            raise Exception("The aqueous total volume is less than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"])) 
+            if round(sum(tube_vol_list)) == base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType]:
+                pass
+
+            elif round(sum(tube_vol_list)) > base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType]:
+                print(tube)
+                print(round(sum(tube_vol_list)))
+                raise Exception("The "+MasterMixType+" total volume is greater than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType])) 
+            
+            elif round(sum(tube_vol_list)) < base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType]:
+                print(tube)
+                print(round(sum(tube_vol_list)))
+                raise Exception("The "+MasterMixType+" total volume is less than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType])) 
 
 
+
+    # Perform the sanity check.
+    VolumeSanityCheck("Aqueous", Aqueous_MasterMix_Tubes_dict, base_rxn_dict = base_rxn_dict)
 
     #########################
 
-    # create the plate dict and add the aqueous MM dict under "Aqueous"
+    # create the plate dict and add the Aqueous MM dict under "Aqueous"
 
     plate_dict = {}
 
@@ -274,26 +345,26 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     # Next Components Elements
 
-    components_MM_tubes = []
-    for idx, item in components_master_mix_dataframe['Tubes'].items():
-        components_MM_tubes = components_MM_tubes + item
+    Components_MM_tubes = []
+    for idx, item in Components_master_mix_dataframe['Tubes'].items():
+        Components_MM_tubes = Components_MM_tubes + item
 
-    list_of_required_components_mastermix_tubes = components_MM_tubes
-    number_of_required_components_mastermix_tubes = len(components_MM_tubes)
+    list_of_required_Components_mastermix_tubes = Components_MM_tubes
+    number_of_required_Components_mastermix_tubes = len(Components_MM_tubes)
 
     Components_MasterMix_Tubes_dict = {}
 
     # empty lists are False in python
-    if not components_variables:
-        print("No components to be modulated.")
+    if not Components_variables:
+        print("No Components to be modulated.")
         
 
-        # iterate over the components tube list and dispense the tube volume into each one
-        for MasterMix_Tube in list_of_required_components_mastermix_tubes:
+        # iterate over the Components tube list and dispense the tube volume into each one
+        for MasterMix_Tube in list_of_required_Components_mastermix_tubes:
                 
             Element_Pipetting_Instructions_dict =   {
-                                                        "Stock_source_well": base_rxn_dict["rxn_components_elements"][element]["Stock_source_well"],
-                                                        "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"]
+                                                        "Stock_source_well": base_rxn_dict["rxn_Components_elements"][element]["Stock_source_well"],
+                                                        "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"]
                                                     }
 
             Elements_dict[element] = Element_Pipetting_Instructions_dict
@@ -303,27 +374,27 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
         ## Assign 10ul of Master Mix space to each component to be modulated.
         # Do this by:
-        # ["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"]
+        # ["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"]
         # minus
-        # 15 * len(components_variables)
+        # 15 * len(Components_variables)
         # and dispense that volume of base_system.
 
-        core_volume_of_base_system = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"] - (15 * len(components_variables))
+        core_volume_of_base_system = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"] - (15 * len(Components_variables))
 
-        # find which element in rxn_components_elements has type base system
-        for element in base_rxn_dict["rxn_components_elements"]:
+        # find which element in rxn_Components_elements has type base system
+        for element in base_rxn_dict["rxn_Components_elements"]:
 
-            if base_rxn_dict["rxn_components_elements"][element]["Type"] == "Base_System":
+            if base_rxn_dict["rxn_Components_elements"][element]["Type"] == "Base_System":
                 base_system_name = element
             else:
                 pass
 
         # then use the base system to dispense.
-        for MasterMix_Tube in list_of_required_components_mastermix_tubes:
+        for MasterMix_Tube in list_of_required_Components_mastermix_tubes:
 
             Element_Pipetting_Instructions_dict = {
-                "Stock_source_well": base_rxn_dict["rxn_components_elements"][base_system_name]["Stock_source_well"],
-                "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"] - (15 * len(components_variables))
+                "Stock_source_well": base_rxn_dict["rxn_Components_elements"][base_system_name]["Stock_source_well"],
+                "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"] - (15 * len(Components_variables))
             }
 
             Elements_dict = {}
@@ -333,7 +404,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
             # Also add the "residual_volume" to the top level of the tube dict
             # this makes the "make_up to the mark volume" easier to calculate and keep track of.
-            Components_MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] = (15 * len(components_variables))
+            Components_MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"] = (15 * len(Components_variables))
 
 
         ######
@@ -341,11 +412,11 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     # do the variable factors
 
     Components_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
-    "components",
-    components_variables,
-    components_master_mix_dataframe,
+    "Components",
+    Components_variables,
+    Components_master_mix_dataframe,
     Components_MasterMix_Tubes_dict,
-    list_of_required_components_mastermix_tubes,
+    list_of_required_Components_mastermix_tubes,
     base_rxn_dict = base_rxn_dict
     )
 
@@ -353,33 +424,14 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     #########################
 
-    # sanity check by confirming that all the volumes add up tobase_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["aqueous"]
-
-    for tube in Components_MasterMix_Tubes_dict:
-
-        tube_vol_list = []
-        for element in Components_MasterMix_Tubes_dict[tube]:
-            tube_vol_list.append(Components_MasterMix_Tubes_dict[tube][element]["Element_stock_volume_ul"])
-
-        if round(sum(tube_vol_list)) == base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"]:
-            pass
-
-        elif round(sum(tube_vol_list)) > base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"]:
-            print(tube)
-            print(round(sum(tube_vol_list)))
-            raise Exception("The aqueous total volume is greater than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"])) 
-        
-        elif round(sum(tube_vol_list)) < base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"]:
-            print(tube)
-            print(round(sum(tube_vol_list)))
-            raise Exception("The aqueous total volume is less than: "+str(base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["components"])) 
-
+    # Perform the sanity check.
+    VolumeSanityCheck("Components", Components_MasterMix_Tubes_dict, base_rxn_dict = base_rxn_dict)
 
     ################
 
 
 
-    # add the components MM dict to plate dict under "Components"
+    # add the Components MM dict to plate dict under "Components"
 
     plate_dict["Components"] = Components_MasterMix_Tubes_dict
 
@@ -387,7 +439,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     all_plates_dict[str(plate_number)] = plate_dict
 
 #########################
-with open("processed_data_files/MasterMixes/mastermix_calculations.json", 'w') as fp:
+with open("tmp/MasterMixes/mastermix_calculations.json", 'w') as fp:
     json.dump(all_plates_dict, fp)
 
 print("Saved mastermix_calculations.json")

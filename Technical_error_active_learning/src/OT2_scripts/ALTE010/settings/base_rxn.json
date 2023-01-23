@@ -2,21 +2,21 @@
   "Metainfo": {
     "Master_Mixes": {
       "total_tube_volumes_ul": {
-        "aqueous": 210,
-        "components": 85
+        "Aqueous": 210,
+        "Components": 85
       },
       "rxns_per_MM": {
-        "aqueous": 12,
-        "components": 12
+        "Aqueous": 12,
+        "Components": 12
       },
       "Volumes_added_to_rxn": {
-        "aqueous": 15,
-        "components": 5
+        "Aqueous": 15,
+        "Components": 5
       }
     },
     "total_reaction_volume_ul": 20
   },
-  "rxn_aqueous_elements": {
+  "rxn_Aqueous_elements": {
 
     "Buffer A DTT": {
         "Type" : "Buffer",
@@ -69,7 +69,7 @@
       }
 
   },
-  "rxn_components_elements": {
+  "rxn_Components_elements": {
     "Lysate": {
         "Type": "Base_System",
         "stock_conc_uM": 4,

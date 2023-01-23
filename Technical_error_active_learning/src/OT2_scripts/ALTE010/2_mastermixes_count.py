@@ -63,7 +63,7 @@ base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
 
 # import the design
-experiment_design_df = pd.read_csv("processed_data_files/Experiment_Designs/design_skeleton.csv", index_col=0)
+experiment_design_df = pd.read_csv("output/Experiment_Designs/design_skeleton.csv", index_col=0)
 
 # drop std order and run order
 experiment_design_df = experiment_design_df.drop('std.order', axis=1)
@@ -122,7 +122,7 @@ experiment_variables = pd.DataFrame(experiment_variables)
 
 
 
-### Determine if aqueous and or components are modulated.
+### Determine if Aqueous and or Components are modulated.
 
 if ('Aqueous' in experiment_variables["Type"].values) and ('Components' in experiment_variables["Type"].values):
     MasterMixesModulated = "Both"
@@ -212,24 +212,24 @@ else:
 if MasterMixesModulated == "Both":
 
     # get the experiment_variables == "Aqueous" and get the list of names
-    aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
-    aqueous_variables = list(aqueous_lookup_table["Variable"])
+    Aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
+    Aqueous_variables = list(Aqueous_lookup_table["Variable"])
 
     # get the experiment_variables == "Components" and get the list of names
-    components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
-    components_variables = list(components_lookup_table["Variable"])
+    Components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
+    Components_variables = list(Components_lookup_table["Variable"])
 
 elif MasterMixesModulated == "Aqueous":
 
     # get the experiment_variables == "Aqueous" and get the list of names
-    aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
-    aqueous_variables = list(aqueous_lookup_table["Variable"])
+    Aqueous_lookup_table = experiment_variables[experiment_variables["Type"] == "Aqueous"]
+    Aqueous_variables = list(Aqueous_lookup_table["Variable"])
 
 elif MasterMixesModulated == "Components":
 
     # get the experiment_variables == "Components" and get the list of names
-    components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
-    components_variables = list(components_lookup_table["Variable"])
+    Components_lookup_table = experiment_variables[experiment_variables["Type"] == "Components"]
+    Components_variables = list(Components_lookup_table["Variable"])
 
 else:
     raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
@@ -248,22 +248,22 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
     plate_df = plate_df.drop(["Well", "Plate"], axis=1)
 
 
-    ### Split design in to aqueous and components columns
+    ### Split design in to Aqueous and Components columns
 
     if MasterMixesModulated == "Both":
-        # select aqueous variables in experimental design
-        plate_df_aqueous = plate_df[aqueous_variables]
+        # select Aqueous variables in experimental design
+        plate_df_Aqueous = plate_df[Aqueous_variables]
 
         # select Components variables in experimental design
-        plate_df_components = plate_df[components_variables]
+        plate_df_Components = plate_df[Components_variables]
 
     elif MasterMixesModulated == "Aqueous":
-        # select aqueous variables in experimental design
-        plate_df_aqueous = plate_df[aqueous_variables]
+        # select Aqueous variables in experimental design
+        plate_df_Aqueous = plate_df[Aqueous_variables]
 
     elif MasterMixesModulated == "Components":
         # select Components variables in experimental design
-        plate_df_components = plate_df[components_variables]
+        plate_df_Components = plate_df[Components_variables]
 
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
@@ -274,28 +274,28 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
     if MasterMixesModulated == "Both":
 
         # Get unique rows
-        aqueous_master_mixes = plate_df_aqueous.copy()
+        Aqueous_master_mixes = plate_df_Aqueous.copy()
         # Get unique rows
-        aqueous_master_mixes = aqueous_master_mixes.drop_duplicates()
+        Aqueous_master_mixes = Aqueous_master_mixes.drop_duplicates()
 
         # Get unique rows
-        components_master_mixes = plate_df_components.copy()
+        Components_master_mixes = plate_df_Components.copy()
         # Get unique rows
-        components_master_mixes = components_master_mixes.drop_duplicates()
+        Components_master_mixes = Components_master_mixes.drop_duplicates()
 
     elif MasterMixesModulated == "Aqueous":
 
         # Get unique rows
-        aqueous_master_mixes = plate_df_aqueous.copy()
+        Aqueous_master_mixes = plate_df_Aqueous.copy()
         # Get unique rows
-        aqueous_master_mixes = aqueous_master_mixes.drop_duplicates()
+        Aqueous_master_mixes = Aqueous_master_mixes.drop_duplicates()
 
     elif MasterMixesModulated == "Components":
 
         # Get unique rows
-        components_master_mixes = plate_df_components.copy()
+        Components_master_mixes = plate_df_Components.copy()
         # Get unique rows
-        components_master_mixes = components_master_mixes.drop_duplicates()
+        Components_master_mixes = Components_master_mixes.drop_duplicates()
 
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
@@ -358,18 +358,18 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
     # execute for the necessary mastermixes
     if MasterMixesModulated == "Both":
 
-        aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, plate_df_aqueous)
-        components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, plate_df_components)
+        Aqueous_master_mixes = CountExperimentsPerMasterMix(Aqueous_master_mixes, plate_df_Aqueous)
+        Components_master_mixes = CountExperimentsPerMasterMix(Components_master_mixes, plate_df_Components)
 
     elif MasterMixesModulated == "Aqueous":
 
-        aqueous_master_mixes = CountExperimentsPerMasterMix(aqueous_master_mixes, plate_df_aqueous)
-        components_master_mixes = PopulateAllWellsWithMasterMix(aqueous_master_mixes)
+        Aqueous_master_mixes = CountExperimentsPerMasterMix(Aqueous_master_mixes, plate_df_Aqueous)
+        Components_master_mixes = PopulateAllWellsWithMasterMix(Aqueous_master_mixes)
     
     elif MasterMixesModulated == "Components":
 
-        components_master_mixes = CountExperimentsPerMasterMix(components_master_mixes, plate_df_components)
-        aqueous_master_mixes = PopulateAllWellsWithMasterMix(components_master_mixes)
+        Components_master_mixes = CountExperimentsPerMasterMix(Components_master_mixes, plate_df_Components)
+        Aqueous_master_mixes = PopulateAllWellsWithMasterMix(Components_master_mixes)
 
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
@@ -377,7 +377,7 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
 
     ###### sanity check to make sure the number of experiments per master mix == total experiments on the plate
 
-    if aqueous_master_mixes["Experiments"].sum() == plate_df.shape[0] and components_master_mixes["Experiments"].sum() == plate_df.shape[0]:
+    if Aqueous_master_mixes["Experiments"].sum() == plate_df.shape[0] and Components_master_mixes["Experiments"].sum() == plate_df.shape[0]:
         print("Master Mix experiment counts check out..")
     else:
         raise ValueError('Experiments per Master mix do not match total number of experiments.' )
@@ -445,51 +445,51 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
         return MasterMixDf
     
     # perform for both regardless of MasterMixesModulated
-    aqueous_master_mixes = DesignateMasterMixTubes(aqueous_master_mixes, substrate_source_list_possibles)
-    components_master_mixes = DesignateMasterMixTubes(components_master_mixes, lysate_source_list_possibles)
+    Aqueous_master_mixes = DesignateMasterMixTubes(Aqueous_master_mixes, substrate_source_list_possibles)
+    Components_master_mixes = DesignateMasterMixTubes(Components_master_mixes, lysate_source_list_possibles)
 
     # save binaries of these working concentration designs
-    aqueous_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
-    components_master_mixes.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Working_Concs.pkl")
+    Aqueous_master_mixes.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
+    Components_master_mixes.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
     
 
 
     #### Prepare the master mix stock concentrations
 
     # create a copy
-    aqueous_master_mixes_stocks = aqueous_master_mixes.copy()
-    components_master_mixes_stocks = components_master_mixes.copy()
+    Aqueous_master_mixes_stocks = Aqueous_master_mixes.copy()
+    Components_master_mixes_stocks = Components_master_mixes.copy()
 
     # execute for the necessary mastermixes
     if MasterMixesModulated == "Both":
 
         # uses dilution factor generated using plating volumes from base_rxn["Metainfo"]
-        aqueous_master_mixes_stocks[aqueous_variables] = aqueous_master_mixes_stocks[aqueous_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["aqueous"])
-        components_master_mixes_stocks[components_variables] = components_master_mixes_stocks[components_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["components"])
+        Aqueous_master_mixes_stocks[Aqueous_variables] = Aqueous_master_mixes_stocks[Aqueous_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Aqueous"])
+        Components_master_mixes_stocks[Components_variables] = Components_master_mixes_stocks[Components_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Components"])
 
     elif MasterMixesModulated == "Aqueous":
 
         # uses dilution factor generated using plating volumes from base_rxn["Metainfo"]
-        aqueous_master_mixes_stocks[aqueous_variables] = aqueous_master_mixes_stocks[aqueous_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["aqueous"])
-        components_master_mixes_stocks["Components"] = components_master_mixes_stocks["Components"] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["components"])
+        Aqueous_master_mixes_stocks[Aqueous_variables] = Aqueous_master_mixes_stocks[Aqueous_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Aqueous"])
+        Components_master_mixes_stocks["Components"] = Components_master_mixes_stocks["Components"] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Components"])
 
     
     elif MasterMixesModulated == "Components":
 
         # uses dilution factor generated using plating volumes from base_rxn["Metainfo"]
-        aqueous_master_mixes_stocks["Aqueous"] = aqueous_master_mixes_stocks["Aqueous"] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["aqueous"])
-        components_master_mixes_stocks[components_variables] = components_master_mixes_stocks[components_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["components"])
+        Aqueous_master_mixes_stocks["Aqueous"] = Aqueous_master_mixes_stocks["Aqueous"] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Aqueous"])
+        Components_master_mixes_stocks[Components_variables] = Components_master_mixes_stocks[Components_variables] * (base_rxn_dict["Metainfo"]["total_reaction_volume_ul"]/base_rxn_dict["Metainfo"]["Master_Mixes"]["Volumes_added_to_rxn"]["Components"])
     
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
     # save human readable CSVs
-    aqueous_master_mixes_stocks.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Stocks_human_readable"+".csv", index=False)
-    components_master_mixes_stocks.to_csv("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Stocks_human_readable"+".csv", index=False)
+    Aqueous_master_mixes_stocks.to_csv("output/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks_human_readable"+".csv", index=False)
+    Components_master_mixes_stocks.to_csv("output/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks_human_readable"+".csv", index=False)
 
     # save machine readable binaries
-    aqueous_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Stocks.pkl")
-    components_master_mixes_stocks.to_pickle("processed_data_files/MasterMixes/"+str(plate_number)+"_plate_components_MasterMix_Stocks.pkl")
+    Aqueous_master_mixes_stocks.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks.pkl")
+    Components_master_mixes_stocks.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks.pkl")
 
 
     # end of function

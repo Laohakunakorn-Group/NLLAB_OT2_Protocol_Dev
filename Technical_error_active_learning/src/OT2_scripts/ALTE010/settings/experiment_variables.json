@@ -1,6 +1,6 @@
 {
-    "Variable": ["MG_Glut", "K_Glut", "DTT", "T7_RNAP"],
-    "Type": ["Aqueous", "Aqueous", "Aqueous", "Components"],
-    "Max":[ 10.0, 130.0, 1.2, 0.1],
-    "Min":[ 3.0, 80.0, 0.7, 0.01]
+    "Variable": ["MG_Glut", "K_Glut", "DTT"],
+    "Type": ["Aqueous", "Aqueous", "Aqueous"],
+    "Max":[ 9.0, 130.0, 1.2],
+    "Min":[ 3.0, 80.0, 0.7]
 }

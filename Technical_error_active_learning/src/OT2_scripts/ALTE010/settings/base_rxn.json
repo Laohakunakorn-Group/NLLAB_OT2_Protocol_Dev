@@ -58,7 +58,7 @@
 
     "MG_Glut": {
         "Type": "Standard",
-        "stock_conc_uM": 1000,
+        "stock_conc_uM": 250,
         "Stock_source_well": "B1"
       },
       "K_Glut": {
@@ -79,11 +79,6 @@
     "Stock-60 BME": {
         "Type" : "Buffer",
         "Stock_source_well": "C2"
-    },
-    "T7_RNAP": {
-      "Type": "Standard",
-      "stock_conc_uM": 5,
-      "Stock_source_well": "C3"
     }
 }
 }

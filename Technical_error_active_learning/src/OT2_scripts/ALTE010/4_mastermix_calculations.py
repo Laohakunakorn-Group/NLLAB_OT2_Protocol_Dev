@@ -70,6 +70,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
         Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
+
         # extract the Components variables
         Components_variables = list(Components_master_mix_dataframe.columns)
         Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
@@ -84,8 +85,12 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Aqueous_variables = list(Aqueous_master_mix_dataframe.columns)
         Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
+        # Components
+        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
+
         # Placeholder
-        Components_variables = ["Components"]
+        Components_variables = ["Lysate"]
 
     elif MasterMixesModulated == "Components":
 
@@ -97,13 +102,17 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Components_variables = list(Components_master_mix_dataframe.columns)
         Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
 
+        # Aqueous
+        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
+
         # Placeholder
         Aqueous_variables = ["Aqueous"]
 
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
-
+    print(Components_master_mix_dataframe)
 
     def CalculateVolumesForVariableFactors(
         MasterMixType,
@@ -139,6 +148,10 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
                     # retrieve the corresponding master mix conc (uM)
                     Element_Master_Mix_conc_uM = mastermix_dataframe.loc[idx,component]
+
+
+                    print(rxn_elements_name)
+                    print(component)
 
                     # Calculate the ul to be added
                     Element_MasterMix_Volume_ul = dilution_calculator(stock_concentration = base_rxn_dict[rxn_elements_name][component]["stock_conc_uM"],

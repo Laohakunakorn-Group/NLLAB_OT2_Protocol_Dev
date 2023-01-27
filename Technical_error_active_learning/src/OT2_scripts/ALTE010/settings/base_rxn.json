@@ -64,7 +64,6 @@
       "K_Glut": {
         "Type": "Variable",
         "stock_conc_uM": 9000,
-        "rxn_conc_uM": 10,
         "Stock_source_well": "B2"
       }
 

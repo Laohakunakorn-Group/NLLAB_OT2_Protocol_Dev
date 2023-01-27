@@ -51,18 +51,18 @@
       "Stock_source_well": "A5"
     },
     "DTT": {
-        "Type": "Standard",
+        "Type": "Variable",
         "stock_conc_uM": 100,
         "Stock_source_well": "A6"
       },
 
     "MG_Glut": {
-        "Type": "Standard",
-        "stock_conc_uM": 1000,
+        "Type": "Variable",
+        "stock_conc_uM": 400,
         "Stock_source_well": "B1"
       },
       "K_Glut": {
-        "Type": "Standard",
+        "Type": "Variable",
         "stock_conc_uM": 9000,
         "rxn_conc_uM": 10,
         "Stock_source_well": "B2"
@@ -79,11 +79,6 @@
     "Stock-60 BME": {
         "Type" : "Buffer",
         "Stock_source_well": "C2"
-    },
-    "T7_RNAP": {
-      "Type": "Standard",
-      "stock_conc_uM": 5,
-      "Stock_source_well": "C3"
     }
 }
 }

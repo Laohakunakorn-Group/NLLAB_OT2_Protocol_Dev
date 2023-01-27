@@ -286,7 +286,7 @@ plates_list = list(experiment_design_df["Plate"].unique())
 for plate_number in plates_list:
 
 
-    aqueous_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_aqueous_MasterMix_Working_Concs.pkl")
+    aqueous_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
     Components_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
 
     # slice the experimental design

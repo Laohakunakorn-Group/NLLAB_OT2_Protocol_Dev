@@ -1,4 +1,3 @@
-from auxillary_scripts.calculators import *
 from auxillary_scripts.mastermix_calculation_functions import *
 import json
 import pandas as pd
@@ -13,8 +12,11 @@ import pandas as pd
 
 ################################
 
-
+# initialise the all plates dict
 all_plates_dict = {}
+
+# initialise the Total_vol_df
+Total_col_df = pd.DataFrame()
 
 # retrieve the number of plates in the experiment
 design_final_df = pd.read_csv("output/Experiment_Designs/design_final.csv")
@@ -172,7 +174,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
             # check if it is to be added to the master mix or not by cross referencing with the variable list.
             if base_rxn_dict["rxn_Aqueous_elements"][element]["Type"] == "Variable":
-                print(element + " is in the variables modulated, therefore skipping it's addition to the mastermix..")
+                #print(element + " is in the variables modulated, therefore skipping it's addition to the mastermix..")
                 pass
 
             else:
@@ -280,6 +282,13 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         MasterMixType = "Aqueous",
         MasterMix_Tubes_dict = Aqueous_MasterMix_Tubes_dict,
         base_rxn_dict = base_rxn_dict)
+
+    # Calculate Total volumes
+    Aqueous_vol_dict = CalculateTotalVolumesPlate(
+    MasterMix_Tubes_dict = Aqueous_MasterMix_Tubes_dict
+    )
+
+
 
     #########################
 
@@ -392,16 +401,31 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         base_rxn_dict = base_rxn_dict)
 
     ################
+    # Calculate Total volumes
+    Components_vol_dict = CalculateTotalVolumesPlate(
+    MasterMix_Tubes_dict = Components_MasterMix_Tubes_dict
+    )
 
     # add the Components MM dict to plate dict under "Components"
-
     plate_dict["Components"] = Components_MasterMix_Tubes_dict
 
     # add that plate to the top level dict under the plate number
     all_plates_dict[str(plate_number)] = plate_dict
+
+    # concatenate the vol_dicts
+    # add plate number
+    # append to the dataframe
+    Aqueous_vol_dict.update(Components_vol_dict)
+    Total_col_dict = Aqueous_vol_dict
+    Total_col_dict["Plate_Number"] = plate_number
+    Total_col_df = Total_col_df.append(Total_col_dict, ignore_index=True)
+
 
 #########################
 with open("tmp/MasterMixes/mastermix_calculations.json", 'w') as fp:
     json.dump(all_plates_dict, fp)
 
 print("Saved mastermix_calculations.json")
+
+Total_col_df.to_csv("./output/Instructions/Total_Required_Reagent_Volumes.csv")
+print("Saved Total_Required_Reagent_Volumes.csv")

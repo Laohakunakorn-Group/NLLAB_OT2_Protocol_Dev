@@ -30,11 +30,10 @@ def run(protocol: protocol_api.ProtocolContext):
 
     # reading in OT2 Settings
     plating_labware_settings_dict_path = "settings/labware_settings.json"
-    pipetting_settings_dict_path = "settings/pipetting_settings.json"
-
     plating_labware_settings_dict = json.load(open(plating_labware_settings_dict_path, 'r'))
     protocol.comment("Plating labware settings json file was read in")
 
+    pipetting_settings_dict_path = "settings/pipetting_settings.json"
     pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
     protocol.comment("Pipetting settings json file was read in")
 
@@ -206,7 +205,7 @@ def run(protocol: protocol_api.ProtocolContext):
         VolumeUL = pipetting_settings_dict["Plating"][SolutionType]["volume"]
 
         # the aspirate volume is 0.5ul greater than the intended volume for reverse pipetting
-        aspirate_volume = VolumeUL + 0.5
+        aspirate_volume = VolumeUL + pipetting_settings_dict["Plating"]["Meta"]["Reverse_Pipetting_Residual_ul"]
 
         # Select pipette based on aspirate_volume
         

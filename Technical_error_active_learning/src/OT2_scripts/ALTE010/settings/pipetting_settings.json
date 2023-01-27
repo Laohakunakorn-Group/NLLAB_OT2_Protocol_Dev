@@ -1,5 +1,9 @@
 { "MasterMix": {
 
+  "Meta": {
+    "MasterMix_Residual_xFactor": 1.1
+  },
+
   "Aqueous": {
 
     "Stock_Tube_bottom_clearance" : 7.8,
@@ -37,11 +41,16 @@
 
   "Plating": {
 
+  "Meta": {
+    "Reverse_Pipetting_Residual_ul": 0.5
+  },
+
     "Aqueous": {
 
       "aspirate_height_init" : 7.8,
 
       "aspirate_height_inc" : 0.3,
+
     
       "volume" : 15,
     

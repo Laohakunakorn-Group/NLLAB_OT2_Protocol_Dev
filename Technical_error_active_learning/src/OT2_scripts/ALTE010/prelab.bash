@@ -2,6 +2,7 @@
 mkdir output
 mkdir output/Experiment_Designs
 mkdir output/MasterMixes
+mkdir output/Instructions
 
 # remake /tmp
 if [ -d "/tmp" ] 

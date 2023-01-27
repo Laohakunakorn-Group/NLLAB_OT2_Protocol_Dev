@@ -84,8 +84,16 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Aqueous_variables = list(Aqueous_master_mix_dataframe.columns)
         Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
-        # Placeholder
-        Components_variables = ["Components"]
+
+        # Components
+        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
+
+        # extract the Components variables
+        Components_variables = list(Components_master_mix_dataframe.columns)
+        Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
+
+
 
     elif MasterMixesModulated == "Components":
 
@@ -97,14 +105,29 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Components_variables = list(Components_master_mix_dataframe.columns)
         Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
 
-        # Placeholder
-        Aqueous_variables = ["Aqueous"]
+        # Aqueous
+        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
+
+        # extract the Aqueous variables
+        Aqueous_variables = list(Aqueous_master_mix_dataframe.columns)
+        Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
     else:
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
+    
+    # clarity readout
+    print()
+    if MasterMixesModulated == "Both":
+        print("Both Master Mixes are Modulated.")
+    elif MasterMixesModulated == "Aqueous":
+        print("Only the Aqueous Master Mixes are Modulated.")
+    elif MasterMixesModulated == "Components":
+        print("Only the Components Master Mixes are Modulated.")
+    print()
 
-
+    
     def CalculateVolumesForVariableFactors(
         MasterMixType,
         list_variables,
@@ -194,8 +217,6 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
 
 
-
-
     ############################
 
     # First do the Aqueous Elements
@@ -227,7 +248,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         for element in base_rxn_dict["rxn_Aqueous_elements"].keys():
 
             # check if it is to be added to the master mix or not by cross referencing with the variable list.
-            if element in Aqueous_variables:
+            if base_rxn_dict["rxn_Aqueous_elements"][element]["Type"] == "Variable":
                 #print(element + " is in the variables modulated, therefore skipping it's addition to the mastermix..")
                 pass
 
@@ -290,14 +311,22 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         
     # do the variable factors
 
-    Aqueous_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
-    "Aqueous",
-    Aqueous_variables,
-    Aqueous_master_mix_dataframe,
-    Aqueous_MasterMix_Tubes_dict,
-    list_of_required_Aqueous_mastermix_tubes,
-    base_rxn_dict = base_rxn_dict
-    )
+    # only calculate the varying volumes for the modulated mixes
+    if MasterMixesModulated == "Both" or MasterMixesModulated == "Aqueous":
+
+        Aqueous_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
+        "Aqueous",
+        Aqueous_variables,
+        Aqueous_master_mix_dataframe,
+        Aqueous_MasterMix_Tubes_dict,
+        list_of_required_Aqueous_mastermix_tubes,
+        base_rxn_dict = base_rxn_dict
+        )
+    
+    elif MasterMixesModulated == "Components":
+        pass
+    else:
+        raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
 
 
@@ -354,16 +383,22 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
     Components_MasterMix_Tubes_dict = {}
 
-    # empty lists are False in python
-    if not Components_variables:
+    # If aqueous then just dispense the same into each well
+    if MasterMixesModulated == "Aqueous":
         print("No Components to be modulated.")
-        
+
 
         # iterate over the Components tube list and dispense the tube volume into each one
         for MasterMix_Tube in list_of_required_Components_mastermix_tubes:
-                
+
+            # iterate over the components to find the base system
+            for element in base_rxn_dict["rxn_Components_elements"]:
+                if base_rxn_dict["rxn_Components_elements"][element]["Type"] == "Base_System":
+                    base_system_name = element
+            
+            # then just dispense the total_tube_volumes_ul of Components of the base system into the well. No buffer.
             Element_Pipetting_Instructions_dict =   {
-                                                        "Stock_source_well": base_rxn_dict["rxn_Components_elements"][element]["Stock_source_well"],
+                                                        "Stock_source_well": base_rxn_dict["rxn_Components_elements"][base_system_name]["Stock_source_well"],
                                                         "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"]
                                                     }
 
@@ -409,17 +444,22 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
         ######
 
-    # do the variable factors
+    # do the variable factors if appropriate
+    if MasterMixesModulated == "Both" or MasterMixesModulated == "Components":
 
-    Components_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
-    "Components",
-    Components_variables,
-    Components_master_mix_dataframe,
-    Components_MasterMix_Tubes_dict,
-    list_of_required_Components_mastermix_tubes,
-    base_rxn_dict = base_rxn_dict
-    )
+        Components_MasterMix_Tubes_dict = CalculateVolumesForVariableFactors(
+        "Components",
+        Components_variables,
+        Components_master_mix_dataframe,
+        Components_MasterMix_Tubes_dict,
+        list_of_required_Components_mastermix_tubes,
+        base_rxn_dict = base_rxn_dict
+        )
 
+    elif MasterMixesModulated == "Aqueous":
+        pass
+    else:
+        raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
 
     #########################

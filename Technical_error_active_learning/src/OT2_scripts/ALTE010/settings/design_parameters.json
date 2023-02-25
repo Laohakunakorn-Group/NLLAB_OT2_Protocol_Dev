@@ -1,5 +1,5 @@
 {
-    "Randomise": 0,
+    "Randomise": 1,
     "Technical_Replicates" : 5,
     "Reaction_Volume": 20,
     "Well_Spacing": 1,

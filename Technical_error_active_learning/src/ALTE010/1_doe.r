@@ -24,15 +24,34 @@ design_parameters_list <- fromJSON(file = "settings/design_parameters.json")
 # get the number of rows of the df to use as # of variables for generating design_coded
 number_of_variables <- nrow(experiment_variables_df)
 
+# Building a design
+
+## Links
+
+# Tutorial: https://r-inthelab.net/2022/06/15/response-surface-designs-and-their-analysis-with-r/
+# Functions docs: https://rdrr.io/cran/rsm/man/ccd.html
+
 # intialises experimental design_coded
-design_coded <- ccd(basis = number_of_variables,
-                n0 = 2,
-                wbreps = 1,
-                blocks = "Block",
-                alpha = "orthogonal",
-                oneblock = TRUE,
-                randomize = design_parameters_list$Randomise,
-                inscribed = FALSE)
+design_coded <- ccd(
+    
+    # Number of diamentions == the number of variables
+    basis = number_of_variables,
+
+    # number of centerpoints
+    n0 = 2,
+
+    # number of technical replicates
+    wbreps = 1,
+
+    blocks = "Block",
+
+    # places the star points on the planes on the box
+    alpha = "faces",
+
+    # Combines the design into one block. Note, the centerpoints for both the box and star blocks are kept.
+    oneblock = TRUE,
+    randomize = design_parameters_list$Randomise,
+    inscribed = FALSE)
 
 # convert the design_coded object to a data.frame
 design_coded <- as.data.frame(design_coded)

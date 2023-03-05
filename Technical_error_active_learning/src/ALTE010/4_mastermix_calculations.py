@@ -324,6 +324,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
             for element in base_rxn_dict["rxn_Components_elements"]:
                 if base_rxn_dict["rxn_Components_elements"][element]["Type"] == "Base_System":
                     base_system_name = element
+
             
             # then just dispense the total_tube_volumes_ul of Components of the base system into the well. No buffer.
             Element_Pipetting_Instructions_dict =   {
@@ -331,7 +332,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
                                                         "Element_stock_volume_ul": base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"]["Components"]
                                                     }
 
-            Elements_dict[element] = Element_Pipetting_Instructions_dict
+            Elements_dict[base_system_name] = Element_Pipetting_Instructions_dict
             Components_MasterMix_Tubes_dict[MasterMix_Tube] = Elements_dict 
         
     else:
@@ -348,8 +349,10 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         # find which element in rxn_Components_elements has type base system
         for element in base_rxn_dict["rxn_Components_elements"]:
 
+
             if base_rxn_dict["rxn_Components_elements"][element]["Type"] == "Base_System":
                 base_system_name = element
+            
             else:
                 pass
 

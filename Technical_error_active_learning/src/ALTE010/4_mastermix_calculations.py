@@ -247,6 +247,11 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         
     # do the variable factors
 
+    # Calculate Volume Avalible for variable factors
+    volume_avalible_per_factor = CalculateResidualVolumeAllocatedForVariableFactors(Aqueous_MasterMix_Tubes_dict, Aqueous_variables)
+
+    print("Volume Avalible per Aqueous factor: " + str(volume_avalible_per_factor))
+
     # only calculate the varying volumes for the modulated mixes
     if MasterMixesModulated == "Both" or MasterMixesModulated == "Aqueous":
 
@@ -256,6 +261,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Aqueous_master_mix_dataframe,
         Aqueous_MasterMix_Tubes_dict,
         list_of_required_Aqueous_mastermix_tubes,
+        volume_avalible_per_factor,
         base_rxn_dict = base_rxn_dict
         )
     

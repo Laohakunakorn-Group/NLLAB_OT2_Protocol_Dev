@@ -8,13 +8,49 @@ base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 pipetting_settings_dict_path = "./settings/pipetting_settings.json"
 pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
 
+
+
+
+
+
+def CalculateResidualVolumeAllocatedForVariableFactors(MasterMix_Tubes_dict, list_variables):
+
+    # check all residule volumes are the same
+
+    residual_volumes = []
+    for MasterMix_Tube in MasterMix_Tubes_dict:
+        residual_volumes.append(MasterMix_Tubes_dict[MasterMix_Tube]["residual_volume"])
+
+    if not (residual_volumes.count(residual_volumes[0]) == len(residual_volumes)):
+        raise Exception("There are varying residual volumes leading into the variable factors..")
+    else:
+        pass
+
+    # as they are the same, grab the first one
+    residual_volume = residual_volumes[0]
+
+    # get the # of variables
+    number_of_variables = len(list_variables)
+
+    # divide
+    volume_avalible_per_factor = residual_volume/number_of_variables
+
+    # round up to the nearest ul
+    volume_avalible_per_factor = round(volume_avalible_per_factor)
+
+    return volume_avalible_per_factor
+    
+
+
+
 def CalculateVolumesForVariableFactors(
     MasterMixType,
     list_variables,
     mastermix_dataframe,
     MasterMix_Tubes_dict,
     list_of_required_mastermix_tubes,
-    base_rxn_dict = base_rxn_dict
+    volume_avalible_per_factor,
+    base_rxn_dict = base_rxn_dict,
     ):
 
     # extract the key identifiers based on master mix type
@@ -49,9 +85,9 @@ def CalculateVolumesForVariableFactors(
                                                 final_concentration = Element_Master_Mix_conc_uM, 
                                                 final_total_volume = base_rxn_dict["Metainfo"]["Master_Mixes"]["total_tube_volumes_ul"][MasterMixType_short])
 
-                #### Check that the volume is 1.0 < x < 10
-                if not 0.5 <= Element_MasterMix_Volume_ul <= 15:
-                    raise Exception("The required volume is not between 0.5 < x < 10 ul.  "+ str(Element_MasterMix_Volume_ul) +" "+ component) 
+                #### Check that the volume is 0.5 < x < volume_avalible_per_factor
+                if not 0.5 <= Element_MasterMix_Volume_ul <= volume_avalible_per_factor:
+                    raise Exception("The required volume is not between 0.5 < x < " + str(volume_avalible_per_factor) + " ul.  "+ str(Element_MasterMix_Volume_ul) +" "+ component) 
                 
                 # Construct the 
                 Element_Pipetting_Instructions_dict = {

@@ -32,9 +32,9 @@
       "Stock_source_well": "A2"
     },
 
-    "Energy_solution_5x": {
+    "Energy_solution_6X": {
         "Type": "Standard",
-        "stock_conc_uM": 10,
+        "stock_conc_uM": 6,
         "rxn_conc_uM": 1,
         "Stock_source_well": "A3"
       },
@@ -53,18 +53,18 @@
     
     "PEG-8000": {
       "Type": "Variable",
-      "stock_conc_uM": 70,
+      "stock_conc_uM": 50,
       "Stock_source_well": "A7"
     },
 
     "MG_Glut": {
         "Type": "Variable",
-        "stock_conc_uM": 400,
+        "stock_conc_uM": 1000,
         "Stock_source_well": "B1"
       },
       "K_Glut": {
         "Type": "Variable",
-        "stock_conc_uM": 9000,
+        "stock_conc_uM": 2000,
         "Stock_source_well": "B2"
       }
 

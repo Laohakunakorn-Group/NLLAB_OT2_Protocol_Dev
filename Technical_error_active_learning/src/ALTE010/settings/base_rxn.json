@@ -48,24 +48,24 @@
     "DTT": {
         "Type": "Variable",
         "stock_conc_uM": 100,
-        "Stock_source_well": "A6"
+        "Stock_source_well": "B1"
       },
     
     "PEG-8000": {
       "Type": "Variable",
       "stock_conc_uM": 50,
-      "Stock_source_well": "A7"
+      "Stock_source_well": "B2"
     },
 
     "MG_Glut": {
         "Type": "Variable",
-        "stock_conc_uM": 1000,
-        "Stock_source_well": "B1"
+        "stock_conc_uM": 500,
+        "Stock_source_well": "B3"
       },
       "K_Glut": {
         "Type": "Variable",
         "stock_conc_uM": 2000,
-        "Stock_source_well": "B2"
+        "Stock_source_well": "B4"
       }
 
   },

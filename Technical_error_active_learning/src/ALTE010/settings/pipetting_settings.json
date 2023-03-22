@@ -6,7 +6,7 @@
 
   "Aqueous": {
 
-    "Stock_Tube_bottom_clearance" : 7.8,
+    "Stock_Tube_bottom_clearance" : 2.5,
   
     "aspirate_rate" : 1,
 
@@ -17,13 +17,13 @@
     "MasterMix_Tube_bottom_clearance" : 0.1,
 
     "mix_repetitions": 10,
-    "mix_volume": 50,
+    "mix_volume": 180,
     "post_mix_pause": 4
   },
 
   "Components": {
 
-    "Stock_Tube_bottom_clearance" : 7.8,
+    "Stock_Tube_bottom_clearance" : 2.5,
   
     "aspirate_rate" : 1,
 
@@ -34,7 +34,7 @@
     "MasterMix_Tube_bottom_clearance" : 0.1,
 
     "mix_repetitions": 10,
-    "mix_volume": 180,
+    "mix_volume": 50,
     "post_mix_pause": 4
   }
 },

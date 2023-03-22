@@ -442,12 +442,16 @@ def run(protocol: protocol_api.ProtocolContext):
     MasterMixTube_Aspiration_Heights_Dict = {}
     
     for SolutionType in pipetting_settings_dict["MasterMix"].keys():
-        
-        SolutionType_Dict = {}
-        for Tube in MasterMixCalculationsDict[SolutionType].keys():
-            SolutionType_Dict[Tube] = pipetting_settings_dict["Plating"][SolutionType]["aspirate_height_init"]
-        
-        MasterMixTube_Aspiration_Heights_Dict[SolutionType] = SolutionType_Dict
+
+        if SolutionType == "Meta":
+            pass
+        else:
+
+            SolutionType_Dict = {}
+            for Tube in MasterMixCalculationsDict[SolutionType].keys():
+                SolutionType_Dict[Tube] = pipetting_settings_dict["Plating"][SolutionType]["aspirate_height_init"]
+            
+            MasterMixTube_Aspiration_Heights_Dict[SolutionType] = SolutionType_Dict
         
     # Running the substrate dispense step if protocol_dispense_substrates = True
     if Plating_Toggle:

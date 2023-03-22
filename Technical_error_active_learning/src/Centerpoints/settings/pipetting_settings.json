@@ -1,0 +1,96 @@
+{ "MasterMix": {
+
+  "Meta": {
+    "MasterMix_Residual_xFactor": 1.1
+  },
+
+  "Aqueous": {
+
+    "Stock_Tube_bottom_clearance" : 2.8,
+  
+    "aspirate_rate" : 1,
+
+    "pause_time": 1,
+  
+    "dispense_rate" : 1,
+  
+    "MasterMix_Tube_bottom_clearance" : 0.1,
+
+    "mix_repetitions": 10,
+    "mix_volume": 180,
+    "post_mix_pause": 4
+  },
+
+  "Components": {
+
+    "Stock_Tube_bottom_clearance" : 7.8,
+  
+    "aspirate_rate" : 1,
+
+    "pause_time": 2,
+  
+    "dispense_rate" : 1,
+  
+    "MasterMix_Tube_bottom_clearance" : 0.1,
+
+    "mix_repetitions": 10,
+    "mix_volume": 50,
+    "post_mix_pause": 4
+  }
+},
+
+  "Plating": {
+
+  "Meta": {
+    "Reverse_Pipetting_Residual_ul": 0.5
+  },
+
+    "Aqueous": {
+
+      "aspirate_height_init" : 7.8,
+
+      "aspirate_height_inc" : 0.3,
+
+    
+      "volume" : 15,
+    
+      "aspirate_rate" : 1,
+    
+      "dispense_rate" : 1,
+    
+      "well_bottom_clearance" : 0.1
+    },
+
+    "Components": {
+
+      "aspirate_height_init" : 3.0,
+
+      "aspirate_height_inc" : 0.1,
+    
+      "volume" : 5,
+    
+      "aspirate_rate" : 0.2,
+    
+      "dispense_rate" : 0.1,
+    
+      "well_bottom_clearance" : 0.1
+    },
+
+    "Wax": {
+      "wax_dispense_volume" : 35,
+
+      "wax_dispense_height" : -3,
+    
+      "wax_new_tip" : "always",
+    
+      "wax_touch_tip" : 0,
+    
+      "wax_air_gap" : 20,
+    
+      "wax_disposal_volume" : 30
+    }
+  }
+
+
+
+}

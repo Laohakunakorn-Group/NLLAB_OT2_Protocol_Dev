@@ -285,6 +285,9 @@ def run(protocol: protocol_api.ProtocolContext):
             pass
 
 
+        #### Extract Pipetting Settings
+
+
         #### Actions
 
         pipette.pick_up_tip()
@@ -441,9 +444,11 @@ def run(protocol: protocol_api.ProtocolContext):
 
     MasterMixTube_Aspiration_Heights_Dict = {}
     
-    for SolutionType in pipetting_settings_dict["MasterMix"].keys():
+    for SolutionType in pipetting_settings_dict["Plating"].keys():
 
-        if SolutionType == "Meta":
+        if SolutionType == "Wax":
+            pass
+        elif SolutionType == "Meta":
             pass
         else:
 

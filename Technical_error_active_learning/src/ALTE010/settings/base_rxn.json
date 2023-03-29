@@ -32,9 +32,9 @@
       "Stock_source_well": "A2"
     },
 
-    "Energy_solution_6X": {
+    "Energy_solution_4X": {
         "Type": "Standard",
-        "stock_conc_uM": 6,
+        "stock_conc_uM": 4,
         "rxn_conc_uM": 1,
         "Stock_source_well": "A3"
       },
@@ -50,12 +50,7 @@
         "stock_conc_uM": 100,
         "Stock_source_well": "B1"
       },
-    
-    "PEG-8000": {
-      "Type": "Variable",
-      "stock_conc_uM": 50,
-      "Stock_source_well": "B2"
-    },
+
 
     "MG_Glut": {
         "Type": "Variable",

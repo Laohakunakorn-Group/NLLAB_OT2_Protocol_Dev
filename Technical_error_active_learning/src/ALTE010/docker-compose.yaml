@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+
+  OT2_CFPS:
+    build: .
+    image: OT2_CFPS_img
+    container_name: OT2_CFPS_cntr
+
+    ports:
+      - 8888:8888
+
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+
+    volumes:
+      - ./:/app
+  

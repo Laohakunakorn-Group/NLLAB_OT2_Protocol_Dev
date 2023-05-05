@@ -1,0 +1,6 @@
+{
+    "Variable": ["MG_Glut", "K_Glut", "DTT"],
+    "Type": ["Aqueous", "Aqueous", "Aqueous"],
+    "Max":[ 8.0, 150.0, 4],
+    "Min":[ 1, 40, 0.5]
+}

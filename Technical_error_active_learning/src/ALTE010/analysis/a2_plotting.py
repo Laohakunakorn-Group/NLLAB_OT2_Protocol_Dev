@@ -6,63 +6,35 @@ It determines what type of plate reader etc to correctly process the data
 
 import json
 import os
-
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+from sub_scripts.plotting_functions import *
+
 
 # import experimental design parameters
-with open("./settings/design_parameters.json") as json_file:
-    design_parameters = json.load(json_file)
+#with open("./settings/design_parameters.json") as json_file:
+#    design_parameters = json.load(json_file)
+
+# Import
+tidy_data = pd.read_csv("analysis/tidy_dataset_.csv")
+
+## Initial trimming.
+# drop negative control
+tidy_data = tidy_data[tidy_data["DNA_Template"] != "None"]
+fdbkp_experiment = tidy_data[tidy_data["Energy_Solution"] == "ES_ET_NTP"]
+fdbkp_experiment = fdbkp_experiment[fdbkp_experiment["Time"] <= 300]
 
 
-### read in the tidy dataset
-print()
-print("Reading in ./output/Datasets/tidy_data.csv")
+## time course
+plot_timecourse_mean(fdbkp_experiment)
 
-tidy_data = pd.read_csv("./output/Datasets/tidy_data.csv")
+## bar plot
 
-# drop TempC Column
-if design_parameters["Plot_Temperature"] == False:
-    tidy_data = tidy_data.drop('TempC', axis=1)
-else:
-    pass
+bar_plot_data = fdbkp_experiment[fdbkp_experiment["Time"] == 300]
+# round data 
+bar_plot_data.loc[:, "GFP_uM"] = bar_plot_data.loc[:, "GFP_uM"].round(2)
 
-
-print(tidy_data)
-
-
-## first plot all the wells
-
-# get all the well names - Time
-wells = list(tidy_data.columns)
-wells.remove("Time")
-
-#save_path = "./output/plots/"
-
-fig = plt.figure(figsize=(10,5))
-
-for well in wells:
-    
-    ax = sns.lineplot(x="Time", y=well, data=tidy_data)
-
-fig.suptitle("Average MAE over rounds")
-fig.tight_layout()
-
-
-plt.savefig("test.png")
-##### Save fig
-
-
-
-# make directory for sticking the output in
-#if os.path.isdir(save_path) == False:
-#    os.mkdir(save_path, mode=0o777)
-
-
-#navigate to tidy_data_files
-#os.chdir(save_path)
-
-
-#
+endpoint_barplot(bar_plot_data)

@@ -9,78 +9,138 @@ import os
 from datetime import time
 import pandas as pd
 
-# import experimental design parameters
-with open("./settings/design_parameters.json") as json_file:
-    design_parameters = json.load(json_file)
+from sub_scripts.identify_wells import *
+from sub_scripts.preprocessing_tidy import *
+from sub_scripts.Calibration import *
+from sub_scripts.zero_gfp import *
+#from sub_scripts.labstep_annotation import *
 
 
-# Import the raw datafile.
 
-# look inside ./analysis and look for any files that end with rawdata.exec
+### import raw data
 
-
-# gets all items in directory
-items = os.listdir("./analysis")
-
-# lists all .csv
-csv_list = []
-for names in items:
-
-    if names.endswith("raw_data.xlsx"):
-        csv_list.append(names)
-
-try:
-    if(len(csv_list) > 1):
-        raise UnAcceptedValueError("More than 1x .CSV file in the directory");
-except UnAcceptedValueError as e:
-    print ("Received error:", e.data)
-    # kills the process
-    quit()
-##########################################################################################
-#import dataset as dataframe
-
-print()
-print("Reading in data..")
-print()
-print("Plate_Reader_Protocol: " + design_parameters["Plate_Reader_Protocol"])
-print()
-print("Slicing data..")
-print()
-
-raw_data = pd.read_excel(r"./analysis/" + csv_list[0])
-
-if design_parameters["Plate_Reader_Protocol"] == "AP_TimeCourse":
-
-    core_data = raw_data.iloc[50:412,1:15]
-    core_data = core_data.reset_index(drop=True)
-    
-    ## revamp
-    # first rename the temp column to "TempC"
-    core_data.iloc[0,1] = "TempC"
-
-    # Set columns
-    core_data.columns = core_data.iloc[0,:]
-    core_data = core_data.iloc[1:,:]
-    core_data = core_data.reset_index(drop=True)
-
-    print("Converting Time to int64 Minutes..")
-    print()
+raw_data = pd.read_excel("analysis/First_Baseline_and_ES_3_05052023.xlsx", header=None)
 
 
-    # change time datatype to int mins row wise
-    for i, row in core_data.iterrows():
-        
-        # changes datetime.time to string, splits the string into a list using :, build Series and converts to int64
-        times = pd.Series(str(row["Time"]).split(':'), index = ["Hours", "Minutes", "Seconds"]).astype("int64")
-        
-        # converts to minutes with seconds in base 60 and sets to row
-        row["Time"] = (times["Hours"]*60) + times["Minutes"] + (times["Seconds"]/100)
+print(raw_data)
+### execute preprocessing scripts
 
-print("Complete.")
-print()
-print("Saving to: "+"./output/Datasets/tidy_data.csv")
-print()
+well_type_dict = {
+    "B8": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "B10": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "B12": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_3",
+        "Lysate_Owner": "MS"
+        },
+    "B14": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_3",
+        "Lysate_Owner": "MS"
+        },
+    "D8": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_DARPIN_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "D10": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_DARPIN_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "D12": {
+        "Well_Type": "Negative_Control",
+        "DNA_Template": "None",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "D14": {
+        "Well_Type": "Negative_Control",
+        "DNA_Template": "None",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "F8": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_INFa2_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "F10": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_INFa2_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "H8": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_Uricase_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "H10": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_Uricase_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "J8": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_StefinA_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        },
+    "J10": {
+        "Well_Type": "Experiment",
+        "DNA_Template": "T7_StefinA_GFP",
+        "Lysate_Inventory_Record": "Lysate_007",
+        "Energy_Solution": "ES_ET_NTP",
+        "Lysate_Owner": "MS"
+        }
 
-### save
-core_data.to_csv("./output/Datasets/tidy_data.csv", index=False)
+    }
 
+
+
+
+model_selected = "GFP_uM_Polynomial_Sarah_Oct_22"
+
+# 1. tidy, trim and annotate the dataset
+data_in_progress = preprocessing_tidy(raw_data, well_type_dict, negative_control_designated = True)
+
+# 2. Calibrate signal with selected fluorescent protein model
+data_in_progress = Calibration(data_in_progress, negative_control_designated = True, model_selected = "GFP_uM_Polynomial_Sarah_Oct_22")
+
+# 3. Zero GFP signal
+data_in_progress = Zero_GFP(data_in_progress, negative_control_designated = True)
+   
+print(data_in_progress)
+
+data_in_progress.to_csv("analysis/tidy_dataset.csv")

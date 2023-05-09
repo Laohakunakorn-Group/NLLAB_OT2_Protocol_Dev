@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
 
-  OT2_CFPS:
+  ot2_cfps:
     build: .
-    image: OT2_CFPS_img
-    container_name: OT2_CFPS_cntr
+    image: ot2_cfps_img
+    container_name: ot2_cfps_cntr
 
     ports:
       - 8888:8888

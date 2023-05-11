@@ -19,7 +19,7 @@ from sub_scripts.plotting_functions import *
 #    design_parameters = json.load(json_file)
 
 # Import
-tidy_data = pd.read_csv("analysis/tidy_dataset_.csv")
+tidy_data = pd.read_csv("analysis/tidy_dataset.csv")
 
 ## Initial trimming.
 # drop negative control

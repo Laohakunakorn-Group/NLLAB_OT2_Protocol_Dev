@@ -13,12 +13,12 @@ library(ggplot2)
 library(dplyr)
 
 # Import the experiment_variables to modulate JSON
-experiment_variables_json <- fromJSON(file = "settings/experiment_variables.json")
+experiment_variables_json <- fromJSON(file = "/app/settings/experiment_variables.json")
 # convert to Dataframe
 experiment_variables_df <- as.data.frame(experiment_variables_json)
 
 # import design_parameters.json
-design_parameters_list <- fromJSON(file = "settings/design_parameters.json")
+design_parameters_list <- fromJSON(file = "/app/settings/design_parameters.json")
 
 
 # get the number of rows of the df to use as # of variables for generating design_coded
@@ -57,7 +57,7 @@ design_coded <- ccd(
 design_coded <- as.data.frame(design_coded)
 
 # write the basic design to disk
-write.csv(design_coded,"output/Experiment_Designs/design_coded.csv", row.names = TRUE)
+write.csv(design_coded,"/app/output/Experiment_Designs/design_coded.csv", row.names = TRUE)
 
 ## Now insert real values
 
@@ -112,4 +112,4 @@ design_real <-design_real %>%
             select(-starts_with('x'))
 
 # write both to disk as .csv
-write.csv(design_real,"output/Experiment_Designs/design_skeleton.csv", row.names = TRUE)
+write.csv(design_real,"/app/output/Experiment_Designs/design_skeleton.csv", row.names = TRUE)

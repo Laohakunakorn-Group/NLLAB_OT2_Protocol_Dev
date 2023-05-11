@@ -58,12 +58,12 @@ def generate_MasterMixWells_96(MasterMix):
 
 
 # import the base_rxn_dict
-base_rxn_path = "settings/base_rxn.json"
+base_rxn_path = "/app/settings/base_rxn.json"
 base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
 
 # import the design
-experiment_design_df = pd.read_csv("output/Experiment_Designs/design_skeleton.csv", index_col=0)
+experiment_design_df = pd.read_csv("/app/output/Experiment_Designs/design_skeleton.csv", index_col=0)
 
 # drop std order and run order
 experiment_design_df = experiment_design_df.drop('std.order', axis=1)
@@ -75,7 +75,7 @@ number_of_experiments = experiment_design_df.shape[0]
 ##### Compatibility checks
 
 # import experimental design parameters
-with open('settings/design_parameters.json') as json_file:
+with open('/app/settings/design_parameters.json') as json_file:
     design_parameters = json.load(json_file)
 
 
@@ -116,7 +116,7 @@ else:
 
 
 # import experiment_variables
-with open('settings/experiment_variables.json') as json_file:
+with open('/app/settings/experiment_variables.json') as json_file:
     experiment_variables = json.load(json_file)
 experiment_variables = pd.DataFrame(experiment_variables)
 
@@ -449,8 +449,8 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
     Components_master_mixes = DesignateMasterMixTubes(Components_master_mixes, lysate_source_list_possibles)
 
     # save binaries of these working concentration designs
-    Aqueous_master_mixes.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
-    Components_master_mixes.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
+    Aqueous_master_mixes.to_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
+    Components_master_mixes.to_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
     
 
 
@@ -484,12 +484,12 @@ def Designate_MasterMix_Tubes_by_Plate(plate_number, MasterMixesModulated):
         raise Exception("MasterMixesModulated is neither Aqueous, Components or Both: MasterMixesModulated = " + MasterMixesModulated)
 
     # save human readable CSVs
-    Aqueous_master_mixes_stocks.to_csv("output/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks_human_readable"+".csv", index=False)
-    Components_master_mixes_stocks.to_csv("output/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks_human_readable"+".csv", index=False)
+    Aqueous_master_mixes_stocks.to_csv("/app/output/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks_human_readable"+".csv", index=False)
+    Components_master_mixes_stocks.to_csv("/app/output/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks_human_readable"+".csv", index=False)
 
     # save machine readable binaries
-    Aqueous_master_mixes_stocks.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks.pkl")
-    Components_master_mixes_stocks.to_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks.pkl")
+    Aqueous_master_mixes_stocks.to_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Stocks.pkl")
+    Components_master_mixes_stocks.to_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Stocks.pkl")
 
 
     # end of function
@@ -503,7 +503,7 @@ for plate_number in plates_list:
     Designate_MasterMix_Tubes_by_Plate(plate_number=plate_number, MasterMixesModulated = MasterMixesModulated)
 
 # save the experiment_design_df
-experiment_design_df.to_csv("tmp/Experiment_Designs/design_unassigned.csv")
+experiment_design_df.to_csv("/app/tmp/Experiment_Designs/design_unassigned.csv")
 #############################################################################################################################################
 
 

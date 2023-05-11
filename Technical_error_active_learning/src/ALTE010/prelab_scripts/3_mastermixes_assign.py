@@ -14,19 +14,19 @@ import numpy as np
 
 
 # import the base_rxn_dict
-base_rxn_path = "settings/base_rxn.json"
+base_rxn_path = "/app/settings/base_rxn.json"
 base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
 
 # import the design
-experiment_design_df = pd.read_csv("tmp/Experiment_Designs/design_unassigned.csv", index_col=0)
+experiment_design_df = pd.read_csv("/app/tmp/Experiment_Designs/design_unassigned.csv", index_col=0)
 #get the number of experiments
 number_of_experiments = experiment_design_df.shape[0]
 
 ##### Compatibility checks
 
 # import experimental design parameters
-with open('settings/design_parameters.json') as json_file:
+with open('/app/settings/design_parameters.json') as json_file:
     design_parameters = json.load(json_file)
 
 
@@ -47,7 +47,7 @@ elif design_parameters["Reaction_Volume"] == 10:
 
 
 # import experiment_variables
-with open('settings/experiment_variables.json') as json_file:
+with open('/app/settings/experiment_variables.json') as json_file:
     experiment_variables = json.load(json_file)
 experiment_variables = pd.DataFrame(experiment_variables)
 
@@ -286,8 +286,8 @@ plates_list = list(experiment_design_df["Plate"].unique())
 for plate_number in plates_list:
 
 
-    aqueous_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
-    Components_master_mixes = pd.read_pickle("tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
+    aqueous_master_mixes = pd.read_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Aqueous_MasterMix_Working_Concs.pkl")
+    Components_master_mixes = pd.read_pickle("/app/tmp/MasterMixes/"+str(plate_number)+"_plate_Components_MasterMix_Working_Concs.pkl")
 
     # slice the experimental design
     plate_df = experiment_design_df[experiment_design_df["Plate"] == plate_number].reset_index(drop=True)
@@ -318,7 +318,7 @@ print()
 
 
 ### save the full design
-experiment_design_df.to_csv("output/Experiment_Designs/design_final.csv", index=False)
+experiment_design_df.to_csv("/app/output/Experiment_Designs/design_final.csv", index=False)
 
 
 #############################################################################################################################################

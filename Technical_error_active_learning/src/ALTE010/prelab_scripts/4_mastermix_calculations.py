@@ -19,18 +19,18 @@ all_plates_dict = {}
 Total_col_df = pd.DataFrame()
 
 # retrieve the number of plates in the experiment
-design_final_df = pd.read_csv("output/Experiment_Designs/design_final.csv")
+design_final_df = pd.read_csv("/app/output/Experiment_Designs/design_final.csv")
 quantity_of_plates = design_final_df["Plate"].max()
 
 # read in the jsons and dataframes
-es_path = "settings/base_energy_solution.json"
+es_path = "/app/settings/base_energy_solution.json"
 es_dict = json.load(open(es_path, 'r'))
 
-base_rxn_path = "settings/base_rxn.json"
+base_rxn_path = "/app/settings/base_rxn.json"
 base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
 # import experiment_variables
-with open('settings/experiment_variables.json') as json_file:
+with open('/app/settings/experiment_variables.json') as json_file:
     experiment_variables = json.load(json_file)
 experiment_variables = pd.DataFrame(experiment_variables)
 
@@ -63,7 +63,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     if MasterMixesModulated == "Both":
 
         # Aqueous
-        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
         Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
 
         # extract the Aqueous variables
@@ -71,7 +71,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
         # Components
-        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
         Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
 
@@ -82,7 +82,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     elif MasterMixesModulated == "Aqueous":
 
         # Aqueous
-        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
         Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
 
         # extract the Aqueous variables
@@ -90,12 +90,12 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Aqueous_variables.remove("Tubes"); Aqueous_variables.remove("Experiments")
 
         # Components
-        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
         Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
 
         # Components
-        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
         Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
         # extract the Components variables
@@ -107,7 +107,7 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
     elif MasterMixesModulated == "Components":
 
         # Components
-        Components_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
+        Components_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Components_MasterMix_Stocks.pkl"
         Components_master_mix_dataframe = pd.read_pickle(Components_master_mix_dataframe_path)
 
         # extract the Components variables
@@ -115,11 +115,11 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
         Components_variables.remove("Tubes"); Components_variables.remove("Experiments")
 
         # Aqueous
-        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
         Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
 
         # Aqueous
-        Aqueous_master_mix_dataframe_path = "tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
+        Aqueous_master_mix_dataframe_path = "/app/tmp/MasterMixes/" + str(plate_number)+ "_plate_Aqueous_MasterMix_Stocks.pkl"
         Aqueous_master_mix_dataframe = pd.read_pickle(Aqueous_master_mix_dataframe_path)
 
         # extract the Aqueous variables
@@ -431,10 +431,10 @@ for plate_number in range(1, (quantity_of_plates+1), 1):
 
 
 #########################
-with open("tmp/MasterMixes/mastermix_calculations.json", 'w') as fp:
+with open("/app/tmp/MasterMixes/mastermix_calculations.json", 'w') as fp:
     json.dump(all_plates_dict, fp)
 
 print("Saved mastermix_calculations.json")
 
-Total_col_df.to_csv("./output/Instructions/Total_Required_Reagent_Volumes.csv")
+Total_col_df.to_csv("/app/output/Instructions/Total_Required_Reagent_Volumes.csv")
 print("Saved Total_Required_Reagent_Volumes.csv")

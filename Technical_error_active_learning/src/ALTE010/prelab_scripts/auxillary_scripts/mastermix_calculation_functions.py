@@ -2,10 +2,10 @@ import json
 from auxillary_scripts.calculators import *
 import math
 
-base_rxn_path = "./settings/base_rxn.json"
+base_rxn_path = "/app/settings/base_rxn.json"
 base_rxn_dict = json.load(open(base_rxn_path, 'r'))
 
-pipetting_settings_dict_path = "./settings/pipetting_settings.json"
+pipetting_settings_dict_path = "/app/settings/pipetting_settings.json"
 pipetting_settings_dict = json.load(open(pipetting_settings_dict_path, 'r'))
 
 

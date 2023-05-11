@@ -143,4 +143,4 @@ data_in_progress = Zero_GFP(data_in_progress, negative_control_designated = True
    
 print(data_in_progress)
 
-data_in_progress.to_csv("analysis/tidy_dataset.csv")
+data_in_progress.to_csv("/app/analysis_output/tidy_dataset.csv")

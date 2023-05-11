@@ -14,7 +14,7 @@ def plot_timecourse_mean(fdbkp_experiment):
     fig.suptitle("Timecourse PoI-GFP Expression")
     fig.tight_layout()
 
-    plt.savefig("analysis/plots/timecourse_mean.png")
+    plt.savefig("/app/analysis_output/plots/timecourse_mean.png")
 
 
 # bar plot
@@ -51,4 +51,4 @@ def endpoint_barplot(bar_plot_data):
     fig_barplot.suptitle("PoI-GFP Expression at 300 mins")
     fig_barplot.tight_layout()
 
-    plt.savefig("analysis/plots/barplot_endpoint.png")
+    plt.savefig("/app/analysis_output/plots/barplot_endpoint.png")

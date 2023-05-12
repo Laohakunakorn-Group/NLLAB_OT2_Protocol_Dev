@@ -19,116 +19,12 @@ from sub_scripts.zero_gfp import *
 
 ### import raw data
 
-raw_data = pd.read_excel("analysis/First_Baseline_and_ES_3_05052023.xlsx", header=None)
+raw_data = pd.read_excel("/app/analysis_scripts/First_Baseline_and_ES_3_05052023.xlsx", header=None)
 
 
-print(raw_data)
+well_type_dict = json.load(open("/app/analysis_scripts/fdbk_baselining_well_metadata.json"))
+
 ### execute preprocessing scripts
-
-well_type_dict = {
-    "B8": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "B10": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "B12": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_3",
-        "Lysate_Owner": "MS"
-        },
-    "B14": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_3",
-        "Lysate_Owner": "MS"
-        },
-    "D8": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_DARPIN_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "D10": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_DARPIN_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "D12": {
-        "Well_Type": "Negative_Control",
-        "DNA_Template": "None",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "D14": {
-        "Well_Type": "Negative_Control",
-        "DNA_Template": "None",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "F8": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_INFa2_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "F10": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_INFa2_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "H8": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_Uricase_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "H10": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_Uricase_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "J8": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_StefinA_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        },
-    "J10": {
-        "Well_Type": "Experiment",
-        "DNA_Template": "T7_StefinA_GFP",
-        "Lysate_Inventory_Record": "Lysate_007",
-        "Energy_Solution": "ES_ET_NTP",
-        "Lysate_Owner": "MS"
-        }
-
-    }
-
-
-
 
 model_selected = "GFP_uM_Polynomial_Sarah_Oct_22"
 
@@ -141,6 +37,6 @@ data_in_progress = Calibration(data_in_progress, negative_control_designated = T
 # 3. Zero GFP signal
 data_in_progress = Zero_GFP(data_in_progress, negative_control_designated = True)
    
-print(data_in_progress)
+
 
 data_in_progress.to_csv("/app/analysis_output/tidy_dataset.csv")

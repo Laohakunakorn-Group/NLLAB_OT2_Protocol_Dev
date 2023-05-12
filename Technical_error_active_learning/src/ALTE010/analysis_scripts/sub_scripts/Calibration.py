@@ -27,7 +27,7 @@ def Calibration(tidy_data, negative_control_designated,  model_selected):
 
     # load selected model
 
-    model_path = "analysis/Calibration/models/" + model_selected + ".pkl"
+    model_path = "/app/analysis_scripts/Calibration/models/" + model_selected + ".pkl"
     loaded_model = pickle.load(open(model_path, 'rb'))
 
 

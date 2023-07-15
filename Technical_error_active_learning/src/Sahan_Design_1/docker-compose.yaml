@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+
+  sahandesign:
+    build: .
+    image: sahandesign
+    container_name: sahandesign
+    ports:
+      - 8888:8888
+
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+
+    volumes:
+      - ./:/app
+  

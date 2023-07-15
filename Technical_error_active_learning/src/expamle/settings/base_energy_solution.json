@@ -1,0 +1,77 @@
+{ "Name":"ES_ET_NTP",
+  "Concentration_Factor_X": 3,
+  "Reagents": {
+    "HEPES": {
+      "Stock_Conc": 2000,
+      "MasterMix_Conc": 200
+    },
+    "ATP": {
+      "Stock_Conc": 100,
+      "MasterMix_Conc": 6
+    },
+    "GTP": {
+      "Stock_Conc": 100,
+      "MasterMix_Conc": 6
+    },
+    "CTP": {
+      "Stock_Conc": 100,
+      "MasterMix_Conc": 3.6
+    },
+    "UTP": {
+      "Stock_Conc": 100,
+      "MasterMix_Conc": 3.6
+    },
+    "tRNA": {
+      "Stock_Conc": 43.75,
+      "MasterMix_Conc": 0.8
+    },
+    "CoA": {
+      "Stock_Conc": 65,
+      "MasterMix_Conc": 1.04
+    },
+    "NAD": {
+      "Stock_Conc": 175,
+      "MasterMix_Conc": 1.32
+    },
+    "cAMP": {
+      "Stock_Conc": 650,
+      "MasterMix_Conc": 3
+    },
+    "Folinic_Acid": {
+      "Stock_Conc": 33.9,
+      "MasterMix_Conc": 0.27
+    },
+    "Spermidine": {
+      "Stock_Conc": 1000,
+      "MasterMix_Conc": 4
+    },
+    "3-PGA": {
+      "Stock_Conc": 1400,
+      "MasterMix_Conc": 120
+    },
+    "Amino_Acids": {
+      "Stock_Conc": 50,
+      "MasterMix_Conc": 6
+    },
+    "Tyrosine": {
+      "Stock_Conc": 50,
+      "MasterMix_Conc": 3
+    },
+    "PEG-8000": {
+      "Stock_Conc": 50,
+      "MasterMix_Conc": 8
+    },
+    "MG_Glut": {
+      "Stock_Conc": 1000,
+      "MasterMix_Conc": 42
+    },
+    "K_Glut": {
+      "Stock_Conc": 6000,
+      "MasterMix_Conc": 400
+    },
+    "TCEP": {
+      "Stock_Conc": 1000,
+      "MasterMix_Conc": 1
+    }
+  }
+}

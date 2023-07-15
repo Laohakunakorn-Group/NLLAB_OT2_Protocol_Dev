@@ -1,0 +1,6 @@
+{
+    "Variable": ["Arabinose", "IPTG"],
+    "Type": ["Aqueous", "Aqueous"],
+    "Max":[ 52.0, 2.0],
+    "Min":[ 0.01, 0.1]
+}

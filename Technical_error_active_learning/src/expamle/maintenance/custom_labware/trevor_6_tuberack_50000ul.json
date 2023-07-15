@@ -1,0 +1,122 @@
+{
+    "ordering": [
+        [
+            "A1",
+            "B1"
+        ],
+        [
+            "A2",
+            "B2"
+        ],
+        [
+            "A3",
+            "B3"
+        ]
+    ],
+    "brand": {
+        "brand": "Trevor",
+        "brandId": []
+    },
+    "metadata": {
+        "displayName": "Trevor 6 Tube Rack with Falcon_50 50 mL",
+        "displayCategory": "tubeRack",
+        "displayVolumeUnits": "µL",
+        "tags": []
+    },
+    "dimensions": {
+        "xDimension": 127.76,
+        "yDimension": 85.48,
+        "zDimension": 115
+    },
+    "wells": {
+        "A1": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 35.5,
+            "y": 60.24,
+            "z": 2
+        },
+        "B1": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 35.5,
+            "y": 25.24,
+            "z": 2
+        },
+        "A2": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 70.5,
+            "y": 60.24,
+            "z": 2
+        },
+        "B2": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 70.5,
+            "y": 25.24,
+            "z": 2
+        },
+        "A3": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 105.5,
+            "y": 60.24,
+            "z": 2
+        },
+        "B3": {
+            "depth": 113,
+            "totalLiquidVolume": 50000,
+            "shape": "circular",
+            "diameter": 27.81,
+            "x": 105.5,
+            "y": 25.24,
+            "z": 2
+        }
+    },
+    "groups": [
+        {
+            "brand": {
+                "brand": "Falcon_50",
+                "brandId": []
+            },
+            "metadata": {
+                "wellBottomShape": "v",
+                "displayCategory": "tubeRack"
+            },
+            "wells": [
+                "A1",
+                "B1",
+                "A2",
+                "B2",
+                "A3",
+                "B3"
+            ]
+        }
+    ],
+    "parameters": {
+        "format": "irregular",
+        "quirks": [],
+        "isTiprack": false,
+        "isMagneticModuleCompatible": false,
+        "loadName": "trevor_6_tuberack_50000ul"
+    },
+    "namespace": "custom_beta",
+    "version": 1,
+    "schemaVersion": 2,
+    "cornerOffsetFromSlot": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+    }
+}

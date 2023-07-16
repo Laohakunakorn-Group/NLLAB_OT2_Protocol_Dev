@@ -1,0 +1,38 @@
+
+Call:
+lm(formula = RFUs ~ poly(MG_Glut, K_Glut, DTT, degree = 2), data = trimmed)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-433.45  -35.53   -5.37   30.47  639.06 
+
+Coefficients:
+                                              Estimate Std. Error t value
+(Intercept)                                  3.707e+02  6.022e-01 615.541
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.0.0  5.767e+03  7.928e+01  72.742
+poly(MG_Glut, K_Glut, DTT, degree = 2)2.0.0 -6.201e+03  7.948e+01 -78.026
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.1.0  4.769e+03  7.928e+01  60.152
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.1.0 -7.584e+04  1.026e+04  -7.391
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.2.0 -1.152e+03  7.948e+01 -14.496
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.0.1 -1.303e+03  7.928e+01 -16.441
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.0.1 -6.690e+04  1.026e+04  -6.520
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.1.1  2.597e+04  1.026e+04   2.531
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.0.2  8.722e+02  7.948e+01  10.974
+                                            Pr(>|t|)    
+(Intercept)                                  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.0.0  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)2.0.0  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.1.0  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.1.0 1.53e-13 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.2.0  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.0.1  < 2e-16 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)1.0.1 7.24e-11 ***
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.1.1   0.0114 *  
+poly(MG_Glut, K_Glut, DTT, degree = 2)0.0.2  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 79.28 on 17318 degrees of freedom
+Multiple R-squared:  0.4763,	Adjusted R-squared:  0.476 
+F-statistic:  1750 on 9 and 17318 DF,  p-value: < 2.2e-16
+

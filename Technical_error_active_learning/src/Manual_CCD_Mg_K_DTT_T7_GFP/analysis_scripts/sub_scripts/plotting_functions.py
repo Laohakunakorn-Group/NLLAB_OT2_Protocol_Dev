@@ -5,13 +5,15 @@ import seaborn as sns
 
 
 # Time course all
-def plot_timecourse_mean(fdbkp_experiment):
+def plot_timecourse_mean(plotting_data):
     
     fig = plt.figure(figsize=(10,5))
 
-    sns.lineplot(x="Time", y= "GFP_uM", hue = "DNA_Template", data = fdbkp_experiment)
+    sns.lineplot(x="Time", y= "RFUs", hue = "Condition", data = plotting_data)
 
-    fig.suptitle("Timecourse PoI-GFP Expression")
+    plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
+
+    fig.suptitle("Timecourse Fluorescence of Conditions")
     fig.tight_layout()
 
     plt.savefig("/app/analysis_output/plots/timecourse_mean.png")
@@ -41,12 +43,19 @@ def show_values(axs, orient="v", space=.05):
 
 
 def endpoint_barplot(bar_plot_data):
+
+    #bar_plot_data.to_csv("bar.csv")
+
     
     fig_barplot = plt.figure(figsize=(10,5))
 
-    ax = sns.barplot(x="DNA_Template", y= "GFP_uM", data = bar_plot_data)
+    ax = sns.barplot(x="Well", y= "RFUs", hue = "Condition", data = bar_plot_data)
     # show values above 
     show_values(ax, orient="v", space=0.05)
+    # rotate tick labels
+    ax.set_xticklabels(np.arange(1,len(bar_plot_data["Condition"].unique())+1, 1))
+
+    plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
 
     fig_barplot.suptitle("PoI-GFP Expression at 300 mins")
     fig_barplot.tight_layout()

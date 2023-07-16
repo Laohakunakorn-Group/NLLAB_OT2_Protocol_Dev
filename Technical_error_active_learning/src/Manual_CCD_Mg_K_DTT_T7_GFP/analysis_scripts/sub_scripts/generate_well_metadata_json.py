@@ -27,6 +27,7 @@ def generate_well_metadata_dict():
         well_dict["MG_Glut"] = well["MG_Glut"]
         well_dict["K_Glut"] = well["K_Glut"]
         well_dict["DTT"] = well["DTT"]
+        well_dict["MasterMixTube"] = well["MasterMixTube"]
 
         # store the whole thing under the well code
         well_metadata_dict[well["Well"]] = well_dict

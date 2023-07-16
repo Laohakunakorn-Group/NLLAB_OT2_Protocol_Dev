@@ -7,7 +7,7 @@ services:
     image: man_doe
     container_name: man_doe
     ports:
-      - 8888:8888
+      - 7001:7001
 
     stdin_open: true # docker run -i
     tty: true        # docker run -t

@@ -21,20 +21,19 @@ from sub_scripts.plotting_functions import *
 # Import
 tidy_data = pd.read_csv("/app/analysis_output/tidy_dataset.csv")
 
+
+
 ## Initial trimming.
 # drop negative control
-tidy_data = tidy_data[tidy_data["DNA_Template"] != "None"]
-fdbkp_experiment = tidy_data[tidy_data["Energy_Solution"] == "ES_ET_NTP"]
-fdbkp_experiment = fdbkp_experiment[fdbkp_experiment["Time"] <= 300]
-
+plotting_data = tidy_data
 
 ## time course
-plot_timecourse_mean(fdbkp_experiment)
+#plot_timecourse_mean(plotting_data)
 
 ## bar plot
+bar_plot_data = plotting_data[plotting_data["Time"] == 100]
 
-bar_plot_data = fdbkp_experiment[fdbkp_experiment["Time"] == 300]
 # round data 
-bar_plot_data.loc[:, "GFP_uM"] = bar_plot_data.loc[:, "GFP_uM"].round(2)
+bar_plot_data.loc[:, "RFUs"] = bar_plot_data.loc[:, "RFUs"].round(2)
 
 endpoint_barplot(bar_plot_data)

@@ -9,6 +9,7 @@ First script in the data preprocessing that:
 # imports
 import pandas as pd
 
+
 # functions
 from sub_scripts.analysis_functions.preprocessing import *
 
@@ -29,6 +30,8 @@ def preprocessing_tidy(raw_data, well_metadata, negative_control_designated):
     experiment_metadata_dict = ExtractExperimentMetadataFromRaw(raw_metadata)
 
 
+
+
     ### Time course data
 
     # get all rows below the metadata
@@ -37,12 +40,14 @@ def preprocessing_tidy(raw_data, well_metadata, negative_control_designated):
     # trim
     trimmed_timecourse_data = TrimRawTimecourseData(raw_timecourse_data, well_metadata)
 
+
     # convert date.time hh:mm:ss to mins
     trimmed_timecourse_data = GetTimeInMinutes(trimmed_timecourse_data)
 
+
     # Melt wellwise
-    melted_timecourse_data = MeltDataByExperimentWells(trimmed_timecourse_data, well_metadata)
-    
+    melted_timecourse_data = MeltDataByExperimentWells(trimmed_timecourse_data, well_metadata) 
+
     # baseline subtract
     if negative_control_designated == True:
         melted_timecourse_data = baseline_subtract_data(melted_timecourse_data, trimmed_timecourse_data, well_metadata)
@@ -57,4 +62,7 @@ def preprocessing_tidy(raw_data, well_metadata, negative_control_designated):
     # annotate the metadata covering the whole experiment
     timecourse_annotated = AnnotateExperimentWideMetadata(timecourse_annotated_wells, experiment_metadata_dict)
 
+    # write condition as strings in Condition Column
+    timecourse_annotated = WriteConditionStringColumn(timecourse_annotated)
+    
     return timecourse_annotated

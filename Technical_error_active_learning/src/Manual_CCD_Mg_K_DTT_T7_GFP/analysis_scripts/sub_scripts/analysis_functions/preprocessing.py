@@ -1,6 +1,6 @@
 # imports
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, time
 
 """
 Data Cleaning and Tidying functions
@@ -99,11 +99,23 @@ def TrimRawTimecourseData(raw_timecourse_data, well_metadata):
     Sets columns
     Deletes temp column
     """
-    ## first find the last row in the column by string matching
+
+    ## Find the last row /time point. There are two possible senarios:
+    # 1. that the full time course has been completed in which case look for Results in column 0 by strong matching
+    # 2. that the timecourse was terminated early in which case look for the time point where time(0,0,0): 00:00:00
     # use it to calculate the last_data_row_index
-    for i,row in enumerate(raw_timecourse_data.iloc[:,0]):
-        if row == "Results":
+
+    for i,row in raw_timecourse_data.iterrows():
+        # if whole timecourse has been found
+        # subtract one to account for spare row
+        if row[0] == "Results":
             last_data_row_index = i-1
+        
+        # or if terminated early.
+        # use i as the actual index.
+        elif row[1] == time(0,0,0):
+            last_data_row_index = i
+            break
 
     # slice the raw_data
     trimmed_timecourse_data = raw_timecourse_data.iloc[:last_data_row_index,1:]
@@ -187,3 +199,30 @@ def AnnotateExperimentWideMetadata(timecourse_annotated_wells, experiment_metada
         timecourse_annotated_wells.loc[:, metadata_key] = metadata_value
 
     return timecourse_annotated_wells
+
+
+def WriteConditionStringColumn(timecourse_annotated):
+
+    # extract experiment variables
+    experiment_variables = list(pd.read_csv("/app/analysis_scripts/design.csv").columns)
+    experiment_variables.remove("MasterMixTube")
+    experiment_variables.remove("Well")
+
+    # slice the columns that contain the condition concentrations
+    stringed_variables = timecourse_annotated[experiment_variables]
+
+    # initialse an empty df to add the stringed columns to.
+    string_df = pd.DataFrame()
+
+    for i, column in enumerate(stringed_variables):
+
+        # add the column name to the string of the concentration
+        condition = stringed_variables[column].name + ": " + stringed_variables[column].astype(str)
+        
+        # add that new column to the df
+        string_df = pd.concat([string_df, condition], axis = 1)
+
+    # concatenate the strings and assign to the Condition column in timecourse_annotated
+    timecourse_annotated["Condition"] = string_df[experiment_variables].agg(', '.join, axis=1)
+
+    return timecourse_annotated

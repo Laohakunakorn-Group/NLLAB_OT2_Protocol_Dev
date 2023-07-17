@@ -93,4 +93,4 @@ def response_surface_methadology_plotting(X, Y, model, polyfeatures):
     ax.set_zlabel('Z')
     ax.set_title('Multivariate Polynomial Regression')
 
-    fig.save_fig("test.png")
+    fig.save_fig("test2222.png")

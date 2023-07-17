@@ -43,4 +43,4 @@ if negative_control_designated == True:
    
 
 
-data_in_progress.to_csv("/app/analysis_output/tidy_dataset.csv")
+data_in_progress.to_csv("/app/analysis_output/tidy_dataset.csv", index=None)

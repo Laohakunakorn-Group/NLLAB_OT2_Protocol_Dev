@@ -5,7 +5,7 @@ import seaborn as sns
 
 
 # Time course all
-def plot_timecourse_mean(plotting_data):
+def plot_timecourse_mean(plotting_data, product_name):
     
     fig = plt.figure(figsize=(10,5))
 
@@ -13,10 +13,10 @@ def plot_timecourse_mean(plotting_data):
 
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
 
-    fig.suptitle("Timecourse Fluorescence of Conditions")
+    fig.suptitle(product_name + " "+"Timecourse Fluorescence of Conditions")
     fig.tight_layout()
 
-    plt.savefig("/app/analysis_output/plots/timecourse_mean.png")
+    plt.savefig("/app/analysis_output/plots/"+product_name+"_timecourse_mean.png")
 
 
 # bar plot
@@ -42,14 +42,15 @@ def show_values(axs, orient="v", space=.05):
         _single(axs)
 
 
-def endpoint_barplot(bar_plot_data):
+def endpoint_barplot(bar_plot_data, product_name):
 
     #bar_plot_data.to_csv("bar.csv")
 
     
     fig_barplot = plt.figure(figsize=(10,5))
 
-    ax = sns.barplot(x="Well", y= "RFUs", hue = "Condition", data = bar_plot_data)
+    #ax = sns.barplot(x="Well", y= "RFUs", hue = "Condition", data = bar_plot_data)
+    ax = sns.barplot(x="Condition", y= "RFUs",  data = bar_plot_data)
     # show values above 
     show_values(ax, orient="v", space=0.05)
     # rotate tick labels
@@ -57,7 +58,7 @@ def endpoint_barplot(bar_plot_data):
 
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
 
-    fig_barplot.suptitle("PoI-GFP Expression at 300 mins")
+    fig_barplot.suptitle(product_name +" Expression at 100 mins")
     fig_barplot.tight_layout()
 
-    plt.savefig("/app/analysis_output/plots/barplot_endpoint.png")
+    plt.savefig("/app/analysis_output/plots/"+product_name+"_barplot_endpoint.png")

@@ -52,7 +52,7 @@
       },
 
 
-    "MG_Glut": {
+    "MG_Acetate": {
         "Type": "Variable",
         "stock_conc_uM": 500,
         "Stock_source_well": "B3"
@@ -60,12 +60,6 @@
       "K_Glut": {
         "Type": "Variable",
         "stock_conc_uM": 2000,
-        "Stock_source_well": "B4"
-      },
-    
-      "tRNA": {
-        "Type": "Variable",
-        "stock_conc_uM": 500,
         "Stock_source_well": "B4"
       }
       

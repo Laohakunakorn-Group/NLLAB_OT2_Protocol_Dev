@@ -1,6 +1,6 @@
 {
-    "Variable": ["MG_Glut", "K_Glut", "TCEP", "tRNA"],
-    "Type": ["Aqueous", "Aqueous", "Aqueous", "Aqueous"],
-    "Max":[ 12.0, 130.0, 1.5, 4],
-    "Min":[ 4.0, 80.0, 0.5, 2]
+    "Variable": ["MG_Acetate", "K_Glut", "TCEP"],
+    "Type": ["Aqueous", "Aqueous", "Aqueous"],
+    "Max":[ 15.0, 150.0, 2],
+    "Min":[ 4.0, 80.0, 0.5]
 }
